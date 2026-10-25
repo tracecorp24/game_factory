@@ -1,0 +1,59 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sd_xl_base_1.0.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["1", 1],
+      "text": "3d glossy crystal blue gem, mobile game match-3 asset, game icon, clean transparent background, high specular reflections, unreal engine 5 render"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["1", 1],
+      "text": "blurry, low quality, noise, photorealistic person, complex background"
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "cfg": 7.5,
+      "denoise": 1.0,
+      "latent_image": ["2", 0],
+      "model": ["1", 0],
+      "negative": ["4", 0],
+      "positive": ["3", 0],
+      "sampler_name": "dpm_2",
+      "scheduler": "karras",
+      "seed": 987654321,
+      "steps": 25
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["5", 0],
+      "vae": ["1", 2]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Match3_Gem",
+      "images": ["6", 0]
+    }
+  }
+}

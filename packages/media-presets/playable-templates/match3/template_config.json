@@ -1,0 +1,24 @@
+{
+  "id": "preset-match3-default",
+  "name": "Match-3 Rescue Ad Preset",
+  "version": "1.0.0",
+  "board": {
+    "rows": 8,
+    "cols": 8,
+    "tile_types": 5,
+    "colors": ["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]
+  },
+  "rules": {
+    "target_score": 1000,
+    "max_moves": 10,
+    "points_per_match": 100
+  },
+  "branding": {
+    "title": "Save the Kingdom!",
+    "hook_text": "Match 3 Gems to Break Free!",
+    "cta_text": "PLAY NOW - FREE DOWNLOAD",
+    "cta_url": "https://apps.apple.com/app/example",
+    "background_color": "#0F172A",
+    "accent_color": "#38BDF8"
+  }
+}

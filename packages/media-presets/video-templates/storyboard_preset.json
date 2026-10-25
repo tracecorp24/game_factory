@@ -1,0 +1,43 @@
+{
+  "id": "storyboard-preset-9x16-default",
+  "title": "Match-3 Rescue Ad Storyboard",
+  "aspect_ratio": "9:16",
+  "fps": 30,
+  "duration_seconds": 15,
+  "shots": [
+    {
+      "shot_id": "shot_01_hook",
+      "start_sec": 0,
+      "end_sec": 3,
+      "name": "Attention Hook",
+      "headline": "Can You Save the Princess?",
+      "subtext": "Only 1% of players can solve this puzzle!",
+      "visual_type": "hook_animation",
+      "accent_color": "#EF4444"
+    },
+    {
+      "shot_id": "shot_02_gameplay",
+      "start_sec": 3,
+      "end_sec": 10,
+      "name": "Gameplay Tension",
+      "headline": "Make 3 Matches Before Timer Runs Out!",
+      "subtext": "Combo x3 activated!",
+      "visual_type": "gameplay_simulation",
+      "accent_color": "#3B82F6"
+    },
+    {
+      "shot_id": "shot_03_cta",
+      "start_sec": 10,
+      "end_sec": 15,
+      "name": "Call to Action",
+      "headline": "PLAY NOW FOR FREE!",
+      "subtext": "Available on iOS and Android",
+      "visual_type": "cta_endcard",
+      "accent_color": "#10B981"
+    }
+  ],
+  "audio": {
+    "background_music": "upbeat_puzzle_track.mp3",
+    "sound_effects": ["gem_match.wav", "combo_fanfare.wav", "victory_cheer.wav"]
+  }
+}

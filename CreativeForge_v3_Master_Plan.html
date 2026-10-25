@@ -1,0 +1,3683 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>CreativeForge Intelligence Studio v3.0 - Master Technical Plan</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<style>
+:root{color-scheme:light;--ink:#182335;--sub:#637186;--accent:#6d4aff;--soft:#f2f2ff;--line:#e1e6f0;--bg:#f8f9fd}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{font:15.5px/1.72 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg);margin:0;max-width:none;padding:0}body>main>header{max-width:1160px;margin:26px auto 0;background:linear-gradient(115deg,#131933,#28204d);padding:38px 48px;color:#fff;border-radius:16px}body>main>header h1{color:white;margin:0}body>main nav#TOC{max-width:1160px;margin:15px auto;padding:20px 40px;border:1px solid var(--line);border-radius:14px;background:#fff}body>main nav#TOC ul{columns:2;padding-left:20px}body>main nav#TOC li{break-inside:avoid}body>main{max-width:1160px;margin:18px auto 64px;padding:40px 48px;background:#fff;border:1px solid var(--line);border-radius:16px}body>main>h1:first-child{margin-top:0}h1,h2,h3,h4{line-height:1.28;letter-spacing:-.025em;scroll-margin-top:20px}h1{font-size:30px;color:#161d39}h2{font-size:24px;margin-top:48px;border-bottom:2px solid #eee9ff;padding-bottom:10px;color:#20243f}h3{font-size:18px;margin-top:32px;color:#322765}h4{font-size:16px}a{color:#5941c7;text-decoration:none}a:hover{text-decoration:underline}p{margin:11px 0 15px}table{width:100%;border-collapse:collapse;font-size:13.2px;margin:20px 0 28px;display:block;overflow-x:auto}thead{background:#efedff;color:#28204f}th,td{padding:10px 13px;border:1px solid #dfe2ee;text-align:left;vertical-align:top;min-width:90px}tr:nth-child(even) td{background:#fbfbff}code{background:#f0f2fa;color:#46327f;padding:2px 5px;border-radius:4px}pre{background:#141b30;color:#eef1ff;padding:18px 20px;border-radius:10px;overflow:auto;line-height:1.5;font-size:12.7px}pre code{color:inherit;background:none;padding:0}blockquote{border-left:4px solid #8165f0;margin:24px 0;padding:10px 21px;background:#f7f5ff}li{margin:5px 0}strong{color:#252451}hr{border:none;border-top:1px solid var(--line);margin:40px 0}input[type=checkbox]{margin-right:8px}@media(max-width:800px){body>header,body>main,body>main nav#TOC{padding:22px;border-radius:0;margin:0}body>main nav#TOC ul{columns:1}h1{font-size:24px}h2{font-size:20px}table{font-size:12px}}@media print{body{background:white}body>header,body>main nav#TOC,body>main{box-shadow:none;border:none;margin:0;padding:0}body>main nav#TOC{display:none}h2,h3{break-after:avoid}pre,table{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+<header id="title-block-header">
+<h1 class="title">CreativeForge Intelligence Studio v3.0 - Master
+Technical Plan</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a
+href="#creativeforge-intelligence-studio-v30--master-product--engineering-plan"
+id="toc-creativeforge-intelligence-studio-v30--master-product--engineering-plan">CreativeForge
+Intelligence Studio v3.0 — MASTER PRODUCT &amp; ENGINEERING PLAN</a>
+<ul>
+<li><a href="#a-proje-ilkeleri-ve-tanım"
+id="toc-a-proje-ilkeleri-ve-tanım">A. Proje ilkeleri ve tanım</a></li>
+<li><a href="#b-kullanıcı-deneyimi-sayfalar-ve-url-haritası"
+id="toc-b-kullanıcı-deneyimi-sayfalar-ve-url-haritası">B. Kullanıcı
+deneyimi, sayfalar ve URL haritası</a></li>
+<li><a href="#c-baştan-sona-kullanıcı-yolculukları"
+id="toc-c-baştan-sona-kullanıcı-yolculukları">C. Baştan sona kullanıcı
+yolculukları</a></li>
+<li><a href="#d-katmanlı-sistem-mimarisi"
+id="toc-d-katmanlı-sistem-mimarisi">D. Katmanlı sistem mimarisi</a></li>
+<li><a
+href="#e-9-geliştirme--core--özel-telemetry-için-ayrıntılı-iş-paketleri"
+id="toc-e-9-geliştirme--core--özel-telemetry-için-ayrıntılı-iş-paketleri">E.
+9 geliştirme + core + özel telemetry için ayrıntılı iş
+paketleri</a></li>
+<li><a href="#f-agentworker-kataloğu-ve-iş-yükü-sahipliği"
+id="toc-f-agentworker-kataloğu-ve-iş-yükü-sahipliği">F. Agent/worker
+kataloğu ve iş yükü sahipliği</a></li>
+<li><a href="#g-node-kataloğu--tüm-portlar-ve-koşullar"
+id="toc-g-node-kataloğu--tüm-portlar-ve-koşullar">G. Node kataloğu — tüm
+portlar ve koşullar</a></li>
+<li><a href="#h-typed-artifact-sözleşmeleri"
+id="toc-h-typed-artifact-sözleşmeleri">H. Typed artifact
+sözleşmeleri</a></li>
+<li><a href="#i-postgresql-veri-modeli--detaylı-şema"
+id="toc-i-postgresql-veri-modeli--detaylı-şema">I. PostgreSQL veri
+modeli — detaylı şema</a></li>
+<li><a href="#j-api-sözleşmesi-ve-gerçek-zamanlı-iletişim"
+id="toc-j-api-sözleşmesi-ve-gerçek-zamanlı-iletişim">J. API sözleşmesi
+ve gerçek zamanlı iletişim</a></li>
+<li><a href="#k-prompt-model-artifact-eval-ve-event-ilişkisi"
+id="toc-k-prompt-model-artifact-eval-ve-event-ilişkisi">K. Prompt,
+model, artifact, eval ve event ilişkisi</a></li>
+<li><a
+href="#l-kullanılacak-github-repoları--seçim-matrisi-entegrasyon-ve-lisans-notları"
+id="toc-l-kullanılacak-github-repoları--seçim-matrisi-entegrasyon-ve-lisans-notları">L.
+Kullanılacak GitHub repoları — seçim matrisi, entegrasyon ve lisans
+notları</a></li>
+<li><a href="#m-önerilen-creativeforge-kendi-github-monorepo-yapısı"
+id="toc-m-önerilen-creativeforge-kendi-github-monorepo-yapısı">M.
+Önerilen CreativeForge kendi GitHub monorepo yapısı</a></li>
+<li><a href="#n-sürümleme-kontrol-kalite-güvenlik-ve-veri-yönetimi"
+id="toc-n-sürümleme-kontrol-kalite-güvenlik-ve-veri-yönetimi">N.
+Sürümleme, kontrol, kalite, güvenlik ve veri yönetimi</a></li>
+<li><a href="#o-test-stratejisi-benchmark-ve-başarı-kriterleri"
+id="toc-o-test-stratejisi-benchmark-ve-başarı-kriterleri">O. Test
+stratejisi, benchmark ve başarı kriterleri</a></li>
+<li><a
+href="#p-uçtan-uca-geliştirme-roadmap--her-faz-için-görevler-bağımlılıklar-ve-teslim-kriterleri"
+id="toc-p-uçtan-uca-geliştirme-roadmap--her-faz-için-görevler-bağımlılıklar-ve-teslim-kriterleri">P.
+Uçtan uca geliştirme roadmap — her faz için görevler, bağımlılıklar ve
+teslim kriterleri</a></li>
+<li><a href="#q-öncelik-matrisi--bağımlılıklar"
+id="toc-q-öncelik-matrisi--bağımlılıklar">Q. Öncelik matrisi /
+bağımlılıklar</a></li>
+<li><a href="#r-kabul-senaryoları--demo-hikâyesi"
+id="toc-r-kabul-senaryoları--demo-hikâyesi">R. Kabul senaryoları / demo
+hikâyesi</a></li>
+<li><a href="#s-mimari-karar-kayıtları-adr"
+id="toc-s-mimari-karar-kayıtları-adr">S. Mimari karar kayıtları
+(ADR)</a></li>
+<li><a href="#t-yürütmeye-hazır-toplam-teslim-listesi"
+id="toc-t-yürütmeye-hazır-toplam-teslim-listesi">T. Yürütmeye hazır
+toplam teslim listesi</a></li>
+<li><a href="#u-başarı-ölçütleri-ve-cv-değeri"
+id="toc-u-başarı-ölçütleri-ve-cv-değeri">U. Başarı ölçütleri ve CV
+değeri</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1
+id="creativeforge-intelligence-studio-v30--master-product--engineering-plan">CreativeForge
+Intelligence Studio v3.0 — MASTER PRODUCT &amp; ENGINEERING PLAN</h1>
+<p><strong>Tarih:</strong> 25 Ekim 2026<br />
+<strong>Durum:</strong> Tasarım / hedef mimari; uygulandı anlamına
+gelmez<br />
+<strong>Amaç:</strong> Trend sinyallerinden kanıta dayalı, özgün
+oyun/reklam konseptlerine; seçilen konseptten görsel, video ve temel
+HTML5 oynanabilir prototipe; eksiksiz operasyonel kayıt, canlı ajan
+izleme, değerlendirme ve deneysel öğrenmeye uzanan uçtan uca AI
+platformu.</p>
+<blockquote>
+<p><strong>Kapsam kararı:</strong> Kullanıcının seçtiği #1, #2, #3, #4,
+#5, #6, #7, #9, #10 eksiksiz dahildir. Ayrıca kapsamlı <strong>Execution
+Ledger (#11)</strong> ve <strong>Analytics &amp; Reporting
+(#12)</strong> birinci sınıf modüllerdir. #8'deki ileri düzey reklam
+ağına özel derleyici <strong>bu sürümün kapsamında değildir</strong>;
+fakat temel HTML/ZIP playable, PNG, MP4 export ve browser test, Creative
+Production çekirdeğinin parçasıdır.</p>
+</blockquote>
+<h2 id="a-proje-ilkeleri-ve-tanım">A. Proje ilkeleri ve tanım</h2>
+<ul>
+<li><strong>Önce kanıt, sonra üretim:</strong> Her trend önerisi kaynak,
+gözlem zamanı, bölge, veri erişim yöntemi ve güven/eksiklik açıklaması
+içerir. Reklam kütüphanesinde görünürlük, dönüşüm/CTR performansı ile
+karıştırılmaz.</li>
+<li><strong>İnsan seçimli konsept:</strong> Trend -&gt; hipotez -&gt; en
+az üç konsept kartı -&gt; onay -&gt; üretim. Fikirler gerçek bir oyunun
+reklam kreatifleri olabilir; ayrı bir 'Game Discovery' modu yeni oyun
+konseptleri üretir. Bu iki hedef UI ve şemada ayrılır.</li>
+<li><strong>Gerçek ajan yürütmesi:</strong> Observatory animasyonu,
+sahte 'thinking' metinlerinden değil zaman damgalı gerçek yürütme
+olaylarından beslenir. Modelin gizli düşünce zincirini gösterdiğini
+iddia etmez.</li>
+<li><strong>Her operasyon izlenebilir:</strong> Kullanıcı talebi, kaynak
+snapshot'ı, model çağrısı, retry, token, fiyat, tool, artifact,
+değerlendirme, insan aksiyonu, export, ayar/sürüm değişikliği kendi
+ID'leriyle bağlantılıdır.</li>
+<li><strong>Temel iş verisi != telemetry:</strong> PostgreSQL
+append-only event ledger ürün gerçeğidir; OpenTelemetry trace hata
+ayıklama katmanıdır. Trace kaybolsa bile ledger ve artifacts ayakta
+kalır.</li>
+<li><strong>Güvenli ve sorumlu tasarım:</strong> Lisansları doğrulanmış
+kaynak ve varlıklar, izinli veri alımı, prompt injection savunması,
+izolasyonlu kod derleme, kişisel veri ve sır maskelemesi.</li>
+<li><strong>Reproducibility nüansı:</strong> Sürüm, seed, prompt, model,
+giriş ve asset lineage saklanır; üçüncü taraf nondeterministic
+modellerde bit düzeyinde aynı üretim garanti edilmez. 'Replay' olayı
+yeniden gösterme, 'Rerun' gerçekten tekrar hesaplamadır.</li>
+<li><strong>Sadelik:</strong> Her iş için ayrı LLM-agent açmak şart
+değildir. Deterministik toplama, skorlama, fiyatlama, validasyon gibi
+işlerde kod kullanılır; gerçek karar/üretim gerektiren yerlerde LLM
+kullanılır.</li>
+</ul>
+<h3 id="a1-resmi-kapsam-modülleri">A1. Resmi kapsam modülleri</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Kimlik</th>
+<th>Modül</th>
+<th>Sahip sistem</th>
+<th>Kullanıcı ekranı</th>
+<th>Ana çıktısı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M01</td>
+<td>Trend Intelligence &amp; Evidence</td>
+<td><code>intel-service</code></td>
+<td>Trend Intelligence</td>
+<td><code>TrendSnapshot</code>, <code>TrendReport</code></td>
+</tr>
+<tr class="even">
+<td>M02</td>
+<td>Creative Hypothesis &amp; Ranking</td>
+<td><code>concept-service</code></td>
+<td>Concept Gallery</td>
+<td><code>CreativeHypothesis</code>, <code>ConceptBoard</code></td>
+</tr>
+<tr class="odd">
+<td>M03</td>
+<td>Experimentation &amp; Feedback</td>
+<td><code>experiment-service</code></td>
+<td>Experiments</td>
+<td><code>ExperimentPlan</code>, <code>ExperimentResult</code></td>
+</tr>
+<tr class="even">
+<td>M04</td>
+<td>Game DNA &amp; Brand Consistency</td>
+<td><code>game-profile-service</code></td>
+<td>Game DNA</td>
+<td><code>GameProfileVersion</code></td>
+</tr>
+<tr class="odd">
+<td>M05</td>
+<td>Shared Agent Memory &amp; Typed Artifacts</td>
+<td><code>agent-runtime</code></td>
+<td>Workflow / Agent detail</td>
+<td><code>ContextBundle</code>, typed artifact</td>
+</tr>
+<tr class="even">
+<td>M06</td>
+<td>Agent Observatory</td>
+<td><code>observatory-service</code></td>
+<td>Agent Observatory</td>
+<td>live graph, timeline, run replay</td>
+</tr>
+<tr class="odd">
+<td>M07</td>
+<td>Quality &amp; Originality Gates</td>
+<td><code>quality-service</code></td>
+<td>Quality Center</td>
+<td><code>EvaluationReport</code>, gate decisions</td>
+</tr>
+<tr class="even">
+<td>M09</td>
+<td>Cost-Aware Orchestration</td>
+<td><code>model-gateway</code></td>
+<td>Analytics / Models</td>
+<td><code>UsageRecord</code>, <code>CostEntry</code></td>
+</tr>
+<tr class="odd">
+<td>M10</td>
+<td>Reproducibility &amp; Secure Execution</td>
+<td><code>execution-service</code></td>
+<td>Runs / Versions / Security</td>
+<td><code>RunManifest</code>, sandbox test report</td>
+</tr>
+<tr class="even">
+<td>M11</td>
+<td><strong>Execution Ledger</strong></td>
+<td><code>ledger-service</code></td>
+<td>Execution Ledger</td>
+<td>append-only ordered events</td>
+</tr>
+<tr class="odd">
+<td>M12</td>
+<td><strong>Analytics &amp; Reporting</strong></td>
+<td><code>analytics-service</code></td>
+<td>Analytics</td>
+<td>trend, cost, latency, retry, artifacts, agent metrics</td>
+</tr>
+<tr class="even">
+<td>CORE</td>
+<td>Image, Video, HTML5 Prototype</td>
+<td><code>creative-workers</code></td>
+<td>Workflow / Artifact Library</td>
+<td>image, mp4, html/zip</td>
+</tr>
+</tbody>
+</table>
+<h2 id="b-kullanıcı-deneyimi-sayfalar-ve-url-haritası">B. Kullanıcı
+deneyimi, sayfalar ve URL haritası</h2>
+<p><strong>Temel hiyerarşi:</strong> Organizasyon &gt; Workspace &gt;
+Project &gt; Game Profile / Creative Campaign &gt; Workflow &gt; Run
+&gt; Node Execution &gt; Attempt / Model Invocation / Artifact.</p>
+<h3 id="b1-sol-navigasyon-ve-sayfalar">B1. Sol navigasyon ve
+sayfalar</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Menü / route örneği</th>
+<th>Sekmeler/alt paneller</th>
+<th>Başlıca gösterim</th>
+<th>Kullanıcı eylemleri</th>
+<th>Kayıt olayı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>/app</code> Overview</td>
+<td>My Projects, Recent Activity, Alerts</td>
+<td>proje listesi, son run, bütçe özeti, son konseptler</td>
+<td>proje aç, kopyala, yeni kampanya</td>
+<td><code>PROJECT_CREATED</code></td>
+</tr>
+<tr class="even">
+<td><code>/projects/:p/intelligence</code> Trend Intelligence</td>
+<td>Sources, Trends, Snapshots, Evidence, Scout Jobs</td>
+<td>ülke/kategori/dönem filtreleri, kaynak tablosu, fark grafiği</td>
+<td>tarama başlat, CSV içe al, snapshot onayla</td>
+<td><code>SOURCE_SYNC_*</code>, <code>TREND_REPORT_CREATED</code></td>
+</tr>
+<tr class="odd">
+<td><code>/projects/:p/concepts</code> Concept Gallery</td>
+<td>Ranked, Boards, Compare, Decisions</td>
+<td>3-8 mockup kartı, hipotez, rank, belirsizlik, yaratım maliyeti</td>
+<td>seç, reddet, birleştir, varyant üret, nedenini yaz</td>
+<td><code>CONCEPT_*</code></td>
+</tr>
+<tr class="even">
+<td><code>/projects/:p/game-dna</code> Game DNA</td>
+<td>Mechanics, Characters, Style, Constraints, Versions</td>
+<td>oyun tanımı, mechanic spec, varlık kütüphanesi ve stil
+referansı</td>
+<td>yeni profil sürümü, asset yükle, onayla</td>
+<td><code>GAME_PROFILE_VERSION_CREATED</code></td>
+</tr>
+<tr class="odd">
+<td><code>/projects/:p/studio?tab=workflow</code> <strong>Workflow
+Studio</strong></td>
+<td>Canvas, Templates, Inspector, Queue, Preview</td>
+<td>ComfyUI tarzı düğümler/kenarlar, hata durumları, input/output
+portları</td>
+<td>node ekle/bağla, doğrula, çalıştır, durdur, onay beklet</td>
+<td><code>WORKFLOW_*</code>, <code>RUN_*</code></td>
+</tr>
+<tr class="even">
+<td><code>/projects/:p/studio?tab=agents&amp;run=:r</code> <strong>Agent
+Observatory</strong></td>
+<td>Galaxy, Timeline, Activity, Compare, Inspector</td>
+<td>merkez çekirdek + agent kutuları, gerçek event hareketleri, token
+maliyeti</td>
+<td>ajan seç, trace aç, filtrele, replay, pause/resume</td>
+<td><code>OBSERVATORY_VIEWED</code>, <code>RUN_CONTROL_*</code></td>
+</tr>
+<tr class="odd">
+<td><code>/projects/:p/artifacts</code> Artifact Library</td>
+<td>Gallery, Lineage, Versions, Export</td>
+<td>görsel/video/HTML preview; kaynak, checksum, provenance</td>
+<td>indir, karşılaştır, işaretle, silme talebi</td>
+<td><code>ARTIFACT_*</code></td>
+</tr>
+<tr class="even">
+<td><code>/projects/:p/experiments</code> Experiments</td>
+<td>Plans, Variants, Outcomes, Analysis</td>
+<td>A/B planları, test hipotezleri, içe aktarılan gerçek metrikler</td>
+<td>deney tanımla, varyant bağla, CSV içe al, sonuç incele</td>
+<td><code>EXPERIMENT_*</code></td>
+</tr>
+<tr class="odd">
+<td><code>/projects/:p/ledger</code> <strong>Execution
+Ledger</strong></td>
+<td>Requests, Runs, Events, Models, Tools, Retries, Audits</td>
+<td>tüm kayıtlar; filtre, arama, ilişki gezgini, export</td>
+<td>run aç, diff, incele, JSONL/CSV indir</td>
+<td><code>AUDIT_EXPORT_REQUESTED</code></td>
+</tr>
+<tr class="even">
+<td><code>/projects/:p/analytics</code> <strong>Analytics
+Dashboard</strong></td>
+<td>Overview, Token &amp; Cost, Agents, Workflow, Assets, QA,
+Experiments</td>
+<td>KPI, zaman serileri, drilldown, segmentler</td>
+<td>tarih/model/agent kırılımı, rapor export</td>
+<td><code>REPORT_EXPORTED</code></td>
+</tr>
+<tr class="odd">
+<td><code>/projects/:p/quality</code> Quality Center</td>
+<td>Gates, Human Reviews, Similarity, Rejections</td>
+<td>teknik test, LLM judge, rubric, insan onayı</td>
+<td>değerlendir, gerekçeli onay/red, yeniden dene</td>
+<td><code>EVALUATION_*</code>, <code>APPROVAL_*</code></td>
+</tr>
+<tr class="even">
+<td><code>/projects/:p/runs/:r</code> Run Detail</td>
+<td>Summary, DAG, Timeline, Calls, Artifacts, Costs, Replay</td>
+<td>tek çalıştırmanın uçtan uca anatomisi</td>
+<td>manifest indir, rerun, compare</td>
+<td><code>RUN_DETAIL_OPENED</code></td>
+</tr>
+<tr class="odd">
+<td><code>/settings/models</code> Model Registry</td>
+<td>Providers, Models, Pricing, Routing, Budgets</td>
+<td>sağlayıcı/parametre, fiyat, cache, API key statüsü</td>
+<td>model politikası ayarla, bütçe onayla</td>
+<td><code>MODEL_POLICY_CHANGED</code></td>
+</tr>
+<tr class="even">
+<td><code>/settings/security</code> Security &amp; Governance</td>
+<td>Permissions, Retention, Secrets, Sandboxes, Audit</td>
+<td>erişimler, saklama, redaksiyon, tehlike politikaları</td>
+<td>rol ata, retention değiştir</td>
+<td><code>SECURITY_CONFIG_CHANGED</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="b2-studio--sekme-1-workflow-studio-detaylı-alan-düzeni">B2.
+Studio — Sekme 1: Workflow Studio detaylı alan düzeni</h3>
+<ul>
+<li><strong>Üst bar:</strong> project/campaign seçimi,
+<code>workflow_version</code>, kaydet, compare, Validate, Dry Run, Run,
+Pause, Cancel, approved budget, live status.</li>
+<li><strong>Sol node palette:</strong> Market Intelligence, Game DNA,
+Ideation, Generation, Evaluation, Human, Control, Export. Arama ve
+kategoriler.</li>
+<li><strong>Orta canvas:</strong> React Flow graph; typed ports (ör.
+<code>ConceptSpec</code> -&gt; <code>ImageAssetRequest</code>),
+parametre badge'i, başarısız node kırmızı, çalışan node animasyonlu,
+tamamlanmış node yeşil.</li>
+<li><strong>Sağ inspector:</strong> seçili node için input sources,
+schema, model, prompt version, timeout, max retry, token/cost estimate,
+output preview, önceki denemeler.</li>
+<li><strong>Alt drawer:</strong> Queue, Execution Log, Artifacts, QA,
+Events, token delta; otomatik scroll kapatma.</li>
+<li><strong>Template galerisi:</strong>
+<code>Trend → Concept → Mockup</code>,
+<code>Selected Concept → Static Ad</code>,
+<code>Selected Concept → Video Ad</code>,
+<code>Selected Concept → Basic Playable</code>,
+<code>Full Campaign</code>.</li>
+<li><strong>Temel etkileşim:</strong> node bağlantısı tip uyumluluğu;
+graph cycle kontrolü; her <code>Run</code> dondurulmuş workflow
+versiyonuna bağlıdır, çalışırken canvas düzenlemesi mevcut run'ı
+değiştirmez.</li>
+</ul>
+<h3 id="b3-studio--sekme-2-agent-observatory-detaylı-alan-düzeni">B3.
+Studio — Sekme 2: Agent Observatory detaylı alan düzeni</h3>
+<ul>
+<li><strong>Merkez:</strong> görsel Orchestration Core; etrafında
+agent/worker kümeleri. Referans görselin neon hissi esin olabilir;
+gerçek UI modern kontrol paneli olarak kalır.</li>
+<li><strong>Bağlantı animasyonu:</strong> görev
+yönlendirme=<code>TASK_DISPATCHED</code>, aktif
+model=<code>MODEL_CALL_STARTED</code>,
+tool=<code>TOOL_CALL_STARTED</code>,
+çıktı=<code>ARTIFACT_CREATED</code>; event yoksa animasyon yok.</li>
+<li><strong>Agent kartı:</strong> avatar/icon, role, task, state,
+tool/model, input artifact ref, output artifact ref, elapsed, token
+billed/estimated, cost, retries.</li>
+<li><strong>Durum makinesi:</strong>
+<code>idle → queued → running → waiting_tool / waiting_human → completed / failed / cancelled</code>;
+retry ayrı olay ve attempt sayısı olarak gösterilir.</li>
+<li><strong>Sağ inspector:</strong> input-output özeti, tool arguments
+(redacted), model response excerpt izinli içerik, trace ID, maliyet,
+error, artifact preview, ilgili ledger linki.</li>
+<li><strong>Alt panel:</strong> canlı timeline / filtreli event akışı;
+her olay için kaynak servis, timestamp, latency, severity,
+<code>event_id</code>.</li>
+<li><strong>Kontroller:</strong> gerçek Pause/Resume/Cancel,
+<code>Step</code> yalnızca replay veya developer debug modunda; geçmiş
+eventleri zaman çizgisinden tekrar animasyonla oynatma; frozen snapshot
+compare.</li>
+<li><strong>Gözlemlenebilirlik notu:</strong> hidden chain-of-thought
+saklanmaz veya görünür kılınamaz; saklanan veriler gerçek API
+giriş/çıkışları, tool sonuçları, yürütme olayları ve modelin açıkça
+döndürdüğü özetlerdir.</li>
+</ul>
+<h3 id="b4-concept-gallery--mockup-kartı-anatomisi">B4. Concept Gallery
+— mockup kartı anatomisi</h3>
+<p>Kart: özgün oyun ekranı mockup'ı + örnek ad hook ilk karesi + konsept
+adı + kategori + oynanış spec bağlantısı + hedef kitle + hipotez + kanıt
+kaynakları + trend confidence + üretim güçlüğü + tahmini maliyet
+(birim/para birimi) + originality flags + format uyumu +
+<code>Select &amp; Build Workflow</code> düğmesi. Bir kartın seçilmesi
+hem <code>CONCEPT_SELECTED</code> event'ini yaratır hem de Game DNA
+sürümünü sabitleyen Workflow draft oluşturur.</p>
+<h2 id="c-baştan-sona-kullanıcı-yolculukları">C. Baştan sona kullanıcı
+yolculukları</h2>
+<h3 id="c1-yeni-bir-oyun-fikrini-keşfetme">C1. Yeni bir oyun fikrini
+keşfetme</h3>
+<ol type="1">
+<li>Kullanıcı ülke, platform, genre, zaman penceresi ve kaynak
+seçer.</li>
+<li>Trend ingestion, lisans ve erişim kontrollerini aşabilen
+kaynaklardan snapshot toplar.</li>
+<li>Normalize / deduplicate / provenance / confidence işlemleri
+yapılır.</li>
+<li>Genre + ad creative pattern analizleri <code>TrendReport</code>
+üretir; belirsiz/kayıtsız veri açıkça işaretlenir.</li>
+<li><code>Hypothesis Engine</code> 3–8 özgün fikir üretir ve heuristic
+puanlar.</li>
+<li>Kullanıcı mockup kartlarından birini seçer, değiştirir veya
+reddeder.</li>
+<li>Seçim bir <code>GameProfileDraft</code> ve yaratıcı üretim
+workflow'uyla ilişkilendirilir.</li>
+<li>İnsan onayından sonra image/video/playable üretimi yürütülür.</li>
+<li>QA, artifact, cost, agent ve audit kayıtları kalıcıdır.</li>
+</ol>
+<h3 id="c2-var-olan-oyun-için-reklam-kreatifi">C2. Var olan oyun için
+reklam kreatifi</h3>
+<ol type="1">
+<li>Kullanıcı oyunun hak sahibi olduğunu doğruladığı game asset'leri ve
+gerçek mechanic spec'i yükler.</li>
+<li><code>Game DNA</code> görsel stil önerisini çıkarır; kullanıcı
+gerçek oyun mekaniğini doğrular.</li>
+<li>Trend engine yalnızca uygun reklam hook'larını önerir, gameplay
+gerçeğini değiştirmez.</li>
+<li>Kullanıcı konsepti seçer; creative brief ve budget belirler.</li>
+<li>Generator image/video/basic playable varyantları oluşturur; her
+output lineage ile kaydedilir.</li>
+<li>Deterministik test + LLM-assisted QA + human review yapılır.</li>
+<li>Varyantlar artifact gallery'den indirilir; deney planı
+hazırlanır.</li>
+</ol>
+<h3 id="c3-hata-analizi-örneği">C3. Hata analizi örneği</h3>
+<p><code>request_id</code> -&gt; <code>run_id</code> -&gt;
+<code>node_execution_id</code> -&gt; <code>attempt_id</code> -&gt;
+<code>model_call_id</code> -&gt; <code>tool_call_id</code> -&gt;
+<code>artifact_id</code> -&gt; <code>evaluation_id</code>. Dashboard'da
+başarısız video oluşturma çağrısı seçilince ilk input brief'i,
+prompt/template versiyonu, model adı, retry nedeni, fiyat durumu, son
+artifact ve root cause görülebilmelidir.</p>
+<h2 id="d-katmanlı-sistem-mimarisi">D. Katmanlı sistem mimarisi</h2>
+<pre><code>Next.js App Shell + React Flow + Observatory UI + Analytics
+     │ REST writes / SSE reads
+FastAPI API &amp; Auth + Command Validation + Read Queries
+     ├── Project/Game/Concept/Trend services
+     ├── Workflow Controller ──&gt; Temporal Workflows / Activities
+     │      ├── Trend &amp; Intelligence Workers
+     │      ├── AI Agent Runtime + Typed Memory
+     │      ├── LiteLLM Model Gateway / Budgets
+     │      ├── ComfyUI / Image API Adapters
+     │      ├── Remotion / Video API Adapters
+     │      ├── Phaser Build + Browser QA Sandbox
+     │      └── Evaluation &amp; Human Approval
+     ├── Transactional PostgreSQL Ledger / Outbox
+     │      ├── Project + Workflow state
+     │      ├── Node attempts + Model calls + Usage / Cost
+     │      ├── Artifact manifests / Lineage
+     │      └── Read models / Analytics
+     ├── S3 Artifacts / previews / bundles
+     └── Event Relay ──&gt; SSE ──&gt; real-time UI
+OTel spans / metrics ──&gt; Phoenix   (diagnostic trace, not ledger)</code></pre>
+<p><strong>Mantıksal servisleri ilk gün ayrı deployment yapmak zorunda
+değiliz:</strong> FastAPI içinde modüler monolit, Temporal worker'ları
+ve ilgili medya/sandbox işçileri olarak başlarız. İstek hacmi artınca
+worker havuzlarını ayırırız. API, kullanıcının doğrudan Temporal
+yönetimini bypass etmesine izin vermez.</p>
+<h3 id="d1-seçilen-teknoloji-yığını">D1. Seçilen teknoloji yığını</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Alan</th>
+<th>Varsayılan teknoloji</th>
+<th>Alternatif / not</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Frontend</td>
+<td>Next.js + TypeScript + Tailwind + shadcn/ui</td>
+<td>React SPA da mümkün</td>
+</tr>
+<tr class="even">
+<td>Node editor</td>
+<td>React Flow (<code>@xyflow/react</code>)</td>
+<td>ComfyUI arayüzünü fork etmiyoruz</td>
+</tr>
+<tr class="odd">
+<td>UI state</td>
+<td>Zustand + TanStack Query</td>
+<td>server state/client state ayrımı</td>
+</tr>
+<tr class="even">
+<td>Charts</td>
+<td>Recharts / ECharts</td>
+<td>yüksek hacimde agregasyon server-side</td>
+</tr>
+<tr class="odd">
+<td>API</td>
+<td>FastAPI + Pydantic v2 + SQLAlchemy + Alembic</td>
+<td>OpenAPI'den TS tip üretimi</td>
+</tr>
+<tr class="even">
+<td>Orchestration</td>
+<td>Temporal + Python SDK</td>
+<td>Temporal history, özel ledger'ın yerine geçmez</td>
+</tr>
+<tr class="odd">
+<td>Model gateway</td>
+<td>LiteLLM adapter + internal metering</td>
+<td>lisans ve provider uyumluluğu kontrolü</td>
+</tr>
+<tr class="even">
+<td>Telemetry</td>
+<td>OpenTelemetry / OpenInference + Phoenix</td>
+<td>Langfuse alternatif; ikisini aynı anda kurma zorunluluğu yok</td>
+</tr>
+<tr class="odd">
+<td>DB</td>
+<td>PostgreSQL + pgvector</td>
+<td>tam metin + vektör hibrit retrieval</td>
+</tr>
+<tr class="even">
+<td>Artifact storage</td>
+<td>yerel dosya (dev) / S3-compatible (prod)</td>
+<td>immutable key + sha256</td>
+</tr>
+<tr class="odd">
+<td>Live</td>
+<td>transactional outbox + SSE (Last-Event-ID)</td>
+<td>iş büyürse Redis Streams ara katman</td>
+</tr>
+<tr class="even">
+<td>Image</td>
+<td>ComfyUI + provider-specific image APIs</td>
+<td>self-host model GPU opsiyonel</td>
+</tr>
+<tr class="odd">
+<td>Video</td>
+<td>Remotion + generative video provider adapter</td>
+<td>Remotion kendi başına diffusion değildir</td>
+</tr>
+<tr class="even">
+<td>Playable</td>
+<td>Phaser + TypeScript + Playwright</td>
+<td>izole build sandbox</td>
+</tr>
+<tr class="odd">
+<td>Security</td>
+<td>OIDC provider / JWT; RBAC; secret store</td>
+<td>local dev'de tek kullanıcı opsiyonu</td>
+</tr>
+<tr class="even">
+<td>Deploy</td>
+<td>Docker Compose local; CI/CD GitHub Actions</td>
+<td>sonradan Kubernetes şart değil</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="e-9-geliştirme--core--özel-telemetry-için-ayrıntılı-iş-paketleri">E.
+9 geliştirme + core + özel telemetry için ayrıntılı iş paketleri</h2>
+<h3 id="m01--trend-intelligence--evidence-engine">M01 — Trend
+Intelligence &amp; Evidence Engine</h3>
+<p><strong>Hedef:</strong> Veri kaynağı belli, tarihli ve kanıtlı trend
+önerileri.</p>
+<p><strong>Bileşenler:</strong> <code>Source Registry</code>,
+<code>Connector Adapters</code>, <code>Ingestion Scheduler</code>,
+<code>Raw Snapshot Store</code>, <code>Normalizer</code>,
+<code>Deduplicator</code>, <code>Genre Classifier</code>,
+<code>Creative Pattern Miner</code>, <code>Evidence Resolver</code>,
+<code>Trend Report Generator</code>,
+<code>Confidence Calibrator</code>.</p>
+<p><strong>Kaynak politikası:</strong> Apple App Store resmi chart
+sayfaları, izinli uygulama/rank verileri, TikTok Creative Center gibi
+açıkça gösterilen reklam örnekleri ve kullanıcı CSV import'ları
+potansiyel kaynaklardır. Her kaynak için erişim şartları/API izni
+doğrulanmalıdır. Public sayfanın varlığı otomatik sınırsız scraping veya
+metrik API yetkisi demek değildir. Erişim yoksa
+<code>manual/imported</code> moduna düş; sahte veri oluşturma.</p>
+<p><strong>Ölçütler:</strong> <code>source_id</code>,
+<code>collection_method</code>, <code>observed_at</code>,
+<code>region</code>, <code>platform</code>, <code>genre</code>,
+<code>rank_snapshot</code>, <code>creative_tags</code>,
+<code>confidence</code>, <code>evidence_url</code>,
+<code>license_note</code>, <code>missingness</code>.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Kaynak sözleşmesi
+<code>SourceAdapter.fetch()</code> ve izin/ToS kontrol
+tablosu.</label></li>
+<li><label><input type="checkbox" />Snapshot deduplication için içerik
+hash, zaman/bölge anahtarı.</label></li>
+<li><label><input type="checkbox" />Zaman serisi normalize; kaynaklar
+arası rank ile performans ayrımını zorunlu kıl.</label></li>
+<li><label><input type="checkbox" />Genre/mechanic sınıflandırma;
+etiketler insan tarafından düzeltilebilir.</label></li>
+<li><label><input type="checkbox" />Insight'lara kanıt linki ve
+<code>low/medium/high</code> güven statüsü bağla.</label></li>
+<li><label><input type="checkbox" />Veri eksikliğini kullanıcıya göster;
+kaynak devre dışıysa gracefully degrade.</label></li>
+<li><label><input type="checkbox" />Trend UI: karşılaştırma, source
+inspector, snapshot diffs.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Her önerilen trend en az bir
+doğrulanabilir gözleme bağlanır; kaynak kapatılırsa sistem uydurma veri
+üretmez; ilgili gözlem snapshot'ı run sonrası da açılabilir.</p>
+<h3 id="m02--creative-hypothesis-ranking--concept-boards">M02 — Creative
+Hypothesis, Ranking &amp; Concept Boards</h3>
+<p><strong>Hedef:</strong> Hipotezi ve gerekçesi açık özgün konseptler,
+kullanıcı onayı.</p>
+<p><strong>Bileşenler:</strong> <code>Ideation Agent</code>,
+<code>Creative Angle Generator</code>, <code>Hypothesis Builder</code>,
+<code>Constraint Validator</code>, <code>Ranking Engine</code>,
+<code>Concept Board Image Generator</code>,
+<code>Decision Capture</code>.</p>
+<p><strong>Hipotez sözleşmesi:</strong> audience, game genre, intended
+hook, problem/desired emotional arc, evidence_refs, expected creative
+mechanism, primary metric, falsification condition, limitations, novelty
+rationale.</p>
+<p><strong>Puan örneği (başlangıç heuristiği, tahmin edilen CTR
+değil):</strong>
+<code>0.25 evidence + 0.20 game_fit + 0.20 novelty + 0.15 feasibility + 0.10 hook_clarity + 0.10 cost_fit</code>.
+Tüm eksenler 0..1 normalize; eksik evidence için confidence kırılımı;
+ağırlıklar admin config'te versiyonlanır. Kullanıcı kendi ağırlıklarını
+değiştirebilir. Benchmark'la kalibrasyon olmadan skoru performans
+olasılığı olarak gösterme.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Structured
+<code>CreativeHypothesis</code> Pydantic schema ve
+versiyon.</label></li>
+<li><label><input type="checkbox" />Seçilen genre ve Game DNA'ya göre
+konsept strateji promptu.</label></li>
+<li><label><input type="checkbox" />Negatif/pozitif kısıt validasyonu ve
+uygunsuz fikir reddi.</label></li>
+<li><label><input type="checkbox" />Mockup board (oyun sahnesi + reklam
+hook karesi + açıklama + metadata).</label></li>
+<li><label><input type="checkbox" />Rank rationale + evidence links +
+source confidence breakdown.</label></li>
+<li><label><input type="checkbox" />Karşılaştırma, <code>select</code>,
+<code>reject</code>, <code>regenerate</code> ve gerekçeli
+override.</label></li>
+<li><label><input type="checkbox" />Her seçimin <code>concept_id</code>,
+<code>version</code>, <code>actor</code>, <code>timestamp</code>,
+<code>reason</code> audit kaydı.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Aynı brief için en az üç farklı
+konsept board'u açılabilir; her konsept hangi sinyallerden üretildiğini
+gösterir; seçim immutable workflow draft'a bağlanır.</p>
+<h3 id="m03--experimentation--learning-loop">M03 — Experimentation &amp;
+Learning Loop</h3>
+<p><strong>Hedef:</strong> Farklı kreatif varyantlarının
+karşılaştırılabilir, ölçülebilir deneyi.</p>
+<p><strong>Bileşenler:</strong> <code>Experiment Planner</code>,
+<code>Variant Generator</code>, <code>Measurement Schema</code>,
+<code>Outcome Import</code>, <code>Statistical Analysis</code>,
+<code>Learning Memory</code>.</p>
+<p><strong>Deney modları:</strong> (i) <code>offline</code> — sentetik
+brief/QA/human acceptance, (ii) <code>real_campaign</code> — kullanıcı
+tarafından yetkili kampanya CSV/API verisi. Bu ayrım zorunludur; offline
+kalite puanı gerçek CTR/CPI değildir.</p>
+<p><strong>Ölçütler:</strong> <code>variant_id</code>, kreatif
+tek-değişken farkı, randomization/allocation note, impressions, clicks,
+installs, spend, region, attribution window, device, date range; tıklama
+ve kurulum metrikleri ancak uygun gerçek veri ile hesaplanır.
+CPI=spend/installs, CTR=clicks/impressions,
+IPM=installs/impressions*1000; paydası sıfır olan metrikler
+<code>null</code>.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />A/B hipotezi ve baseline
+seçme.</label></li>
+<li><label><input type="checkbox" />Hook/CTA/visual tek değişkenli
+varyant planı.</label></li>
+<li><label><input type="checkbox" />CSV schema validator ve metadata
+leakage kontrolü.</label></li>
+<li><label><input type="checkbox" />Güven aralığı, örneklem büyüklüğü,
+değişken kontrolü; 'kazanan' erken ilan edilmez.</label></li>
+<li><label><input type="checkbox" />Offline/real sonucu farklı rozet ve
+grafiklerde göster.</label></li>
+<li><label><input type="checkbox" />Sonuçların
+<code>LearningInsight</code> olarak yeniden konsept üretimine
+beslenmesi.</label></li>
+<li><label><input type="checkbox" />Tek başına korelasyonu nedensellik
+olarak sunma.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Aynı deneyde iki varyantın
+maliyet/kalite/performans karşılaştırması yapılır; gerçek veri olmadan
+performans iddiası gösterilmez.</p>
+<h3 id="m04--game-dna--brand-consistency">M04 — Game DNA &amp; Brand
+Consistency</h3>
+<p><strong>Hedef:</strong> Oyun mekanikleriyle görsellerin ve
+reklamların tutarlı kalması.</p>
+<p><strong>Model:</strong> <code>GameProfileVersion</code> =
+<code>mechanics_spec</code>, <code>genres</code>,
+<code>board_rules</code>, <code>target_audience</code>,
+<code>style_tokens</code>, <code>palette</code>,
+<code>character_refs</code>, <code>sprite_manifest</code>,
+<code>sound_rules</code>, <code>brand_constraints</code>,
+<code>do_not_generate</code>, <code>allowed_ad_claims</code>,
+<code>asset_rights</code>, <code>approval_status</code>.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Görsel upload sonrası model tabanlı
+stil önerisi; mekanikleri otomatik kesin bilgi sayma.</label></li>
+<li><label><input type="checkbox" />Mechanic spec form/editor ve
+validasyon; match-3, merge, sorting gibi örnek preset.</label></li>
+<li><label><input type="checkbox" />Referans görsel/karakter/sprite
+kütüphanesi ve hak/izin metadata.</label></li>
+<li><label><input type="checkbox" />Renk, aspect ratio, karakter
+kimliği, görsel ton, yasak öğeler.</label></li>
+<li><label><input type="checkbox" />Her konsept/asset/run için
+<code>game_profile_version_id</code> freeze.</label></li>
+<li><label><input type="checkbox" />Cross-modal consistency checker
+(image/video/playable).</label></li>
+<li><label><input type="checkbox" />Değişiklikte diff ve etkilenen
+downstream node'ları göstermek.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Bir profilin versiyonu değişince
+eski run etkilenmez; QA raporu stil/mechanics uyumunu raporlar.</p>
+<h3 id="m05--shared-agent-memory-typed-handoff--blackboard">M05 — Shared
+Agent Memory, Typed Handoff &amp; Blackboard</h3>
+<p><strong>Hedef:</strong> Ajanlar arasında güvenilir, maliyet kontrollü
+ve yeniden üretilebilir context aktarımı.</p>
+<p><strong>Bellek katmanları:</strong></p>
+<ol type="1">
+<li><strong>Run-local working context:</strong> kısa yaşayan, özel run'a
+ait referanslar; büyük payload yerine artifact ID.</li>
+<li><strong>Project factual memory:</strong> onaylı Game DNA, kurallar,
+branding, geri bildirim.</li>
+<li><strong>Evidence retrieval:</strong> pgvector + PostgreSQL FTS;
+kaynak ve alıntı ID'si birlikte döner.</li>
+<li><strong>Learning memory:</strong> deney sonuçları ve insan
+değerlendirmesi; henüz doğrulanmamış hipotezler ayrı statüde.</li>
+</ol>
+<p><strong>İşleyiş:</strong> <code>ContextSelector</code> en alakalı
+referansları toplar -&gt; token budget hesaplar -&gt;
+<code>ContextBundle</code> yaratır -&gt; agent validated
+<code>OutputSchema</code> üretir -&gt; artifact store'a immutable sürüm
+yazar -&gt; pointer üzerinden handoff yapılır.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input
+type="checkbox" /><code>ArtifactBase {id, schema_version, content_hash, producer_id, parent_ids}</code>.</label></li>
+<li><label><input type="checkbox" />Pydantic schema registry ve
+<code>validate_edge(from_output, to_input)</code>.</label></li>
+<li><label><input type="checkbox" /><code>ContextBundle</code> ile
+source pointer, snippet, relevance, token_budget.</label></li>
+<li><label><input type="checkbox" />Blackboard: sadece versioned write,
+optimistic locking; paylaşımda yetki kontrolü.</label></li>
+<li><label><input type="checkbox" />Retrieval dedup ve freshness;
+context budget aşımında priority truncation.</label></li>
+<li><label><input type="checkbox" />Handoff failsafe: schema validation
+fail -&gt; repair attempt -&gt; bounded retry -&gt; human
+escalation.</label></li>
+<li><label><input type="checkbox" />Deterministik node'larda LLM
+kullanımı kaldır; işin doğasına göre executor seç.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Yanlış tipte edge compile
+edilmiyor; eski artifact değiştirilmiyor; her agent'a hangi memory
+girişinin verildiği görülebiliyor.</p>
+<h3
+id="m06--agent-observatory-canlı-ve-tekrar-oynatılabilir-ajan-operasyon-merkezi">M06
+— Agent Observatory: canlı ve tekrar oynatılabilir ajan operasyon
+merkezi</h3>
+<p><strong>Hedef:</strong> MagmaLabs referans görselindeki merkezden
+çevreye yayılan ajan topolojisini gerçek execution telemetry ile
+gösterme.</p>
+<p><strong>Mimari:</strong> <code>LedgerOutboxRelay</code> -&gt;
+<code>SSE /events?run_id=...</code> -&gt; client state projection -&gt;
+SVG/Canvas/WebGL agent network renderer. React Flow görsel editor; agent
+galaksisi için özel bir render katmanı tercih edilebilir (React + SVG,
+gerektiğinde PixiJS); zorunlu ağır 3D engine yoktur.</p>
+<p><strong>Visual language:</strong> Merkez <code>Creative Core</code>,
+dış halkalar: Data &amp; Insight, Strategy, Asset Production, QA &amp;
+Governance. Kenarlar veri bağımlılıklarını gösterir; hareketli sinyaller
+gerçekten <code>TASK_DISPATCHED</code>, <code>MODEL_CALL_*</code>,
+<code>ARTIFACT_*</code>, <code>TOOL_CALL_*</code> eventleriyle
+tetiklenir. Her renk/animasyon için erişilebilir metin ve reduced-motion
+modu vardır.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Ajana ait gerçek state machine ve
+event -&gt; visual reducer.</label></li>
+<li><label><input type="checkbox" />SSE Last-Event-ID ile
+reconnect/replay ve per-run <code>seq</code> sıralama.</label></li>
+<li><label><input type="checkbox" />Aktif node seçince o
+<code>node_execution_id</code> detay inspector'u.</label></li>
+<li><label><input type="checkbox" />Time travel (yalnızca gösterim) +
+run compare.</label></li>
+<li><label><input type="checkbox" />Pause/Resume/Cancel komutlarını API
+-&gt; Temporal Signal/Update -&gt; audit olayına bağla.</label></li>
+<li><label><input type="checkbox" /><code>Step</code> düğmesini
+historical replay için veya developer breakpoint kontrollü modda tut;
+canlı modelin iç adımlarında durduğunu iddia etme.</label></li>
+<li><label><input type="checkbox" />Sade görünüm (operations) ile neon
+görünüm (presentation) tema seçenekleri.</label></li>
+<li><label><input type="checkbox" />Demo Mode yalnızca sentetik event
+fixture ile ve kalıcı görünür <code>SIMULATION</code> bandı ile
+gösterilsin.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Bir ajan retry yaptığında
+ekranda ayrı attempt ve neden görünür; reconnect sonrası event kaybı
+olmaz; tarihsel replay aynı event dizisine dayanır.</p>
+<h3 id="m07--multi-layer-quality-compliance--originality-gates">M07 —
+Multi-Layer Quality, Compliance &amp; Originality Gates</h3>
+<p><strong>Hedef:</strong> Üretimin düzgün çalışması, brief uyumu,
+görsel tutarlılık, özgünlük riski ve insan onayı.</p>
+<p><strong>Gate sırası:</strong></p>
+<ol type="1">
+<li><strong>Schema Gate:</strong> Output tipi, zorunlu alanlar,
+referanslar, media metadata.</li>
+<li><strong>Technical Gate:</strong> render/build, kaynak dosya varlığı,
+HTTP hata, tarayıcı responsive, playable input interaction, runtime JS
+error.</li>
+<li><strong>Game Truth Gate:</strong> mekanik gerçeği, yanıltıcı oynanış
+olmaması, Game DNA kısıtları.</li>
+<li><strong>Visual/Audio Gate:</strong> kalite, çözünürlük, CTA
+okunurluğu, tema tutarlılığı, ses seviyesi temel kontroller.</li>
+<li><strong>Similarity/IP Risk Gate:</strong> perceptual hash, embedding
+similarity, karakter/logo eşleşme uyarıları; otomatik hukuki kesinlik
+yok.</li>
+<li><strong>LLM Judge:</strong> rubrik bazlı, gerekçeli/kanıtlı
+değerlendirme; model veya rubric sürümü kaydedilir.</li>
+<li><strong>Human Review:</strong> kritik/belirsiz çıktı için
+onay/ret/yorum; zorunlu durumları konfigüre et.</li>
+</ol>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Gate rule registry,
+<code>gate_version</code>, severity, threshold, actionable failure
+code.</label></li>
+<li><label><input type="checkbox" />Deterministik testleri model
+değerlendirmesinden ayır; 0/1 technical failure ile 0-5 subjective score
+ayrı.</label></li>
+<li><label><input type="checkbox" />LLM judge seti için örnek golden
+dataset, kör insan kontrolü, disagreement ölçümü.</label></li>
+<li><label><input type="checkbox" />Similarity uyarısında
+asset/reference provenance sakla, gerçek telif garantisi
+verme.</label></li>
+<li><label><input type="checkbox" />Targeted regeneration yalnızca
+hatalı node alt grafını etkiler; max retry ve max budget
+uygulansın.</label></li>
+<li><label><input type="checkbox" />Human reviewer gerekçesi ve artifact
+sürümü immutable kayıtlansın.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Kırık playable başarıyla export
+edilmez; QA skorunu hangi input ve rubrik ile aldığı görülebilir; insan
+reddi düzeltme akışını başlatır.</p>
+<h3 id="m09--cost-aware-routing-budget--model-operations">M09 —
+Cost-Aware Routing, Budget &amp; Model Operations</h3>
+<p><strong>Hedef:</strong> Her çağrıyı maliyet/latency/kalite
+politikasıyla yönlendirmek, finansal yükü görünür kılmak.</p>
+<p><strong>Model Registry alanları:</strong> <code>provider</code>,
+<code>model_id</code>, <code>capabilities</code>,
+<code>context_window</code>, <code>supports_schema</code>,
+<code>pricing_version</code>, <code>rate_limit</code>,
+<code>quality_tier</code>, <code>enabled</code>,
+<code>data_policy</code>, <code>concurrency_limit</code>. Pricing
+birimi: input/output token, cached token, image, output resolution,
+generated second, provider credit, GPU-second vb.</p>
+<p><strong>Rotalama:</strong> görev tipi -&gt; quality floor / schema /
+data policy -&gt; fiyat ve hız uygun adaylar -&gt; per-run estimated
+upper bound -&gt; seçilen model -&gt; provider response actual usage
+-&gt; invoice reconciliation. Model fallback sırasında kendiliğinden
+hassas verinin başka bir sağlayıcıya gitmesini engelleyen allowlist.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Model gateway adapter (LiteLLM text)
++ özel image/video metering.</label></li>
+<li><label><input type="checkbox" /><code>PriceCatalog</code> para
+birimi/birim/effective_at ve değişmeyen fiyat snapshot'ı.</label></li>
+<li><label><input type="checkbox" />Tenant/project/run/agent bazında
+budget threshold (soft alert + hard deny).</label></li>
+<li><label><input type="checkbox" />Token estimation yalnızca ön tahmin;
+actual usage gelince ayrı status.</label></li>
+<li><label><input type="checkbox" />Cache-hit sayaçları,
+provider-reported cached input ayrımı, billable miktar.</label></li>
+<li><label><input type="checkbox" />Dynamic fallback rule; timeout/retry
+count ve backoff jitter.</label></li>
+<li><label><input type="checkbox" />Maliyet alarmı: budget %80, %100,
+atypical spikes, unknown pricing.</label></li>
+<li><label><input type="checkbox" />Prompt/template ve output kalite
+değişimlerini model değişimi karşılaştırmalarına bağla.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Kullanıcı X para birimi bütçe
+koyduğunda yeni işlerin kabul politikası buna uyar; maliyeti bilinmeyen
+medya çağrıları <code>unpriced</code>, asla sıfır gösterilmez.</p>
+<h3 id="m10--reproducibility-versioning-safe-execution">M10 —
+Reproducibility, Versioning, Safe Execution</h3>
+<p><strong>Hedef:</strong> Her run için frozen manifest, güvenli kod
+yürütme, sürüm karşılaştırması ve failure recovery.</p>
+<p><strong><code>RunManifest</code> içerikleri:</strong>
+<code>run_id</code>, project/campaign, request snapshot hash,
+workflow_version, node_registry_versions, prompt_versions,
+GameDNA_version, trend_snapshot_ids, source licenses,
+model_requested/resolved/version, parameters, random seeds (varsa),
+pricing_snapshot, code commit SHA, input artifact SHA, environment image
+digest, evaluation rubric versions.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Her Run girişinde manifest freeze;
+işlem ortasında settings değişikliği eski run'a etki etmez.</label></li>
+<li><label><input type="checkbox" />Append-only revisions; workflow
+graph JSON diff, replay vs rerun seçeneği.</label></li>
+<li><label><input type="checkbox" />Retry idempotency key,
+non-repeatable side-effect guard, external call
+reconciliation.</label></li>
+<li><label><input type="checkbox" />Playable build için ayrılmış
+disposable sandbox, en az ayrı kullanıcı/namespace, read-only rootfs, no
+host mounts, kaynak sınırı, ağ çıkışı default deny, süresi dolan
+workspace imhası.</label></li>
+<li><label><input type="checkbox" />Uzak URL fetch işlerinde allowlist,
+SSRF koruması, içerik türü/boyut doğrulama.</label></li>
+<li><label><input type="checkbox" />Secrets yalnızca server side;
+generated code'a ve prompt'a secret geçirilmeyecek.</label></li>
+<li><label><input type="checkbox" />Sürüm saklama ve audit; üretim hash
+zincirine opsiyonel tamper-evidence ekle.</label></li>
+<li><label><input type="checkbox" />Sandbox güvenliğinin yalnızca Docker
+ile mutlak sağlanamayacağını kabul et; yüksek riskte microVM sandbox
+sağlayıcısı tercih et.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Aynı run'a ait manifest export
+edilebilir, kaynak sürüm bulunabilir; üretilen kodun host secret/ağ
+erişimi güvenlik testlerinde engellenir.</p>
+<h3 id="core--creative-asset-generation">CORE — Creative Asset
+Generation</h3>
+<p><strong>Image:</strong> ConceptSpec -&gt; prompt/constraints -&gt;
+ComfyUI JSON/API veya image provider -&gt; ImageAsset -&gt; thumbnail
+&amp; metadata -&gt; QA. ComfyUI queue/job ID ve prompt hash
+kaydedilir.</p>
+<p><strong>Video:</strong> Creative storyboard -&gt; shot plan -&gt;
+image/video provider -&gt; Remotion composition (metin, CTA, zamanlama,
+geçiş, ses) -&gt; MP4/GIF preview -&gt; QA. Remotion ile kod tabanlı
+render ile gerçek generative video modelini ayrı ürün kabiliyeti olarak
+belirt.</p>
+<p><strong>Basic Playable:</strong> <code>GameMechanicsSpec</code> +
+Sprite Manifest -&gt; codegen template seçimi -&gt; TypeScript/Phaser
+source -&gt; restricted sandbox build -&gt; Playwright test -&gt;
+preview -&gt; HTML/ZIP export. Bu yalnızca temel prototip export'udur,
+reklam ağlarına tam uyumluluk/otomatik yayınlama garantisi vermez.</p>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />ComfyUI adapter + placeholder mock
+provider (demo etiketli).</label></li>
+<li><label><input type="checkbox" />Önce tek match-3, merge/sort daha
+sonraki preset.</label></li>
+<li><label><input type="checkbox" />Remotion için 9:16 preview
+composition ve temel giriş/CTA animasyonları.</label></li>
+<li><label><input type="checkbox" />Model-generated assets için
+içerik/provenance metadata.</label></li>
+<li><label><input type="checkbox" />Artifact manifest ve tüm oluşturma
+giriş/çıkış kayıtları.</label></li>
+<li><label><input type="checkbox" />CDN değil kısa süreli signed
+download URL; canlı bundle browser sandbox içinde
+önizlenir.</label></li>
+</ul>
+<h3 id="m11--execution-ledger-bi̇ri̇nci̇-sinif-çeki̇rdek">M11 — Execution
+Ledger (BİRİNCİ SINIF ÇEKİRDEK)</h3>
+<p><strong>Hedef:</strong> Kullanıcının talep ettiği 'hangi istek nasıl
+istendi, ne yaptı, kaç token, kaç artifact, kaç deneme, ne kadar
+maliyet, hangi model/ajan, hangi kaynak ve hangi onay' sorularının
+tamamını cevaplamak.</p>
+<p><strong>Kritik prensip:</strong> Her API, agent, worker ve kullanıcı
+eylemi standart <code>EventEnvelope</code> + ilgili ilişkisel kaydı
+oluşturur. OLTP business tables yalnızca gerçeğe dönük sorguları tutar;
+append-only ledger ise olayların zaman çizgisidir. İkisi <strong>aynı
+PostgreSQL transaction</strong> veya atomic state+outbox yaklaşımıyla
+tutarlı yazılır. Temporal activity dış çağrıyı tamamladıktan sonra event
+yazmada başarısız kalırsa idempotency/reconciliation politikası
+uygulanır.</p>
+<p><strong>Event envelope — zorunlu alanlar:</strong></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;event_id&quot;</span><span class="fu">:</span><span class="st">&quot;evt_01...&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;event_type&quot;</span><span class="fu">:</span><span class="st">&quot;MODEL_CALL_FINISHED&quot;</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;schema_version&quot;</span><span class="fu">:</span><span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;occurred_at&quot;</span><span class="fu">:</span><span class="st">&quot;2026-10-25T12:00:00Z&quot;</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;recorded_at&quot;</span><span class="fu">:</span><span class="st">&quot;2026-10-25T12:00:00.310Z&quot;</span><span class="fu">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;project_id&quot;</span><span class="fu">:</span><span class="st">&quot;proj_123&quot;</span><span class="fu">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;campaign_id&quot;</span><span class="fu">:</span><span class="st">&quot;camp_123&quot;</span><span class="fu">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;request_id&quot;</span><span class="fu">:</span><span class="st">&quot;req_123&quot;</span><span class="fu">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;run_id&quot;</span><span class="fu">:</span><span class="st">&quot;run_123&quot;</span><span class="fu">,</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;run_seq&quot;</span><span class="fu">:</span><span class="dv">42</span><span class="fu">,</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;workflow_version_id&quot;</span><span class="fu">:</span><span class="st">&quot;wfv_123&quot;</span><span class="fu">,</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;node_execution_id&quot;</span><span class="fu">:</span><span class="st">&quot;ne_123&quot;</span><span class="fu">,</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;attempt_id&quot;</span><span class="fu">:</span><span class="st">&quot;att_2&quot;</span><span class="fu">,</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;agent_id&quot;</span><span class="fu">:</span><span class="st">&quot;concept_agent&quot;</span><span class="fu">,</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;trace_id&quot;</span><span class="fu">:</span><span class="st">&quot;012345...&quot;</span><span class="fu">,</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;span_id&quot;</span><span class="fu">:</span><span class="st">&quot;abc123...&quot;</span><span class="fu">,</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;actor_type&quot;</span><span class="fu">:</span><span class="st">&quot;worker&quot;</span><span class="fu">,</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;actor_id&quot;</span><span class="fu">:</span><span class="st">&quot;model_gateway&quot;</span><span class="fu">,</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;correlation_id&quot;</span><span class="fu">:</span><span class="st">&quot;corr_123&quot;</span><span class="fu">,</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;causation_event_id&quot;</span><span class="fu">:</span><span class="st">&quot;evt_01previous&quot;</span><span class="fu">,</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;payload_ref&quot;</span><span class="fu">:</span><span class="st">&quot;obj://private/event-payload-sha256&quot;</span><span class="fu">,</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;payload_preview&quot;</span><span class="fu">:{</span><span class="dt">&quot;model&quot;</span><span class="fu">:</span><span class="st">&quot;example-text-model&quot;</span><span class="fu">,</span><span class="dt">&quot;usage_status&quot;</span><span class="fu">:</span><span class="st">&quot;provider_reported&quot;</span><span class="fu">},</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;redaction_level&quot;</span><span class="fu">:</span><span class="st">&quot;metadata_only&quot;</span><span class="fu">,</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;integrity_hash&quot;</span><span class="fu">:</span><span class="st">&quot;sha256:...&quot;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><em>Yukarıdaki kayıt şematik örnektir, çalıştırılmış gerçek bir çağrı
+değildir.</em></p>
+<p><strong>Event taxonomy:</strong></p>
+<ul>
+<li>Request &amp; approvals: <code>REQUEST_RECEIVED</code>,
+<code>BRIEF_VERSION_CREATED</code>, <code>USER_INPUT_CHANGED</code>,
+<code>CONCEPT_SELECTED</code>, <code>CONCEPT_REJECTED</code>,
+<code>APPROVAL_REQUESTED</code>, <code>APPROVAL_GRANTED</code>,
+<code>APPROVAL_DENIED</code>.</li>
+<li>Trend: <code>SOURCE_SYNC_QUEUED</code>,
+<code>SOURCE_SYNC_STARTED</code>, <code>SOURCE_FETCHED</code>,
+<code>SOURCE_FETCH_FAILED</code>, <code>TREND_SNAPSHOT_CREATED</code>,
+<code>TREND_REPORT_CREATED</code>.</li>
+<li>Workflow: <code>WORKFLOW_VERSION_CREATED</code>,
+<code>RUN_CREATED</code>, <code>RUN_QUEUED</code>,
+<code>RUN_STARTED</code>, <code>RUN_PAUSED</code>,
+<code>RUN_RESUMED</code>, <code>RUN_CANCELLED</code>,
+<code>RUN_COMPLETED</code>, <code>RUN_FAILED</code>.</li>
+<li>Agent and node: <code>TASK_DISPATCHED</code>,
+<code>AGENT_STARTED</code>, <code>AGENT_FINISHED</code>,
+<code>NODE_STARTED</code>, <code>NODE_FINISHED</code>,
+<code>NODE_FAILED</code>, <code>ATTEMPT_STARTED</code>,
+<code>ATTEMPT_FAILED</code>, <code>RETRY_SCHEDULED</code>,
+<code>RETRY_EXHAUSTED</code>.</li>
+<li>Model: <code>MODEL_ROUTE_SELECTED</code>,
+<code>MODEL_CALL_STARTED</code>, <code>MODEL_CALL_FINISHED</code>,
+<code>MODEL_CALL_FAILED</code>, <code>MODEL_USAGE_RECORDED</code>,
+<code>MODEL_USAGE_CORRECTED</code>,
+<code>MODEL_FALLBACK_USED</code>.</li>
+<li>Tools/artifacts: <code>TOOL_CALL_STARTED</code>,
+<code>TOOL_CALL_FINISHED</code>, <code>TOOL_CALL_FAILED</code>,
+<code>ARTIFACT_CREATED</code>, <code>ARTIFACT_VALIDATED</code>,
+<code>ARTIFACT_REVISED</code>, <code>ARTIFACT_EXPORTED</code>,
+<code>ARTIFACT_DELETION_REQUESTED</code>.</li>
+<li>QA / cost / governance: <code>EVALUATION_CREATED</code>,
+<code>QUALITY_GATE_PASSED</code>, <code>QUALITY_GATE_FAILED</code>,
+<code>COST_ESTIMATED</code>, <code>COST_COMMITTED</code>,
+<code>COST_RECONCILED</code>, <code>BUDGET_ALERTED</code>,
+<code>BUDGET_BLOCKED</code>, <code>POLICY_VIOLATION_BLOCKED</code>,
+<code>SETTINGS_CHANGED</code>, <code>DATA_REDACTED</code>.</li>
+</ul>
+<p><strong>Önemli kimlik ayrımı:</strong> <code>run_id</code> mantıksal
+workflow çalıştırma; <code>node_execution_id</code> DAG node yürütümü;
+<code>attempt_id</code> her tekrar denemede farklı;
+<code>model_invocation_id</code> her fiziksel sağlayıcı isteği;
+<code>artifact_id</code> her immutable çıktı. Bir node 3 kez denerse 3
+attempt ve koşula göre 3 model invocation oluşur; 'logical node' bir kez
+sayılır. İdempotent replay tüketici iki kez event alırsa analytics çift
+saymaz.</p>
+<p><strong>Prompt ve response saklama politikası:</strong> Kullanıcının
+isteği <em>açık rızası/ayarına göre</em> şifreli tam gövde veya
+maskelenmiş içerik referansıyla saklanabilir. Varsayılan telemetry
+payload metadata-only; API key/PII/özel ticari veri ve modelin
+erişilemeyen gizli internal reasoning içeriği tutulmaz. Tam metin
+görüntüleme RBAC+audit+retention'a bağlıdır. İş kaydı 'her şeyi' teknik
+olarak mümkün olan, izinli ve güvenli kapsamda ifade eder.</p>
+<p><strong>Token usage — ayrıştırılmış alanlar:</strong></p>
+<ul>
+<li><code>input_tokens</code>, <code>output_tokens</code>,
+<code>total_tokens</code> (provider-reported veya estimated flag);</li>
+<li><code>cached_input_tokens</code>,
+<code>cache_creation_tokens</code>, modality breakdown
+(<code>text/image/audio</code>), <code>reasoning_tokens</code>
+<strong>yalnızca provider döndürürse</strong>;</li>
+<li><code>billable_input_units</code>,
+<code>billable_output_units</code>, <code>billable_media_units</code>,
+<code>billable_seconds</code>, <code>unit_name</code>;</li>
+<li><code>usage_source</code> = <code>provider_reported</code> |
+<code>estimated</code> | <code>invoice_reconciled</code> |
+<code>missing</code>;</li>
+<li><code>price_snapshot_id</code>, <code>currency</code>,
+<code>estimated_cost</code>, <code>actual_cost</code>,
+<code>billed_cost</code>, <code>confidence</code>.</li>
+</ul>
+<p><strong>No double count:</strong> cache token bileşenleri total
+input'a zaten dahil olabileceği için ikinci kez eklenmez. Retry maliyeti
+node'ın <strong>tüm fiziksel invocation</strong> kayıtları üzerinden
+toplanır. Streaming usage son eventte geliyorsa <code>pending</code>
+-&gt; <code>final</code> güncellenir; başarısız ama ücretli provider
+çağrıları muhasebeden düşürülmez. Image/video token dışı faturalar ayrı
+birimde saklanır; bilinmiyorsa <code>unknown</code>, sıfır değil.</p>
+<p><strong>Bütün giriş/çıkış kayıtları:</strong>
+<code>original_user_request</code> (encrypted/ref),
+<code>normalized_brief</code>, <code>client_request_id</code>, actor,
+timestamp, locale; context inputs (source IDs), node parameters,
+prompt/template version, tool args/result (sanitized), provider request
+ID, response metadata, generated files (S3 URI &amp; SHA), reviewer
+events, retries and failure codes, total cost, final outputs and
+manifest.</p>
+<p><strong>Outbox &amp; delivery:</strong> Tek transaction'da ledger
+event ve <code>outbox_event</code> yaz; relay SSE'ye yayımlar;
+at-least-once semantiğiyle duplicate kabul edilir fakat
+<code>event_id</code> ile de-duplicate edilir; her <code>run_seq</code>
+monoton ve unique'dir. <code>Last-Event-ID</code> veya
+<code>since_seq</code> ile kopan istemci boşluğu doldurur.</p>
+<p><strong>Retention (önerilen ayarlanabilir varsayılan):</strong> audit
+metadata 365 gün; runtime events 180 gün; encrypted prompt/response
+content 30 gün; artifacts 180 gün; trace details 30 gün. Organizasyon
+ihtiyaçları, lisans, GDPR/KVKK yükümlülükleri ve kullanıcı silme
+talepleri önceliklidir. Tüm süreler ürün config'i olmalıdır, hiçbir veri
+'sonsuz' varsayılan saklanmamalıdır.</p>
+<p><strong>Definition of Done:</strong> Tek <code>run_id</code> ile tüm
+request, node, attempt, tool, model, token, cost, artifact ve approval
+kayıtları join edilebilir ve indirilebilir; sahte token verisi yazılmaz;
+event stream reconnect'te kayıp yaşanmaz.</p>
+<h3 id="m12--analytics--reporting-dashboard">M12 — Analytics &amp;
+Reporting Dashboard</h3>
+<p><strong>Hedef:</strong> Executions Ledger'dan sorgu/ağırlıklandırma
+tutarlılığı olan ölçülebilir dashboard, filtreler ve açıklanabilir
+KPI'lar.</p>
+<p><strong>Sayfa bölümleri ve metric formülleri:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Dashboard sekmesi</th>
+<th>KPI'lar</th>
+<th>Kaynak tablolar</th>
+<th>Drilldown</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Overview</td>
+<td>total runs, completed/failed/cancelled, unique briefs, artifacts,
+total known spend</td>
+<td><code>runs</code>, <code>requests</code>, <code>artifacts</code>,
+<code>cost_entries</code></td>
+<td>Run Detail</td>
+</tr>
+<tr class="even">
+<td>Token &amp; Cost</td>
+<td>input/output/cached tokens, known spend, cost per successful run,
+unpriced invocations</td>
+<td><code>model_invocations</code>, <code>usage_records</code>,
+<code>cost_entries</code></td>
+<td>Model Call Detail</td>
+</tr>
+<tr class="odd">
+<td>Agents</td>
+<td>task count, success rate, p50/p95 latency, errors, retries, avg
+token, agent cost</td>
+<td><code>agent_sessions</code>, <code>node_executions</code>,
+<code>attempts</code></td>
+<td>Agent Observatory</td>
+</tr>
+<tr class="even">
+<td>Workflows</td>
+<td>run throughput, critical path, bottleneck nodes, failed DAG
+branches, version comparison</td>
+<td><code>runs</code>, <code>node_executions</code>,
+<code>workflow_versions</code></td>
+<td>Workflow Studio / Diff</td>
+</tr>
+<tr class="odd">
+<td>Assets</td>
+<td>images/video/playables created, approved/rejected, bytes, reuse,
+generation time/cost</td>
+<td><code>artifacts</code>, <code>artifact_lineage</code>,
+<code>evaluations</code></td>
+<td>Artifact Library</td>
+</tr>
+<tr class="even">
+<td>Quality</td>
+<td>gate pass %, rubric score distribution, judge-human agreement, root
+causes</td>
+<td><code>evaluations</code>, <code>quality_gate_results</code>,
+<code>human_reviews</code></td>
+<td>Quality Center</td>
+</tr>
+<tr class="odd">
+<td>Experiments</td>
+<td>offline approval score, real CTR/IPM/CPI when available, allocation,
+intervals</td>
+<td><code>experiments</code>, <code>experiment_variants</code>,
+<code>outcome_metrics</code></td>
+<td>Experiment Detail</td>
+</tr>
+<tr class="even">
+<td>Reliability</td>
+<td>SLO success, MTTR approximation, retries/recovery, queue wait,
+idempotency duplicates</td>
+<td><code>runs</code>, <code>attempts</code>,
+<code>run_events</code></td>
+<td>Run Detail</td>
+</tr>
+<tr class="odd">
+<td>Data Sources</td>
+<td>source freshness, coverage, errors, missingness, evidence count</td>
+<td><code>trend_sources</code>, <code>trend_observations</code>,
+<code>source_sync_jobs</code></td>
+<td>Trend Inspector</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filtreler:</strong> date range, project, campaign, workflow
+version, source, region, category, agent, node, model, provider, output
+type, run status, evaluation outcome, usage status, currency. İndirme:
+CSV (tablolar), JSONL (olaylar), PDF rapor opsiyonel gelecek aşama.</p>
+<p><strong>KPI tanımları (yanlış sunumu önlemek için):</strong></p>
+<ul>
+<li><code>run_success_rate = completed_runs / terminal_runs</code>,
+terminal = completed+failed+cancelled (cancelled'ı ayrıca raporla;
+gerekirse başarısız dışı da görüntüle).</li>
+<li><code>node_retry_rate = retried_node_executions / all_node_executions</code>.</li>
+<li><code>retry_attempts_total = sum(max(attempt_count-1, 0))</code>;
+aynı attempt hem logical retry hem model retry olarak iki kez
+sayılmaz.</li>
+<li><code>cost_per_approved_artifact = allocated_known_cost / approved_artifact_count</code>,
+ortak DAG maliyeti için allocation policy açıkça belirtilir; sıfır
+paydaya <code>null</code>.</li>
+<li><code>token_total = SUM(provider_reported_or_estimated)</code> ve
+<code>estimated_token_share</code> ayrı gösterilir; cached input
+toplamları ikinci kez toplanmaz.</li>
+<li><code>unpriced_call_ratio = unpriced_invocations / all_invocations</code>;
+unknown cost hiçbir grafikte sıfır olarak yer almaz.</li>
+<li><code>p95_latency</code> gerçek measured durations üzerinden; queue
+wait ayrı.</li>
+<li><code>QA_pass_rate = passed_gate_executions / all_final_gate_executions</code>.</li>
+<li>CTR/CPI/IPM yalnızca gerçek outcome veri alanları mevcutsa ve
+kaynak/attribution netse gösterilir.</li>
+</ul>
+<p><strong>Geliştirme işleri:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />SQL materialized views / incremental
+aggregation / gerektiğinde yeniden hesaplama.</label></li>
+<li><label><input type="checkbox" />Date/model/agent/workflow filtreli
+ilk 7 temel dashboard.</label></li>
+<li><label><input type="checkbox" />Model call detail and retry
+waterfall grafikleri.</label></li>
+<li><label><input type="checkbox" />Run compare (same brief different
+workflow/model) fark paneli.</label></li>
+<li><label><input type="checkbox" />Export audit + row-level
+permission.</label></li>
+<li><label><input type="checkbox" />CSV/JSONL export, scheduled daily
+summaries ileriki faz.</label></li>
+<li><label><input type="checkbox" />Grafikte her metriğin tanımını
+tooltip olarak açıkla.</label></li>
+</ul>
+<p><strong>Definition of Done:</strong> Dashboard sayıları aynı run'a
+ait ilişkisel kayıtlarla doğrulanır; örneğin 2 retry sonucu 3 fiziksel
+çağrı maliyeti görünür; kullanıcı tıklayarak ilgili satıra ulaşır.</p>
+<h2 id="f-agentworker-kataloğu-ve-iş-yükü-sahipliği">F. Agent/worker
+kataloğu ve iş yükü sahipliği</h2>
+<p><strong>Orkestrasyon politikası:</strong> Agent = LLM destekli
+karar/üretim yapan sorumluluk birimi; Worker = deterministik hesap,
+aktarım veya derleme yapan işlemdir. Sistemin ekranda gösterdiği her
+kutu 'LLM-agent' değildir; türü ayrı belirtilir.</p>
+<table>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Agent / worker</th>
+<th>Tür</th>
+<th>Sorumluluk</th>
+<th>Input → Output</th>
+<th>Güvenli tamamlanma koşulu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A01</td>
+<td>Trend Scout</td>
+<td>Connector worker</td>
+<td>izinli kaynaklardan veri</td>
+<td><code>SourceQuery</code> → <code>TrendSnapshot</code></td>
+<td>evidence ve source hash mevcut</td>
+</tr>
+<tr class="even">
+<td>A02</td>
+<td>Genre Analyst</td>
+<td>hybrid agent</td>
+<td>genre/mechanic gruplama</td>
+<td><code>TrendSnapshot</code> → <code>GenreReport</code></td>
+<td>kaynağa dayalı sınıflandırma</td>
+</tr>
+<tr class="odd">
+<td>A03</td>
+<td>Creative Pattern Miner</td>
+<td>hybrid agent</td>
+<td>hook/CTA kalıp çıkarma</td>
+<td><code>CreativeEvidence[]</code> → <code>PatternReport</code></td>
+<td>evidence_refs zorunlu</td>
+</tr>
+<tr class="even">
+<td>A04</td>
+<td>Insight Synthesizer</td>
+<td>LLM agent</td>
+<td>özetlenmiş trend çıkarımı</td>
+<td>reports → <code>TrendReport</code></td>
+<td>belirsizlik saklanır</td>
+</tr>
+<tr class="odd">
+<td>A05</td>
+<td>Game DNA Extractor</td>
+<td>vision agent</td>
+<td>stil ve asset özellikleri</td>
+<td><code>GameAssets</code> → <code>GameProfileDraft</code></td>
+<td>insan mechanic doğrulaması</td>
+</tr>
+<tr class="even">
+<td>A06</td>
+<td>Creative Strategist</td>
+<td>LLM agent</td>
+<td>test edilebilir fikir hipotezleri</td>
+<td><code>TrendReport+GameProfile</code> →
+<code>Hypothesis[]</code></td>
+<td>constraint validator</td>
+</tr>
+<tr class="odd">
+<td>A07</td>
+<td>Concept Ranking</td>
+<td>deterministic</td>
+<td>çok ölçütlü ağırlıklı skor</td>
+<td><code>Hypothesis[]</code> → <code>RankedConcepts</code></td>
+<td>açıklanabilir skor</td>
+</tr>
+<tr class="even">
+<td>A08</td>
+<td>Mockup Board Designer</td>
+<td>image+layout worker</td>
+<td>konsept kartları</td>
+<td><code>ConceptSpec</code> → <code>ConceptBoard[]</code></td>
+<td>preview + cost kaydı</td>
+</tr>
+<tr class="odd">
+<td>A09</td>
+<td>Asset Prompt Builder</td>
+<td>LLM agent</td>
+<td>image/video prompt planlama</td>
+<td><code>Concept+GameDNA</code> → <code>AssetPlan</code></td>
+<td>typed output</td>
+</tr>
+<tr class="even">
+<td>A10</td>
+<td>Image Production</td>
+<td>provider worker</td>
+<td>sprite/scene yaratma</td>
+<td><code>AssetPlan</code> → <code>ImageAsset[]</code></td>
+<td>artifact SHA+usage</td>
+</tr>
+<tr class="odd">
+<td>A11</td>
+<td>Video Producer</td>
+<td>media worker</td>
+<td>video klip ve kompozisyon</td>
+<td><code>Storyboard</code> → <code>VideoAsset</code></td>
+<td>render probe</td>
+</tr>
+<tr class="even">
+<td>A12</td>
+<td>Playable Planner</td>
+<td>LLM agent</td>
+<td>basit oyun mekanik spec</td>
+<td><code>GameSpec+Concept</code> → <code>PlayableSpec</code></td>
+<td>rules validated</td>
+</tr>
+<tr class="odd">
+<td>A13</td>
+<td>Playable Code Agent</td>
+<td>code agent</td>
+<td>Phaser template/kod üretimi</td>
+<td><code>PlayableSpec+Assets</code> → <code>SourceBundle</code></td>
+<td>schema + lint/build</td>
+</tr>
+<tr class="even">
+<td>W14</td>
+<td>Sandbox Build Runner</td>
+<td>secured worker</td>
+<td>build, test, report</td>
+<td><code>SourceBundle</code> → <code>BuildReport</code></td>
+<td>isolated environment</td>
+</tr>
+<tr class="odd">
+<td>A15</td>
+<td>Creative QA Evaluator</td>
+<td>hybrid</td>
+<td>rubric &amp; technical QA</td>
+<td><code>Artifact+Brief</code> → <code>EvaluationReport</code></td>
+<td>deterministic gates pass</td>
+</tr>
+<tr class="even">
+<td>W16</td>
+<td>Similarity Checker</td>
+<td>deterministic+ML</td>
+<td>originality risk sinyalleri</td>
+<td><code>Asset+ReferenceCorpus</code> →
+<code>SimilarityRisk</code></td>
+<td>threshold + human warning</td>
+</tr>
+<tr class="odd">
+<td>W17</td>
+<td>Experiment Analyzer</td>
+<td>statistical worker</td>
+<td>variant performance</td>
+<td><code>OutcomeDataset</code> → <code>ExperimentResult</code></td>
+<td>data quality checks</td>
+</tr>
+<tr class="even">
+<td>W18</td>
+<td>Cost Controller</td>
+<td>deterministic worker</td>
+<td>quota, pricing, circuit breaker</td>
+<td><code>CallEstimate+Budget</code> → <code>Allow/Deny</code></td>
+<td>budget policy</td>
+</tr>
+<tr class="odd">
+<td>W19</td>
+<td>Orchestration Core</td>
+<td>deterministic orchestrator</td>
+<td>DAG scheduling, branch, checkpoint, retry</td>
+<td><code>WorkflowRun</code> → <code>RunState</code></td>
+<td>durable/idempotent</td>
+</tr>
+<tr class="even">
+<td>W20</td>
+<td>Ledger Writer</td>
+<td>deterministic infra worker</td>
+<td>events/outbox/cost/artifacts</td>
+<td>actions → <code>LedgerEvents</code></td>
+<td>DB commit</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kümeler:</strong> <code>Insight</code> A01–A04;
+<code>Strategy</code> A05–A08; <code>Production</code> A09–A13;
+<code>QA</code> W14–W17; <code>Control</code> W18–W20. Observatory
+renk/şekilleri bu kategoriden türetilir. Görselleştirilen gerçek çalışma
+birimleri <code>agent_id</code>, <code>task_id</code>,
+<code>node_execution_id</code> ile eşleştirilir.</p>
+<h2 id="g-node-kataloğu--tüm-portlar-ve-koşullar">G. Node kataloğu — tüm
+portlar ve koşullar</h2>
+<p><strong>Temel port tipleri:</strong> <code>SourceQuery</code>,
+<code>TrendSnapshot</code>, <code>TrendReport</code>,
+<code>GameAssets</code>, <code>GameProfileVersion</code>,
+<code>CreativeHypothesis[]</code>, <code>RankedConcepts</code>,
+<code>ConceptSpec</code>, <code>ConceptBoard[]</code>,
+<code>ApprovalDecision</code>, <code>AssetPlan</code>,
+<code>ImageAsset[]</code>, <code>Storyboard</code>,
+<code>VideoAsset</code>, <code>PlayableSpec</code>,
+<code>SourceBundle</code>, <code>PlayableBundle</code>,
+<code>EvaluationReport</code>, <code>ExperimentPlan</code>,
+<code>ExperimentResult</code>, <code>ExportManifest</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Kategori</th>
+<th>Node tipi</th>
+<th>Zorunlu input → output</th>
+<th>Executor</th>
+<th>UI inspector parametreleri</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Market</td>
+<td>Source Fetch</td>
+<td>SourceQuery → TrendSnapshot</td>
+<td>worker</td>
+<td>region, period, connector</td>
+</tr>
+<tr class="even">
+<td>Market</td>
+<td>Deduplicate</td>
+<td>Snapshot[] → Snapshot</td>
+<td>worker</td>
+<td>similarity, key</td>
+</tr>
+<tr class="odd">
+<td>Market</td>
+<td>Genre Classifier</td>
+<td>Snapshot → GenreReport</td>
+<td>hybrid</td>
+<td>taxonomy, threshold</td>
+</tr>
+<tr class="even">
+<td>Market</td>
+<td>Ad Pattern Extract</td>
+<td>CreativeEvidence[] → PatternReport</td>
+<td>hybrid</td>
+<td>hook tags, batch</td>
+</tr>
+<tr class="odd">
+<td>Market</td>
+<td>Trend Synthesis</td>
+<td>GenreReport + PatternReport → TrendReport</td>
+<td>agent</td>
+<td>model, prompt version</td>
+</tr>
+<tr class="even">
+<td>Profile</td>
+<td>Game Asset Import</td>
+<td>files → GameAssets</td>
+<td>worker</td>
+<td>rights, format</td>
+</tr>
+<tr class="odd">
+<td>Profile</td>
+<td>Game DNA Extract</td>
+<td>GameAssets → GameProfileDraft</td>
+<td>agent</td>
+<td>style constraints</td>
+</tr>
+<tr class="even">
+<td>Profile</td>
+<td>Human Confirm Mechanics</td>
+<td>Draft → GameProfileVersion</td>
+<td>human</td>
+<td>mandatory checklist</td>
+</tr>
+<tr class="odd">
+<td>Concept</td>
+<td>Creative Brief</td>
+<td>user brief + GameProfile → CreativeBrief</td>
+<td>form</td>
+<td>audience, goals</td>
+</tr>
+<tr class="even">
+<td>Concept</td>
+<td>Hypothesis Generate</td>
+<td>TrendReport + Brief → Hypothesis[]</td>
+<td>agent</td>
+<td>count, diversity</td>
+</tr>
+<tr class="odd">
+<td>Concept</td>
+<td>Hypothesis Rank</td>
+<td>Hypothesis[] → RankedConcepts</td>
+<td>worker</td>
+<td>weights, exclusions</td>
+</tr>
+<tr class="even">
+<td>Concept</td>
+<td>Concept Board Render</td>
+<td>Concepts → ConceptBoard[]</td>
+<td>agent+worker</td>
+<td>mockup count, model</td>
+</tr>
+<tr class="odd">
+<td>Concept</td>
+<td>User Select Board</td>
+<td>Boards → ConceptSpec</td>
+<td>human</td>
+<td>selected ID/reason</td>
+</tr>
+<tr class="even">
+<td>Production</td>
+<td>Prompt Builder</td>
+<td>ConceptSpec → AssetPlan</td>
+<td>agent</td>
+<td>prompt/model version</td>
+</tr>
+<tr class="odd">
+<td>Production</td>
+<td>Image Generator</td>
+<td>AssetPlan → ImageAsset[]</td>
+<td>provider worker</td>
+<td>model, resolution, seed</td>
+</tr>
+<tr class="even">
+<td>Production</td>
+<td>Storyboard Planner</td>
+<td>ConceptSpec → Storyboard</td>
+<td>agent</td>
+<td>duration, shots</td>
+</tr>
+<tr class="odd">
+<td>Production</td>
+<td>Video Generator</td>
+<td>Storyboard + Assets → VideoAsset</td>
+<td>media worker</td>
+<td>provider, seconds</td>
+</tr>
+<tr class="even">
+<td>Production</td>
+<td>Remotion Render</td>
+<td>Storyboard + Assets → VideoAsset</td>
+<td>worker</td>
+<td>resolution/fps</td>
+</tr>
+<tr class="odd">
+<td>Production</td>
+<td>Playable Spec</td>
+<td>Concept + GameDNA → PlayableSpec</td>
+<td>agent</td>
+<td>preset, mechanics</td>
+</tr>
+<tr class="even">
+<td>Production</td>
+<td>Phaser Codegen</td>
+<td>PlayableSpec + Assets → SourceBundle</td>
+<td>agent</td>
+<td>template version</td>
+</tr>
+<tr class="odd">
+<td>Production</td>
+<td>Sandbox Build</td>
+<td>SourceBundle → PlayableBundle</td>
+<td>worker</td>
+<td>cpu/memory/timeout</td>
+</tr>
+<tr class="even">
+<td>Production</td>
+<td>Browser QA</td>
+<td>PlayableBundle → EvaluationReport</td>
+<td>worker</td>
+<td>browsers, viewports</td>
+</tr>
+<tr class="odd">
+<td>Quality</td>
+<td>Schema Validate</td>
+<td>any typed artifact → result</td>
+<td>worker</td>
+<td>schema version</td>
+</tr>
+<tr class="even">
+<td>Quality</td>
+<td>Visual QA</td>
+<td>Image/Video + Brief → EvaluationReport</td>
+<td>agent</td>
+<td>rubric version</td>
+</tr>
+<tr class="odd">
+<td>Quality</td>
+<td>Mechanics QA</td>
+<td>Playable + GameDNA → EvaluationReport</td>
+<td>hybrid</td>
+<td>rule set</td>
+</tr>
+<tr class="even">
+<td>Quality</td>
+<td>Similarity Risk</td>
+<td>Asset + corpus → risk report</td>
+<td>worker</td>
+<td>threshold</td>
+</tr>
+<tr class="odd">
+<td>Quality</td>
+<td>Quality Gate</td>
+<td>EvalReports → Pass/Fail</td>
+<td>worker</td>
+<td>gate policy</td>
+</tr>
+<tr class="even">
+<td>Quality</td>
+<td>Human Approval</td>
+<td>Artifact + QA → ApprovalDecision</td>
+<td>human</td>
+<td>required reviewers</td>
+</tr>
+<tr class="odd">
+<td>Control</td>
+<td>Branch</td>
+<td>decision → selected graph edge</td>
+<td>worker</td>
+<td>expression</td>
+</tr>
+<tr class="even">
+<td>Control</td>
+<td>Merge</td>
+<td>typed inputs → output</td>
+<td>worker</td>
+<td>merge strategy</td>
+</tr>
+<tr class="odd">
+<td>Control</td>
+<td>Retry Policy</td>
+<td>failure → control signal</td>
+<td>worker</td>
+<td>retries, backoff</td>
+</tr>
+<tr class="even">
+<td>Control</td>
+<td>Budget Gate</td>
+<td>estimate → allow/deny</td>
+<td>worker</td>
+<td>limits</td>
+</tr>
+<tr class="odd">
+<td>Control</td>
+<td>Artifact Save</td>
+<td>any output → ArtifactRef</td>
+<td>worker</td>
+<td>retention/tags</td>
+</tr>
+<tr class="even">
+<td>Export</td>
+<td>PNG/MP4/HTML Export</td>
+<td>approved assets → ExportManifest</td>
+<td>worker</td>
+<td>output type</td>
+</tr>
+<tr class="odd">
+<td>Experiments</td>
+<td>Variant Factory</td>
+<td>Hypothesis → variants</td>
+<td>hybrid</td>
+<td>single variable</td>
+</tr>
+<tr class="even">
+<td>Experiments</td>
+<td>Outcome Import</td>
+<td>CSV / API → dataset</td>
+<td>worker</td>
+<td>mapping, attribution</td>
+</tr>
+<tr class="odd">
+<td>Experiments</td>
+<td>Experiment Analysis</td>
+<td>outcomes → ExperimentResult</td>
+<td>worker</td>
+<td>confidence settings</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Node sürüm politikası:</strong> <code>node_type</code>,
+<code>node_version</code>, <code>input_schema_version</code>,
+<code>output_schema_version</code>, <code>execution_strategy</code>,
+<code>retry_policy</code>, <code>cost_policy</code>,
+<code>timeout</code>, <code>can_pause</code> registry'de tanımlanır.
+<code>Human Approval</code> gibi async wait node, bir Temporal wait
+state'e karşılık gelir.</p>
+<h2 id="h-typed-artifact-sözleşmeleri">H. Typed artifact
+sözleşmeleri</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Tip</th>
+<th>Asgari alanlar</th>
+<th>Hangi modül üretir</th>
+<th>Kim tüketir</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>TrendSnapshot</code></td>
+<td><code>source_id</code>, <code>observed_at</code>,
+<code>region</code>, <code>records</code>, <code>raw_hash</code></td>
+<td>M01</td>
+<td>M01/M02</td>
+</tr>
+<tr class="even">
+<td><code>TrendReport</code></td>
+<td><code>signals</code>, <code>evidence_refs</code>,
+<code>confidence</code>, <code>limitations</code></td>
+<td>M01</td>
+<td>M02</td>
+</tr>
+<tr class="odd">
+<td><code>GameProfileVersion</code></td>
+<td><code>mechanics</code>, <code>style</code>, <code>assets</code>,
+<code>constraints</code>, <code>version</code></td>
+<td>M04</td>
+<td>M02/CORE/M07</td>
+</tr>
+<tr class="even">
+<td><code>CreativeHypothesis</code></td>
+<td><code>audience</code>, <code>hook</code>, <code>rationale</code>,
+<code>metric</code>, <code>test_plan</code></td>
+<td>M02</td>
+<td>M02/M03</td>
+</tr>
+<tr class="odd">
+<td><code>ConceptSpec</code></td>
+<td><code>hypothesis_id</code>, <code>scene</code>,
+<code>interaction</code>, <code>style</code>,
+<code>target_formats</code></td>
+<td>M02</td>
+<td>CORE</td>
+</tr>
+<tr class="even">
+<td><code>ConceptBoard</code></td>
+<td><code>preview_asset_id</code>, <code>concept_id</code>,
+<code>score_components</code></td>
+<td>M02</td>
+<td>User/CORE</td>
+</tr>
+<tr class="odd">
+<td><code>ContextBundle</code></td>
+<td><code>ref_ids</code>, <code>context_budget</code>,
+<code>used_tokens</code>, <code>provenance</code></td>
+<td>M05</td>
+<td>Agents</td>
+</tr>
+<tr class="even">
+<td><code>AssetPlan</code></td>
+<td><code>shots</code>, <code>prompts</code>, <code>constraints</code>,
+<code>model_policy</code></td>
+<td>CORE</td>
+<td>Image/Video</td>
+</tr>
+<tr class="odd">
+<td><code>ImageAsset</code></td>
+<td><code>object_ref</code>, <code>sha256</code>,
+<code>resolution</code>, <code>generation_call_id</code></td>
+<td>CORE</td>
+<td>Video/Playable/QA</td>
+</tr>
+<tr class="even">
+<td><code>VideoAsset</code></td>
+<td><code>object_ref</code>, <code>sha256</code>, <code>codec</code>,
+<code>duration</code>, <code>generation_call_id</code></td>
+<td>CORE</td>
+<td>QA/Export</td>
+</tr>
+<tr class="odd">
+<td><code>PlayableSpec</code></td>
+<td><code>template</code>, <code>rules</code>, <code>inputs</code>,
+<code>winning_condition</code>, <code>cta</code></td>
+<td>CORE</td>
+<td>Codegen/QA</td>
+</tr>
+<tr class="even">
+<td><code>PlayableBundle</code></td>
+<td><code>zip_object_ref</code>, <code>sha256</code>,
+<code>entrypoint</code>, <code>build_report_id</code></td>
+<td>CORE</td>
+<td>QA/Export</td>
+</tr>
+<tr class="odd">
+<td><code>EvaluationReport</code></td>
+<td><code>rubric_id</code>, <code>gate_results</code>,
+<code>scores</code>, <code>judge_id</code>, <code>evidence</code></td>
+<td>M07</td>
+<td>Human/Analytics</td>
+</tr>
+<tr class="even">
+<td><code>ExperimentResult</code></td>
+<td><code>variant_ids</code>, <code>metric_values</code>,
+<code>method</code>, <code>uncertainty</code></td>
+<td>M03</td>
+<td>Learning/Analytics</td>
+</tr>
+<tr class="odd">
+<td><code>RunManifest</code></td>
+<td>source+model+code+workflow+artifact versions/hashes</td>
+<td>M10</td>
+<td>Runs/Repro</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Serialization:</strong> Pydantic v2 / JSON Schema. Büyük
+image/video payload JSON içine konmaz, yalnızca object ref + digest. Her
+artifact <code>schema_version</code> ve <code>content_hash</code> taşır;
+UI'de eski kayıtlar için migration readers gerekir.</p>
+<h2 id="i-postgresql-veri-modeli--detaylı-şema">I. PostgreSQL veri
+modeli — detaylı şema</h2>
+<p><strong>Çalışma disiplini:</strong> <code>uuid</code>/UUIDv7 veya
+ULID (tek politika), <code>created_at</code> UTC,
+<code>updated_at</code> (mutable tablolarda), <code>project_id</code>
+çoğu tabloda partition key/tenant filtre, FKs, gerekli index, JSONB
+alanlarında version. Bütün eventleri tek JSONB tablosuna atmak yerine
+arama ve aggregate için normalized tablolar.</p>
+<h3 id="i1-tablolar--ana-alanlar--indeksler">I1. Tablolar / ana alanlar
+/ indeksler</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Tablo</th>
+<th>Temel alanlar</th>
+<th>Ana ilişki / index</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>organizations</code></td>
+<td>id, name, settings_json</td>
+<td>PK</td>
+</tr>
+<tr class="even">
+<td><code>users</code></td>
+<td>id, oidc_subject, display_name</td>
+<td>oidc_subject unique</td>
+</tr>
+<tr class="odd">
+<td><code>memberships</code></td>
+<td>org_id, user_id, role</td>
+<td>(org,user) unique</td>
+</tr>
+<tr class="even">
+<td><code>workspaces</code></td>
+<td>id, org_id, name</td>
+<td>org FK</td>
+</tr>
+<tr class="odd">
+<td><code>projects</code></td>
+<td>id, workspace_id, name, type</td>
+<td>workspace FK</td>
+</tr>
+<tr class="even">
+<td><code>campaigns</code></td>
+<td>id, project_id, game_profile_id, objective</td>
+<td>project FK</td>
+</tr>
+<tr class="odd">
+<td><code>source_registry</code></td>
+<td>id, source_type, access_policy, terms_checked_at</td>
+<td>source_type index</td>
+</tr>
+<tr class="even">
+<td><code>source_sync_jobs</code></td>
+<td>id, source_id, status, started_at, errors</td>
+<td>source,status,time</td>
+</tr>
+<tr class="odd">
+<td><code>raw_snapshots</code></td>
+<td>id, source_id, observed_at, object_ref, sha256</td>
+<td>source+time, hash unique scoped</td>
+</tr>
+<tr class="even">
+<td><code>trend_observations</code></td>
+<td>id, snapshot_id, game_ref, genre, metric_type, value, region</td>
+<td>observed_at/region/genre</td>
+</tr>
+<tr class="odd">
+<td><code>trend_reports</code></td>
+<td>id, project_id, snapshot_ids, report_ref, model_call_id</td>
+<td>project+time</td>
+</tr>
+<tr class="even">
+<td><code>game_profiles</code></td>
+<td>id, project_id, active_version_id</td>
+<td>project</td>
+</tr>
+<tr class="odd">
+<td><code>game_profile_versions</code></td>
+<td>id, profile_id, version, spec_json, hash, approved_at</td>
+<td>(profile,version) unique</td>
+</tr>
+<tr class="even">
+<td><code>asset_rights</code></td>
+<td>id, asset_id, owner, license_kind, evidence_ref</td>
+<td>asset FK</td>
+</tr>
+<tr class="odd">
+<td><code>creative_hypotheses</code></td>
+<td>id, project_id, report_id, spec_json, rank_version</td>
+<td>project+report</td>
+</tr>
+<tr class="even">
+<td><code>concept_boards</code></td>
+<td>id, hypothesis_id, board_artifact_id, score_json</td>
+<td>hypothesis FK</td>
+</tr>
+<tr class="odd">
+<td><code>concept_decisions</code></td>
+<td>id, concept_id, user_id, decision, reason, time</td>
+<td>concept+time</td>
+</tr>
+<tr class="even">
+<td><code>workflows</code></td>
+<td>id, project_id, name, active_version_id</td>
+<td>project</td>
+</tr>
+<tr class="odd">
+<td><code>workflow_versions</code></td>
+<td>id, workflow_id, version, graph_json, sha256</td>
+<td>workflow+version unique</td>
+</tr>
+<tr class="even">
+<td><code>requests</code></td>
+<td>id, user_id, campaign_id, original_text_ref,
+normalized_brief_json</td>
+<td>campaign+time</td>
+</tr>
+<tr class="odd">
+<td><code>runs</code></td>
+<td>id, request_id, workflow_version_id, state, started_at, ended_at,
+run_manifest_id</td>
+<td>project+state+time</td>
+</tr>
+<tr class="even">
+<td><code>run_manifests</code></td>
+<td>id, run_id, json_ref, sha256, code_commit</td>
+<td>run unique</td>
+</tr>
+<tr class="odd">
+<td><code>run_events</code></td>
+<td>event_id, run_id, run_seq, event_type, occurred_at, payload_ref,
+trace_id, causation_id</td>
+<td><code>(run_id, run_seq)</code> unique; time+type</td>
+</tr>
+<tr class="even">
+<td><code>outbox_events</code></td>
+<td>id, event_id, payload, dispatched_at, attempts</td>
+<td>undispatched partial index</td>
+</tr>
+<tr class="odd">
+<td><code>node_executions</code></td>
+<td>id, run_id, node_id, node_version, state, timings</td>
+<td>run+node</td>
+</tr>
+<tr class="even">
+<td><code>attempts</code></td>
+<td>id, node_execution_id, attempt_no, state, error_code, backoff_ms,
+start/end</td>
+<td>(node_exec,attempt_no) unique</td>
+</tr>
+<tr class="odd">
+<td><code>agent_sessions</code></td>
+<td>id, run_id, agent_type, node_execution_id, context_bundle_id</td>
+<td>run+agent</td>
+</tr>
+<tr class="even">
+<td><code>model_invocations</code></td>
+<td>id, attempt_id, provider, model_requested, model_resolved,
+provider_request_id, state, timing</td>
+<td>attempt; provider_request_id unique nullable</td>
+</tr>
+<tr class="odd">
+<td><code>usage_records</code></td>
+<td>id, invocation_id, input_tokens, output_tokens, cached_tokens,
+source, modality_json</td>
+<td>invocation+revision</td>
+</tr>
+<tr class="even">
+<td><code>price_catalog_versions</code></td>
+<td>id, provider, model, effective_from/to, unit_prices_json</td>
+<td>provider+model+effective</td>
+</tr>
+<tr class="odd">
+<td><code>cost_entries</code></td>
+<td>id, invocation_id, usage_record_id, price_version_id, amount,
+currency, cost_kind, status</td>
+<td>invocation+cost_kind+status</td>
+</tr>
+<tr class="even">
+<td><code>tool_calls</code></td>
+<td>id, attempt_id, tool_name, args_ref, result_ref, status,
+duration</td>
+<td>attempt+tool</td>
+</tr>
+<tr class="odd">
+<td><code>artifacts</code></td>
+<td>id, run_id, type, storage_ref, sha256, bytes, media_meta, state</td>
+<td>run+type; hash</td>
+</tr>
+<tr class="even">
+<td><code>artifact_lineage</code></td>
+<td>parent_artifact_id, child_artifact_id, relation_type</td>
+<td>composite unique</td>
+</tr>
+<tr class="odd">
+<td><code>quality_gate_results</code></td>
+<td>id, artifact_id, rubric_version_id, gate_type, state, score</td>
+<td>artifact+gate</td>
+</tr>
+<tr class="even">
+<td><code>evaluations</code></td>
+<td>id, run_id, target_artifact_id, rubric_version, report_ref,
+judge_invocation_id</td>
+<td>target+rubric</td>
+</tr>
+<tr class="odd">
+<td><code>human_reviews</code></td>
+<td>id, artifact_id, reviewer_id, decision, reason, reviewed_at</td>
+<td>artifact+time</td>
+</tr>
+<tr class="even">
+<td><code>experiments</code></td>
+<td>id, campaign_id, hypothesis_id, mode, outcome_source</td>
+<td>campaign+mode</td>
+</tr>
+<tr class="odd">
+<td><code>experiment_variants</code></td>
+<td>id, experiment_id, artifact_id, variant_controls_json</td>
+<td>experiment</td>
+</tr>
+<tr class="even">
+<td><code>experiment_outcomes</code></td>
+<td>id, variant_id, observations_json, window, source_ref</td>
+<td>variant+window</td>
+</tr>
+<tr class="odd">
+<td><code>prompt_templates</code></td>
+<td>id, name, task_kind</td>
+<td>unique name+scope</td>
+</tr>
+<tr class="even">
+<td><code>prompt_versions</code></td>
+<td>id, template_id, version, object_ref, sha256</td>
+<td>(template,version) unique</td>
+</tr>
+<tr class="odd">
+<td><code>model_policies</code></td>
+<td>id, project_id, version, rules_json</td>
+<td>project+version</td>
+</tr>
+<tr class="even">
+<td><code>context_bundles</code></td>
+<td>id, run_id, refs_json, token_budget, selected_token_count</td>
+<td>run FK</td>
+</tr>
+<tr class="odd">
+<td><code>audit_events</code></td>
+<td>id, actor_id, action, entity_type/id, redacted_diff, created_at</td>
+<td>actor+time, entity</td>
+</tr>
+<tr class="even">
+<td><code>analytics_rollups_hourly</code></td>
+<td>project_id, hour, dimensions, aggregate_json, watermark_seq</td>
+<td>project+hour+dimensions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ek prensipler:</strong></p>
+<ul>
+<li>Büyük immutable JSON prompt, raw API responses ve video byte'ları S3
+objelerinde; DB'de pointer, sha256, encryption key version ve access
+label.</li>
+<li><code>cost_entries</code> için estimate/final/reconciliation
+sürümleri tutulur; düzeltme yeni version/adjustment kaydıdır, eski
+geçmiş silinmez.</li>
+<li>Append-only <code>run_events</code>, <code>audit_events</code>
+UPDATE/DELETE kısıtı uygulama rolünde engellenir; yetkili retention job
+ayrı işlem yürütür.</li>
+<li>Index ve partition: event/veri hacmi büyüyünce
+<code>occurred_at</code> bazında aylık partition; eski partition
+retention ile silinir. İlk günden gereksiz dağıtık DB yok.</li>
+<li>Transactional outbox publisher başarısız olursa repeat; client
+event_id dedupe, run_seq gap recovery.</li>
+<li>Çok kiracılı kullanımda workspace/project scope her sorguda enforce,
+RLS ek koruma.</li>
+</ul>
+<h3 id="i2-örnek-ilişkisel-zincir">I2. Örnek ilişkisel zincir</h3>
+<pre><code>projects
+  └─ campaigns
+      └─ requests (original user message)
+          └─ runs (frozen workflow + manifest)
+              ├─ run_events (append-only seq=1...N)
+              ├─ node_executions
+              │    ├─ attempts (#1, #2, #3...)
+              │    │    ├─ model_invocations → usage_records → cost_entries
+              │    │    └─ tool_calls
+              │    └─ agent_sessions → context_bundles
+              ├─ artifacts → artifact_lineage
+              ├─ evaluations / quality_gate_results / human_reviews
+              └─ experiment_variants / experiment_outcomes</code></pre>
+<h3 id="i3-tek-bir-runda-audit-örneği">I3. Tek bir run'da audit
+örneği</h3>
+<ol type="1">
+<li>14:00:00 kullanıcı <code>req_7</code> ile “match-3 rescue concept”
+brief gönderdi; <code>REQUEST_RECEIVED</code>.</li>
+<li>14:00:01 sistem <code>run_88</code> başladı;
+<code>workflow_version_4</code> ve <code>game_profile_version_2</code>
+freeze edildi.</li>
+<li>14:00:03 <code>concept-agent</code> başladı; invocation A = 1.200
+input, 250 output token (örnek).</li>
+<li>14:00:06 <code>mockup-generator</code> 2 image asset üretti;
+<code>artifact_a</code>, <code>artifact_b</code>, görsel birim maliyeti
+ayrı.</li>
+<li>14:00:15 video node ilk attempt timeout; attempt#1 ve provider
+request ID kaydedildi; eğer ücretlendirildiyse maliyeti eklenir.</li>
+<li>14:00:18 ikinci attempt başladı; fallback model versiyonu ve yeni
+token/medya usage kaydı.</li>
+<li>14:00:28 video artifact oluştu, SHA256 hesaplandı; parent image
+ID'lerine lineage.</li>
+<li>14:00:34 teknik QA passed, originality warning; insan onayı
+bekliyor.</li>
+<li>14:01:12 kullanıcı gerekçeli onay verdi; export başladı.</li>
+<li>14:01:13 final run manifest, tüm cost/usage/trace ref ve QA
+raporuyla tamamlandı.</li>
+</ol>
+<p>Bu örnek sayılar gerçek CreativeForge ölçümleri değildir; test
+fixture olarak kullanılır. Dashboard'da hata veren attempt de dahil
+bütün fiziksel çağrılar sayılır.</p>
+<h2 id="j-api-sözleşmesi-ve-gerçek-zamanlı-iletişim">J. API sözleşmesi
+ve gerçek zamanlı iletişim</h2>
+<p><strong>Auth:</strong> JWT/OIDC, project-level RBAC, API yazma
+eylemlerinde actor kimliği; mutasyonlara <code>Idempotency-Key</code>.
+Sayfa sorgularında cursor pagination, <code>from/to</code>,
+<code>status</code>, <code>model</code>, <code>agent</code>
+filtreleri.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Grup</th>
+<th>Endpoint</th>
+<th>Fonksiyon</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Projects</td>
+<td><code>POST /api/v1/projects</code>,
+<code>GET /api/v1/projects/:id</code></td>
+<td>proje CRUD</td>
+</tr>
+<tr class="even">
+<td>Sources</td>
+<td><code>GET /api/v1/trends/sources</code>,
+<code>POST /api/v1/trends/sync</code></td>
+<td>kaynak seçme ve toplama</td>
+</tr>
+<tr class="odd">
+<td>Trends</td>
+<td><code>GET /api/v1/projects/:p/trends</code>,
+<code>GET /api/v1/trends/snapshots/:id</code></td>
+<td>kaynaklı trend sorgulama</td>
+</tr>
+<tr class="even">
+<td>Game DNA</td>
+<td><code>POST /api/v1/games/:g/versions</code>,
+<code>GET /api/v1/games/:g/versions/:v</code></td>
+<td>frozen game profile</td>
+</tr>
+<tr class="odd">
+<td>Concepts</td>
+<td><code>POST /api/v1/projects/:p/concepts/generate</code>,
+<code>GET /api/v1/projects/:p/concepts</code></td>
+<td>hipotez/mockup oluşturma</td>
+</tr>
+<tr class="even">
+<td>Decisions</td>
+<td><code>POST /api/v1/concepts/:id/decision</code></td>
+<td>seçim veya ret</td>
+</tr>
+<tr class="odd">
+<td>Workflows</td>
+<td><code>POST /api/v1/workflows</code>,
+<code>PUT /api/v1/workflows/:w/draft</code>,
+<code>POST /api/v1/workflows/:w/publish</code></td>
+<td>düzenle/doğrula/yayınla</td>
+</tr>
+<tr class="even">
+<td>Runs</td>
+<td><code>POST /api/v1/workflows/:w/runs</code>,
+<code>GET /api/v1/runs/:r</code></td>
+<td>workflow başlat/incele</td>
+</tr>
+<tr class="odd">
+<td>Controls</td>
+<td><code>POST /api/v1/runs/:r/pause</code>, <code>/resume</code>,
+<code>/cancel</code>, <code>/rerun</code></td>
+<td>idempotent kontrol</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td><code>GET /api/v1/runs/:r/events?since_seq=N</code></td>
+<td>tarihsel events</td>
+</tr>
+<tr class="odd">
+<td>Live SSE</td>
+<td><code>GET /api/v1/runs/:r/events/stream</code></td>
+<td>canlı Observatory &amp; Workflow updates</td>
+</tr>
+<tr class="even">
+<td>Calls</td>
+<td><code>GET /api/v1/runs/:r/model-calls</code>,
+<code>GET /api/v1/model-calls/:id</code></td>
+<td>prompt/usage/cost metadata</td>
+</tr>
+<tr class="odd">
+<td>Retries</td>
+<td><code>GET /api/v1/runs/:r/attempts</code></td>
+<td>attempt listesi</td>
+</tr>
+<tr class="even">
+<td>Artifacts</td>
+<td><code>GET /api/v1/runs/:r/artifacts</code>,
+<code>GET /api/v1/artifacts/:a/lineage</code></td>
+<td>output ve kaynak ilişkisi</td>
+</tr>
+<tr class="odd">
+<td>Previews</td>
+<td><code>POST /api/v1/artifacts/:a/preview-ticket</code>,
+<code>GET /api/v1/artifacts/:a</code></td>
+<td>kontrollü görüntüleme</td>
+</tr>
+<tr class="even">
+<td>QA</td>
+<td><code>POST /api/v1/artifacts/:a/review</code>,
+<code>GET /api/v1/quality/gates</code></td>
+<td>onay/ret ve rubric</td>
+</tr>
+<tr class="odd">
+<td>Experiments</td>
+<td><code>POST /api/v1/experiments</code>,
+<code>POST /api/v1/experiments/:e/outcomes/import</code></td>
+<td>deney ve sonuç</td>
+</tr>
+<tr class="even">
+<td>Analytics</td>
+<td><code>GET /api/v1/analytics/overview</code>, <code>/costs</code>,
+<code>/agents</code>, <code>/artifacts</code>, <code>/quality</code>,
+<code>/reliability</code></td>
+<td>KPI</td>
+</tr>
+<tr class="odd">
+<td>Compare</td>
+<td><code>GET /api/v1/runs/compare?left=...&amp;right=...</code></td>
+<td>run diff</td>
+</tr>
+<tr class="even">
+<td>Manifest</td>
+<td><code>GET /api/v1/runs/:r/manifest</code>,
+<code>GET /api/v1/runs/:r/export</code></td>
+<td>reproducibility bundle</td>
+</tr>
+<tr class="odd">
+<td>Admin</td>
+<td><code>GET/PUT /api/v1/model-policies</code>,
+<code>GET/PUT /api/v1/retention</code>,
+<code>GET /api/v1/audit</code></td>
+<td>model/security ayarları</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SSE örnek event:</strong></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;run_88:42&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;event&quot;</span><span class="fu">:</span><span class="st">&quot;MODEL_CALL_FINISHED&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;data&quot;</span><span class="fu">:{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;event_id&quot;</span><span class="fu">:</span><span class="st">&quot;evt_42&quot;</span><span class="fu">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;run_id&quot;</span><span class="fu">:</span><span class="st">&quot;run_88&quot;</span><span class="fu">,</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;run_seq&quot;</span><span class="fu">:</span><span class="dv">42</span><span class="fu">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;node_execution_id&quot;</span><span class="fu">:</span><span class="st">&quot;ne_video_2&quot;</span><span class="fu">,</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;attempt_id&quot;</span><span class="fu">:</span><span class="st">&quot;att_video_2&quot;</span><span class="fu">,</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;status&quot;</span><span class="fu">:</span><span class="st">&quot;completed&quot;</span><span class="fu">,</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;usage_status&quot;</span><span class="fu">:</span><span class="st">&quot;provider_reported&quot;</span><span class="fu">,</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;latency_ms&quot;</span><span class="fu">:</span><span class="dv">2780</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Kontrat notu:</strong> Yukarıdaki gösterim SSE payload'unun
+JSON örneğidir; gerçek SSE wire formatı <code>id:</code>,
+<code>event:</code>, <code>data:</code> satırlarından oluşur.</p>
+<h2 id="k-prompt-model-artifact-eval-ve-event-ilişkisi">K. Prompt,
+model, artifact, eval ve event ilişkisi</h2>
+<p><strong>Tek model çağrısı kayıt kuralı:</strong> İstek upstream
+<code>NodeAttempt</code>'te başladığında <code>ModelInvocation</code>
+için immutable <code>provider_request_id</code> (varsa) ve
+<code>idempotency_key</code> yazılır. Call sırasında istemci ayrılırsa
+server çağrısını sonlandırma politikası belirlenir; usage gelmediyse
+<code>missing</code> olarak kalır. <code>token_count=null</code> ile
+<code>token_count=0</code> semantik olarak farklıdır.</p>
+<p><strong>Örnek dashboard drilldown yolu:</strong>
+<code>Analytics → Agent Cost → A13 Playable Code Agent → run_88 → attempt_2 → model_invocation_5 → usage_record_5 → cost_entry_6 → source_bundle_20 → build_report_4 → final_html_bundle_9</code>.</p>
+<p><strong>Lineage:</strong> Bir asset'in parent'ları (concept/asset
+plan/image/model invocation) ayrı <code>artifact_lineage</code>
+bağlantıları; her artifact için <code>input_hashes</code>,
+<code>generator_version</code>, <code>license/provenance</code> ve
+<code>eval_result</code> ilişki referansları.</p>
+<p><strong>Evaluation kayıt kuralı:</strong> rubric version, judge model
+version, automatic vs human, reference baselines, score, disagreement,
+timestamps; aynı artifact farklı rubric ile birden fazla değerlendirme
+alabilir.</p>
+<h2
+id="l-kullanılacak-github-repoları--seçim-matrisi-entegrasyon-ve-lisans-notları">L.
+Kullanılacak GitHub repoları — seçim matrisi, entegrasyon ve lisans
+notları</h2>
+<p><strong>Önemli:</strong> Buradaki bağlantılar, CreativeForge'a
+'tamamını kopyalayacağımız' projeler değil, sistemin alt teknolojileri
+veya referans uygulamalarıdır. Birbirinin kopyası birçok
+orchestration/observability framework'ünü aynı anda kurmuyoruz. Sürüm
+pinlemeden önce ilgili repoların LICENSE, breaking changes ve dağıtım
+koşulları kontrol edilmelidir.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Öncelik</th>
+<th>Resmî GitHub repo</th>
+<th>Kullanım yeri</th>
+<th>Entegrasyon şekli</th>
+<th>Not</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Zorunlu</td>
+<td><a href="https://github.com/xyflow/xyflow">xyflow/xyflow</a></td>
+<td>Workflow Studio</td>
+<td>React Flow npm kütüphanesi</td>
+<td>ComfyUI görünümünü kendi UX'imizle kurarız</td>
+</tr>
+<tr class="even">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/fastapi/fastapi">fastapi/fastapi</a></td>
+<td>API</td>
+<td>Python package</td>
+<td>REST, OpenAPI, SSE endpoint</td>
+</tr>
+<tr class="odd">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/temporalio/sdk-python">temporalio/sdk-python</a></td>
+<td>Kalıcı orkestrasyon</td>
+<td>Python SDK</td>
+<td>Workflow/activity retry ve durable state</td>
+</tr>
+<tr class="even">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/temporalio/temporal">temporalio/temporal</a></td>
+<td>Worker orchestration server</td>
+<td>ayrı servis</td>
+<td>platform altyapısı; kendi ledger değil</td>
+</tr>
+<tr class="odd">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/BerriAI/litellm">BerriAI/litellm</a></td>
+<td>Model gateway</td>
+<td>proxy/SDK</td>
+<td>model routing, sağlayıcı adaptörleri; fiyat doğrulaması gerekir</td>
+</tr>
+<tr class="even">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/Comfy-Org/ComfyUI">Comfy-Org/ComfyUI</a></td>
+<td>Image generation</td>
+<td>HTTP / WebSocket worker backend</td>
+<td>tüm arayüzünü ürün içine taşımıyoruz</td>
+</tr>
+<tr class="odd">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/remotion-dev/remotion">remotion-dev/remotion</a></td>
+<td>Video composition</td>
+<td>JS/TS render worker</td>
+<td><strong>Özel lisans koşulları</strong> kontrol edilmeli</td>
+</tr>
+<tr class="even">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/phaserjs/phaser">phaserjs/phaser</a></td>
+<td>Playable</td>
+<td>JS/TS package</td>
+<td>2D web oyun prototipi</td>
+</tr>
+<tr class="odd">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/microsoft/playwright">microsoft/playwright</a></td>
+<td>E2E &amp; browser QA</td>
+<td>browser testing</td>
+<td>mobil viewport + input smoke test</td>
+</tr>
+<tr class="even">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/Arize-ai/phoenix">Arize-ai/phoenix</a></td>
+<td>AI observability</td>
+<td>OTLP trace ingestion + UI</td>
+<td>teknik tracing/evals, iş ledger'ının alternatifi değil</td>
+</tr>
+<tr class="odd">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/Arize-ai/openinference">Arize-ai/openinference</a></td>
+<td>Agent model/tool spans</td>
+<td>Python instrumentation</td>
+<td>OTel ile birlikte</td>
+</tr>
+<tr class="even">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/open-telemetry/opentelemetry-collector">open-telemetry/opentelemetry-collector</a></td>
+<td>Telemetry pipeline</td>
+<td>OTLP collector</td>
+<td>trace/metric filter/redaction</td>
+</tr>
+<tr class="odd">
+<td>Zorunlu</td>
+<td><a
+href="https://github.com/pgvector/pgvector">pgvector/pgvector</a></td>
+<td>Project/evidence memory</td>
+<td>PostgreSQL extension</td>
+<td>semantic retrieval + SQL joins</td>
+</tr>
+<tr class="even">
+<td>Zorunlu</td>
+<td><a href="https://github.com/colinhacks/zod">colinhacks/zod</a></td>
+<td>Frontend contract validation</td>
+<td>TypeScript package</td>
+<td>backend JSON Schema ile uyum</td>
+</tr>
+<tr class="odd">
+<td>Opsiyonel</td>
+<td><a
+href="https://github.com/langfuse/langfuse">langfuse/langfuse</a></td>
+<td>Phoenix alternatifi</td>
+<td>ayrı tracing/eval ürünü</td>
+<td>aynı anda iki platform kurmayalım</td>
+</tr>
+<tr class="even">
+<td>Opsiyonel</td>
+<td><a
+href="https://github.com/grafana/grafana">grafana/grafana</a></td>
+<td>Infra dashboard</td>
+<td>datasource + alerts</td>
+<td>ürün dashboard'ını bununla değiştirmeyiz</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Neden seçtik?</strong> React Flow node/edge, custom handles
+ve minimap sağlıyor; Temporal uzun süren ve geri kazanılabilir yürütmeye
+uygun; ComfyUI HTTP/WebSocket ile prompt kuyruklarına eriştiriyor;
+Remotion programatik video montajı yapıyor; Phaser HTML5 2D oyun ve
+Playwright tarayıcı testleri sağlıyor; Phoenix/OpenInference trace ile
+eval deneylerini destekliyor. Bunların tümü kendi resmî açıklamalarıyla
+doğrulanabilir.</p>
+<p><strong>GitHub kullanma stratejisi:</strong></p>
+<ul>
+<li>CreativeForge ana kodunu <strong>tek bir yeni monorepo</strong>
+olarak geliştir; üstteki upstream repolar submodule olarak klonlanmak
+zorunda değil.</li>
+<li>Frontend paketlerini npm, Python paketlerini uv/pip, özel işçileri
+image olarak yönet; ComfyUI ve Temporal bağımsız servis.</li>
+<li>Phoenix veya Langfuse'dan tekini ana AI tracing backend olarak seç;
+varsayılan Phoenix.</li>
+<li>Bir repo kurulumdan önce lisans, kullanım amacı ve ticari kullanımı
+kontrol et. Özellikle Remotion'un sıradan MIT lisansı olmadığını unutma;
+ayrıca kullanılan ComfyUI custom node/model ağırlıklarının lisansları
+ayrı olabilir.</li>
+<li>Trend/reklam verisi toplamak için rastgele scraper repo'su entegre
+etme; kaynak şartları/API izinleri ve veri provenance sistemi
+önceliklidir.</li>
+</ul>
+<h3 id="l1-kaynak-ve-entegrasyon-referansları">L1. Kaynak ve entegrasyon
+referansları</h3>
+<ul>
+<li>React Flow: <a
+href="https://reactflow.dev/">https://reactflow.dev/</a> ; <a
+href="https://github.com/xyflow/xyflow">https://github.com/xyflow/xyflow</a></li>
+<li>ComfyUI server routes: <a
+href="https://github.com/Comfy-Org/docs/blob/main/development/comfyui-server/comms_routes.mdx">https://github.com/Comfy-Org/docs/blob/main/development/comfyui-server/comms_routes.mdx</a></li>
+<li>Remotion: <a
+href="https://github.com/remotion-dev/remotion">https://github.com/remotion-dev/remotion</a></li>
+<li>Phaser: <a
+href="https://github.com/phaserjs/phaser">https://github.com/phaserjs/phaser</a></li>
+<li>OpenTelemetry GenAI semantic conventions: <a
+href="https://github.com/open-telemetry/semantic-conventions-genai">https://github.com/open-telemetry/semantic-conventions-genai</a></li>
+<li>Phoenix: <a
+href="https://github.com/Arize-ai/phoenix">https://github.com/Arize-ai/phoenix</a></li>
+<li>Apple iPhone Games Charts: <a
+href="https://apps.apple.com/tr/iphone/charts/6014">https://apps.apple.com/tr/iphone/charts/6014</a></li>
+<li>TikTok Creative Center description: <a
+href="https://ads.tiktok.com/resources/help/article/creative-center">https://ads.tiktok.com/resources/help/article/creative-center</a></li>
+</ul>
+<h2 id="m-önerilen-creativeforge-kendi-github-monorepo-yapısı">M.
+Önerilen CreativeForge kendi GitHub monorepo yapısı</h2>
+<pre class="text"><code>creativeforge-intelligence-studio/
+├─ README.md
+├─ LICENSE                    # Kendi kodunun lisansı; bağımlılık lisanslarından ayrı
+├─ SECURITY.md
+├─ CONTRIBUTING.md
+├─ .github/
+│  ├─ workflows/
+│  │  ├─ ci-frontend.yml
+│  │  ├─ ci-backend.yml
+│  │  ├─ integration-tests.yml
+│  │  ├─ dependency-scan.yml
+│  │  └─ docker-build.yml
+│  └─ ISSUE_TEMPLATE/
+├─ apps/
+│  └─ web/                     # Next.js UI
+│     ├─ app/(workspace)/
+│     │  ├─ overview/
+│     │  ├─ intelligence/
+│     │  ├─ concepts/
+│     │  ├─ game-dna/
+│     │  ├─ studio/
+│     │  ├─ artifacts/
+│     │  ├─ experiments/
+│     │  ├─ ledger/
+│     │  ├─ analytics/
+│     │  ├─ quality/
+│     │  └─ runs/[runId]/
+│     ├─ components/
+│     │  ├─ workflow/{canvas,nodes,edges,inspector,templates}/
+│     │  ├─ observatory/{core,agent-card,connections,timeline}/
+│     │  ├─ concepts/{board-card,comparison,ranking}/
+│     │  ├─ analytics/{filters,kpis,charts,cost-waterfall}/
+│     │  ├─ ledger/{event-table,event-detail,trace-link}/
+│     │  └─ artifacts/{gallery,preview,lineage}/
+│     ├─ lib/{api,schemas,events,formatting}/
+│     └─ state/
+├─ services/
+│  ├─ api/                      # FastAPI modular monolith
+│  │  ├─ app/modules/
+│  │  │  ├─ projects/
+│  │  │  ├─ intelligence/
+│  │  │  ├─ concepts/
+│  │  │  ├─ game_dna/
+│  │  │  ├─ workflows/
+│  │  │  ├─ agents/
+│  │  │  ├─ evaluations/
+│  │  │  ├─ experiments/
+│  │  │  ├─ ledger/
+│  │  │  ├─ analytics/
+│  │  │  ├─ budgets/
+│  │  │  └─ security/
+│  │  ├─ app/db/{models,migrations,repositories}/
+│  │  ├─ app/api/v1/
+│  │  └─ app/core/{auth,settings,contracts,telemetry}/
+│  ├─ worker-orchestrator/       # Temporal workflows + activities
+│  ├─ worker-trends/             # connectors, snapshots, analysis
+│  ├─ worker-ai/                 # agent runtime, typed handoff, gateway
+│  ├─ worker-image/              # ComfyUI/provider adapter
+│  ├─ worker-video/              # video provider + Remotion render
+│  ├─ worker-playable/           # Phaser build, Playwright, sandbox
+│  ├─ worker-evaluation/         # validators, rubric, similarity
+│  └─ worker-event-relay/        # outbox -&gt; SSE/event bus
+├─ packages/
+│  ├─ contracts/                 # Pydantic + generated JSON Schema + TS types
+│  ├─ node-registry/             # node definitions / capabilities
+│  ├─ prompts/                   # versioned prompt templates
+│  ├─ rubrics/                   # versioned eval rubrics
+│  ├─ media-presets/             # safe original mini-game templates
+│  └─ test-fixtures/             # synthetic events, golden datasets
+├─ infrastructure/
+│  ├─ docker-compose.yml
+│  ├─ otel-collector.yaml
+│  ├─ temporal/
+│  ├─ postgres/
+│  ├─ storage/
+│  ├─ phoenix/
+│  └─ deployment/
+├─ tests/
+│  ├─ unit/
+│  ├─ contract/
+│  ├─ integration/
+│  ├─ e2e/
+│  ├─ load/
+│  ├─ security/
+│  └─ golden-datasets/
+├─ examples/
+│  ├─ match3-original-demo/
+│  ├─ trend-to-concept.json
+│  ├─ concept-to-playable.json
+│  └─ observatory-demo-events.jsonl
+└─ docs/
+   ├─ product-spec.md
+   ├─ page-map.md
+   ├─ adr/
+   ├─ event-taxonomy.md
+   ├─ database-schema.md
+   ├─ api-spec.md
+   ├─ node-catalog.md
+   ├─ metrics-dictionary.md
+   ├─ threat-model.md
+   ├─ evaluation-plan.md
+   └─ roadmap.md</code></pre>
+<p><strong>Servis ayırma kuralı:</strong> Önce tek API ve 2–3 worker
+deployment yeterlidir. Yukarıdaki klasörlerin var olması hepsinin ayrı
+sunucuya ihtiyaç duyduğu anlamına gelmez. Image/video ağır işleri
+bağımsız sıraya koy; maliyetleri izlemeyi geliştirme boyunca aktif
+tut.</p>
+<h2 id="n-sürümleme-kontrol-kalite-güvenlik-ve-veri-yönetimi">N.
+Sürümleme, kontrol, kalite, güvenlik ve veri yönetimi</h2>
+<h3 id="n1-yetkilendirme-rolleri">N1. Yetkilendirme rolleri</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Rol</th>
+<th>Okuma</th>
+<th>Üretim</th>
+<th>Onay</th>
+<th>Model/bütçe ayarı</th>
+<th>Audit export</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Owner/Admin</td>
+<td>tüm workspace</td>
+<td>evet</td>
+<td>evet</td>
+<td>evet</td>
+<td>evet</td>
+</tr>
+<tr class="even">
+<td>Engineer</td>
+<td>atanan proje</td>
+<td>evet</td>
+<td>opsiyonel policy</td>
+<td>öneri</td>
+<td>kısıtlı</td>
+</tr>
+<tr class="odd">
+<td>Creative Reviewer</td>
+<td>konsept ve artifact</td>
+<td>sınırlı</td>
+<td>evet</td>
+<td>hayır</td>
+<td>hayır</td>
+</tr>
+<tr class="even">
+<td>Analyst</td>
+<td>trends/experiments/analytics</td>
+<td>deney/rapor</td>
+<td>hayır</td>
+<td>hayır</td>
+<td>özet export</td>
+</tr>
+<tr class="odd">
+<td>Viewer</td>
+<td>izinli özet</td>
+<td>hayır</td>
+<td>hayır</td>
+<td>hayır</td>
+<td>hayır</td>
+</tr>
+</tbody>
+</table>
+<p>Tüm dashboard API'lerinde sunucu taraflı proje/rol kontrolü vardır;
+frontend button disable yeterli değildir. Yetkisiz trace payload/asset
+indirmesi engellenir.</p>
+<h3 id="n2-threat-model">N2. Threat model</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Risk</th>
+<th>Saldırı / hata</th>
+<th>Önlem / kabul testi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Prompt injection</td>
+<td>taranan reklam açıklaması ajanı yeniden yönlendiriyor</td>
+<td>untrusted source boundary, schema, tool allowlist</td>
+</tr>
+<tr class="even">
+<td>Leakage</td>
+<td>model prompt veya log içine key/özel bilgi düşüyor</td>
+<td>server-side secrets, redaction, encrypted payload, allowlist</td>
+</tr>
+<tr class="odd">
+<td>SSRF</td>
+<td>source URL ile internal servis taranıyor</td>
+<td>URL normalization, egress proxy, DNS/IP blocklist/allowlist</td>
+</tr>
+<tr class="even">
+<td>Generated code</td>
+<td>agent zararlı JS/Node kodu üretiyor</td>
+<td>microVM/hardened sandbox, no secret mounts, no network by
+default</td>
+</tr>
+<tr class="odd">
+<td>Budget runaway</td>
+<td>hatalı retry döngüsü ücret yakıyor</td>
+<td>global/project/run budget, bounded retries, breaker</td>
+</tr>
+<tr class="even">
+<td>Duplicate billing</td>
+<td>outbox veya activity replay aynı maliyeti iki kez yazıyor</td>
+<td>idempotent invocation ID and unique constraints</td>
+</tr>
+<tr class="odd">
+<td>Data contamination</td>
+<td>import içinde sahte 'başarılı trend'</td>
+<td>provenance + quality + human spot-check</td>
+</tr>
+<tr class="even">
+<td>IP/brand infringement</td>
+<td>özgün olmayan ikon/karakterler</td>
+<td>provenance, similarity warnings, human approval</td>
+</tr>
+<tr class="odd">
+<td>Private content exposure</td>
+<td>dashboard yetki aşımı</td>
+<td>RBAC/RLS, signed URL, access audit</td>
+</tr>
+<tr class="even">
+<td>Misleading dashboard</td>
+<td>estimated token/cost actual gibi görünür</td>
+<td><code>usage_source</code>, <code>cost_status</code>, null/unknown
+handling</td>
+</tr>
+</tbody>
+</table>
+<h3 id="n3-saklama--uyumluluk">N3. Saklama / uyumluluk</h3>
+<ul>
+<li>En az <code>metadata only</code>, <code>redacted content</code>,
+<code>full content opt-in</code> kayıt modları; güvenlik sınırı
+organisation/project seviyesinde.</li>
+<li>Retention süreleri konfigüre edilebilir; zamanında purge ve silme
+talebi iş akışı log'lanır.</li>
+<li><code>audit_events</code> saklamak, kullanıcı silme taleplerine
+karşı mutlak dokunulmazlık iddiası değildir; gerekli mevzuat ve veri
+minimizasyonu politikası birlikte tasarlanır.</li>
+<li>Medya üretim modelleri için izinli ticari kullanım, eğitim
+verisi/asset hakları ve çıktı lisans koşulları gözden geçirilir.</li>
+</ul>
+<h2 id="o-test-stratejisi-benchmark-ve-başarı-kriterleri">O. Test
+stratejisi, benchmark ve başarı kriterleri</h2>
+<p><strong>Demo fixture ile gerçek benchmark ayrımı:</strong>
+<code>demo/fixtures</code> verisi test UI'yi göstermek için; benchmark
+raporu ise kodun koştuğu ve ölçüm topladığı ayrı dataset/run
+manifest'ten üretilir.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Test katmanı</th>
+<th>Test senaryosu</th>
+<th>Kabul ölçütü (ilk hedef)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Unit</td>
+<td>token/cache ve fiyat toplama</td>
+<td>provider reported + cached sayılarda double count yok</td>
+</tr>
+<tr class="even">
+<td>Unit</td>
+<td>score normalization, missingness</td>
+<td>missing evidence <code>0 success</code> olmaz</td>
+</tr>
+<tr class="odd">
+<td>Contract</td>
+<td>yanlış tip edge</td>
+<td>publish reddedilir ve açıklayıcı hata</td>
+</tr>
+<tr class="even">
+<td>Integration</td>
+<td>workflow -&gt; ledger -&gt; outbox</td>
+<td>event idempotent, run_seq monoton</td>
+</tr>
+<tr class="odd">
+<td>Integration</td>
+<td>provider timeout -&gt; retry</td>
+<td>iki attempt, tüm ücretli çağrılar cost'ta</td>
+</tr>
+<tr class="even">
+<td>Integration</td>
+<td>budget exceeded</td>
+<td>pahalı çağrı başlamadan deny + alert</td>
+</tr>
+<tr class="odd">
+<td>E2E</td>
+<td>trend -&gt; concept -&gt; selection</td>
+<td>kaynaklı mockup ve karar izi</td>
+</tr>
+<tr class="even">
+<td>E2E</td>
+<td>concept -&gt; image / video</td>
+<td>en az bir gerçek provider artifact</td>
+</tr>
+<tr class="odd">
+<td>E2E</td>
+<td>concept -&gt; HTML5 playable</td>
+<td>sandbox build + mobil input smoke test</td>
+</tr>
+<tr class="even">
+<td>E2E</td>
+<td>failure -&gt; targeted retry</td>
+<td>önceki başarılı asset yeniden hesaplanmaz</td>
+</tr>
+<tr class="odd">
+<td>E2E</td>
+<td>pause / resume</td>
+<td>durable state korunur</td>
+</tr>
+<tr class="even">
+<td>E2E</td>
+<td>reconnect</td>
+<td>Last-Event-ID sonrası atlanmamış event timeline</td>
+</tr>
+<tr class="odd">
+<td>Observability</td>
+<td>inspector drilldown</td>
+<td><code>request→run→node→attempt→call→artifact</code> kesintisiz</td>
+</tr>
+<tr class="even">
+<td>Evaluation</td>
+<td>QA score human agreement</td>
+<td>ölçülen agreement raporunda örneklem sayısı var</td>
+</tr>
+<tr class="odd">
+<td>Security</td>
+<td>generated-code network request</td>
+<td>sandbox varsayılan deny</td>
+</tr>
+<tr class="even">
+<td>Security</td>
+<td>private object link</td>
+<td>yetkisiz erişim reddedilir</td>
+</tr>
+<tr class="odd">
+<td>Recovery</td>
+<td>worker kill/restart</td>
+<td>iş ya toparlar ya belirgin terminal failure üretir</td>
+</tr>
+<tr class="even">
+<td>Performance</td>
+<td>10 eşzamanlı demo run</td>
+<td>queue wait/latency ölçülür, sistem kilitlenmez</td>
+</tr>
+</tbody>
+</table>
+<p><strong>İlk portföy benchmark dataset'i:</strong> örneğin 20 farklı
+özgün puzzle game brief; en az 3 trend sinyal kaynağı türü
+(izinli/manuel), 3 konsept/brief, 10 playable generation target, 3 QA
+rubric kategorisi, 2 model stratejisi. Rakamlar hedef test sayılarıdır;
+henüz elde edilmiş sonuçlar değildir.</p>
+<p><strong>KPI hedefleri başlangıçta başarı iddiası değil kabul
+ölçütüdür:</strong> E2E build başarısı &gt;80% gibi eşikler veri olmadan
+garanti edilmez; ilk birkaç koşuyla baseline çıkar, sonraki sprintte
+ölçülen hedef seti oluştur. Gerçek reklam performansı ancak yetkili
+deney/outcome verisiyle değerlendirilir.</p>
+<h2
+id="p-uçtan-uca-geliştirme-roadmap--her-faz-için-görevler-bağımlılıklar-ve-teslim-kriterleri">P.
+Uçtan uca geliştirme roadmap — her faz için görevler, bağımlılıklar ve
+teslim kriterleri</h2>
+<p><strong>Öncelikler:</strong> P0 = ilk ciddi portföy sürümü için
+olmazsa olmaz; P1 = daha ileri platform yeteneği; P2 = opsiyonel
+ölçekleme. Fazlar ardışık iskelet üzerinde ilerler; ledger, güvenlik ve
+fiyatlama sona bırakılmaz.</p>
+<h3 id="faz-0--foundation--engineering-standards-p0">Faz 0 — Foundation
+/ Engineering Standards (P0)</h3>
+<p><strong>Bağımlılıklar:</strong> yok.<br />
+<strong>Deliverable:</strong> <code>docker compose up</code> ile
+app+API+Postgres+Temporal+OTel/Phoenix temel ortamı.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Monorepo, CI lint/test/typecheck,
+environment secrets example.</label></li>
+<li><label><input type="checkbox" />API/Pydantic contracts, DB
+migrations, UUID/UTC/naming ADR.</label></li>
+<li><label><input type="checkbox" />Local auth single user, ileride RBAC
+hook.</label></li>
+<li><label><input type="checkbox" />Standard <code>EventEnvelope</code>,
+ledger writer, outbox publisher.</label></li>
+<li><label><input type="checkbox" /><code>run_id</code>,
+<code>trace_id</code> correlation; Phoenix OTel smoke
+trace.</label></li>
+<li><label><input type="checkbox" />Node registry, typed edge validator,
+model provider mock adapter (açıkça mock).</label></li>
+<li><label><input type="checkbox" />UI layout: sidebar, Studio 2-tab
+shell, empty dashboards.</label></li>
+<li><label><input type="checkbox" />Demo fixture'ı gerçek veri gibi
+görünmeyecek şekilde işaretle.</label></li>
+</ul>
+<p><strong>Gate:</strong> Test isteği <code>REQUEST_RECEIVED</code>
+yazıp SSE'den ekrana gelir; trace ve ledger ID'leri eşleşir.</p>
+<h3 id="faz-1--workflow-studio--durable-orchestration-p0">Faz 1 —
+Workflow Studio + Durable Orchestration (P0)</h3>
+<p><strong>Bağımlılıklar:</strong> Faz 0.<br />
+<strong>Deliverable:</strong> basit
+<code>brief -&gt; structured concept -&gt; approval</code> workflow
+gerçek yürütme.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />React Flow
+drag/connect/save/publish, graph validator, inspector.</label></li>
+<li><label><input type="checkbox" />Temporal workflow/activity
+integration; queued/running/waiting/completed state.</label></li>
+<li><label><input type="checkbox" />Pause/resume/cancel, max attempts,
+exponential backoff.</label></li>
+<li><label><input type="checkbox" />Node attempt, tool call, model
+invocation, usage and cost DB writes.</label></li>
+<li><label><input type="checkbox" />Workflow version immutability +
+manifest freeze.</label></li>
+<li><label><input type="checkbox" />Run Detail ilk sürümü;
+request→node→attempt timeline.</label></li>
+<li><label><input type="checkbox" />SSE reconnect test ve outbox
+dedupe.</label></li>
+</ul>
+<p><strong>Gate:</strong> Simüle edilmiş tool failure otomatik retry
+edilir; her attempt, zaman ve maliyet kaydı anlaşılır biçimde
+incelenir.</p>
+<h3 id="faz-2--game-dna--concept-studio-p0">Faz 2 — Game DNA + Concept
+Studio (P0)</h3>
+<p><strong>Bağımlılıklar:</strong> Faz 1.<br />
+<strong>Deliverable:</strong> brief'ten üç onaylanabilir,
+yapılandırılmış mockup board.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Game DNA upload, game mechanic
+editor, version &amp; asset rights.</label></li>
+<li><label><input type="checkbox" />Creative hypothesis structured
+output, constraint checks.</label></li>
+<li><label><input type="checkbox" />Deterministik concept ranking +
+score explanation.</label></li>
+<li><label><input type="checkbox" />Mockup board gallery, comparison,
+user selection/override.</label></li>
+<li><label><input type="checkbox" />Seçilen konseptten workflow draft
+üretimi.</label></li>
+<li><label><input type="checkbox" />Testleri: game mechanics doğruluğu
+ve selection audit.</label></li>
+</ul>
+<p><strong>Gate:</strong> Kullanıcı bir konsepti seçince seçimin
+gerekçesi ve Game DNA sürümü trace edilebilir.</p>
+<h3 id="faz-3--real-asset-generation--playable-p0">Faz 3 — Real Asset
+Generation / Playable (P0)</h3>
+<p><strong>Bağımlılıklar:</strong> Faz 2.<br />
+<strong>Deliverable:</strong> en az bir gerçek image API ve bir temel
+playable workflow.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />ComfyUI API adapter / gerçek image
+provider integration.</label></li>
+<li><label><input type="checkbox" />Artifact object storage + sha256 +
+source lineage.</label></li>
+<li><label><input type="checkbox" />Phaser match-3 starter template,
+generator, isolated compile.</label></li>
+<li><label><input type="checkbox" />Playwright phone viewport, drag/tap,
+runtime-error test.</label></li>
+<li><label><input type="checkbox" />Preview &amp; HTML/ZIP download,
+upload/asset size validation.</label></li>
+<li><label><input type="checkbox" />Remotion composition ile basit MP4
+reklam; generative video API P1 genişlemesi.</label></li>
+<li><label><input type="checkbox" />Media credits/seconds ve LLM
+tokenlarının ayrı cost accounting'i.</label></li>
+</ul>
+<p><strong>Gate:</strong>
+<code>Selected Concept → Generated Assets → QA → User Approved → Download</code>
+uçtan uca işler.</p>
+<h3 id="faz-4--trend-intelligence-p0">Faz 4 — Trend Intelligence
+(P0)</h3>
+<p><strong>Bağımlılıklar:</strong> Faz 2, veri erişimi izinleri.<br />
+<strong>Deliverable:</strong> tarihli ve kanıtlı trendlerden fikir
+üretilmesi.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Source registry &amp; license
+policy; manual import fallback.</label></li>
+<li><label><input type="checkbox" />Snapshot ingestion, dedup,
+normalized observation schema.</label></li>
+<li><label><input type="checkbox" />Genre/classifier, creative pattern
+extraction, evidence links.</label></li>
+<li><label><input type="checkbox" />Ranking evidence fusion ve
+uncertainty breakdown.</label></li>
+<li><label><input type="checkbox" />Trend UI source
+freshness/coverage/errors.</label></li>
+<li><label><input type="checkbox" />Kaynak kesilme, sahte metrik, prompt
+injection testleri.</label></li>
+</ul>
+<p><strong>Gate:</strong> Trend raporundaki her sinyal en az bir
+timestamp'li kaynağa bağlanır; sahte performans metriği üretilmez.</p>
+<h3 id="faz-5--full-observatory--execution-ledger-p0">Faz 5 — Full
+Observatory + Execution Ledger (P0)</h3>
+<p><strong>Bağımlılıklar:</strong> Faz 1–4.<br />
+<strong>Deliverable:</strong> referans görsele yakın ancak tamamen
+event-driven ajan ekranı ve ledger explorer.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Agent topology renderer,
+state-to-animation mapping, reduced motion.</label></li>
+<li><label><input type="checkbox" />Live timeline, filters, inspector,
+tool/model/artifact previews.</label></li>
+<li><label><input type="checkbox" />Replay, Run Compare,
+Pause/Resume/Cancel controls.</label></li>
+<li><label><input
+type="checkbox" />Requests/Runs/Events/Models/Tools/Retries/Audits
+ledger sayfaları.</label></li>
+<li><label><input type="checkbox" />Model pricing snapshot / retry
+waterfall / all artifact provenance.</label></li>
+<li><label><input type="checkbox" />JSONL/CSV export + RBAC log;
+redaction and retention.</label></li>
+<li><label><input type="checkbox" />Event replay ve 2 browser connection
+reconciliation test.</label></li>
+</ul>
+<p><strong>Gate:</strong> Bütün ajan çalışmaları canlıda ve geçmişte
+aynı event verisine dayanır; user tek <code>run_id</code> ile tam izi
+indirebilir.</p>
+<h3 id="faz-6--multi-gate-quality--analytics-p0">Faz 6 — Multi-Gate
+Quality + Analytics (P0)</h3>
+<p><strong>Bağımlılıklar:</strong> Faz 3, 5.<br />
+<strong>Deliverable:</strong> kalite kapısı, dashboard ve maliyet
+optimizasyonu.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Technical, game truth, visual,
+originality, human gates.</label></li>
+<li><label><input type="checkbox" />Rubric/golden dataset ve
+model-judge-human agreement raporu.</label></li>
+<li><label><input
+type="checkbox" />Cost/usage/agent/workflow/artifact/QA dashboards;
+drilldown.</label></li>
+<li><label><input type="checkbox" />Price snapshots, per-run budgets,
+warning/block alerts.</label></li>
+<li><label><input type="checkbox" />p50/p95, retry, failure, cache and
+unknown-cost semantics.</label></li>
+<li><label><input type="checkbox" />Failure injection &amp;
+reconciliation tests.</label></li>
+</ul>
+<p><strong>Gate:</strong> Üç retry içeren işte final artifact sayısı ve
+toplam maliyet ledger kayıtlarıyla birebir doğrulanır; erişilmemesi
+gereken payload ekranlarda gösterilmez.</p>
+<h3 id="faz-7--experiments--feedback-p1">Faz 7 — Experiments &amp;
+Feedback (P1)</h3>
+<p><strong>Bağımlılıklar:</strong> Faz 2, 3, 6.<br />
+<strong>Deliverable:</strong> ölçülebilir test planları ve sonraki
+yaratıcı önerilere öğrenme sinyali.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />A/B planı, kontrol varyantı,
+tek-değişken üretimi.</label></li>
+<li><label><input type="checkbox" />Offline/real_campaign ayrımı, CSV
+validation ve attribution metadata.</label></li>
+<li><label><input type="checkbox" />CTR/IPM/CPI hesapları yalnızca
+gerçek ve tam girdilerle.</label></li>
+<li><label><input type="checkbox" />Trend/experiment feedback store ve
+evidence scoring update.</label></li>
+<li><label><input type="checkbox" />Experiment comparison report +
+careful statistical interpretation.</label></li>
+</ul>
+<p><strong>Gate:</strong> Gerçek veri olmadan performans artırdık
+iddiası gösterilmez; variant lineage ve test koşulları raporda
+bulunur.</p>
+<h3 id="faz-8--portfolio--production-hardening-p1">Faz 8 — Portfolio
+&amp; Production Hardening (P1)</h3>
+<p><strong>Bağımlılıklar:</strong> bütün P0 gates.<br />
+<strong>Deliverable:</strong> kamuya açık, teknik mülakatta
+savunulabilir demo ve kurulum rehberi.</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Sample data, özgün asset'ler,
+kayıtlı gerçek benchmark ve açık metodoloji.</label></li>
+<li><label><input type="checkbox" />README demo GIF/video, mimari
+diagram, screenshot, sistem tasarım kararları.</label></li>
+<li><label><input type="checkbox" />GitHub Actions test ve
+reproducibility manifest export.</label></li>
+<li><label><input type="checkbox" />Rate limiting, backup/restore,
+secrets rotation, dependency security scan.</label></li>
+<li><label><input type="checkbox" />Deployment/operations runbook ve
+maliyet politikası.</label></li>
+<li><label><input type="checkbox" />Demo'da fail case gösterme: başarılı
+üretim kadar controlled recovery.</label></li>
+</ul>
+<p><strong>Gate:</strong> Yeni makinede açık yönergelerle demo ayağa
+kalkar; en az bir gerçek image ve playable üretimi tekrar edilebilir
+test sürecinden geçer.</p>
+<h3 id="p1p2-ileriye-dönük-bu-sürüm-için-zorunlu-değil">P1/P2 ileriye
+dönük, bu sürüm için zorunlu değil</h3>
+<ul>
+<li>Multi-tenant billing, provider invoice ingestion otomasyonu,
+gelişmiş role policies.</li>
+<li>Yüksek trafik için ClickHouse/columnar warehouse veya time-series
+analitik ayrımı.</li>
+<li>Birden fazla playable mechanic family, code reuse ve cross-platform
+paketleme.</li>
+<li>İnsan review queue otomasyonu, collaborative board editing,
+benchmark suites.</li>
+<li>İleri düzey reklam ağı compiler (#8), ancak kullanıcı kapsamı ayrıca
+genişletirse.</li>
+</ul>
+<h2 id="q-öncelik-matrisi--bağımlılıklar">Q. Öncelik matrisi /
+bağımlılıklar</h2>
+<table>
+<thead>
+<tr class="header">
+<th>İş paketi</th>
+<th>Öncelik</th>
+<th>İhtiyaç duyduğu temel</th>
+<th>Gösterilebilir çıktı</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Event Ledger &amp; Basic Analytics</td>
+<td>P0</td>
+<td>Foundation</td>
+<td>request→call→artifact izleme</td>
+</tr>
+<tr class="even">
+<td>React Flow Editor</td>
+<td>P0</td>
+<td>Schema Registry</td>
+<td>görsel workflow run</td>
+</tr>
+<tr class="odd">
+<td>Durable Orchestrator</td>
+<td>P0</td>
+<td>DB/Event</td>
+<td>retry/pause/resume</td>
+</tr>
+<tr class="even">
+<td>Game DNA</td>
+<td>P0</td>
+<td>Artifacts</td>
+<td>frozen game profile</td>
+</tr>
+<tr class="odd">
+<td>Creative Boards &amp; Ranking</td>
+<td>P0</td>
+<td>Game DNA</td>
+<td>seçilebilir mockup kartları</td>
+</tr>
+<tr class="even">
+<td>Real Image &amp; Playable</td>
+<td>P0</td>
+<td>concepts+workers</td>
+<td>export edilen çalışan ürün</td>
+</tr>
+<tr class="odd">
+<td>Trend Evidence</td>
+<td>P0</td>
+<td>source permission</td>
+<td>kaynaklı insight</td>
+</tr>
+<tr class="even">
+<td>Agent Observatory</td>
+<td>P0</td>
+<td>ledger SSE</td>
+<td>gerçek agent animasyonu</td>
+</tr>
+<tr class="odd">
+<td>QA &amp; Cost</td>
+<td>P0</td>
+<td>run/asset/usage</td>
+<td>güvenilir dashboard</td>
+</tr>
+<tr class="even">
+<td>Experiment Loop</td>
+<td>P1</td>
+<td>variants + analytics</td>
+<td>feedback-driven suggestion</td>
+</tr>
+<tr class="odd">
+<td>Deployment/Hardening</td>
+<td>P1</td>
+<td>feature-complete</td>
+<td>güvenilir demo</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kritik yol:</strong> Foundation → Typed Workflow &amp; Ledger
+→ Game DNA + Concept → Real Generation → Evaluation &amp; Dashboard →
+Trend &amp; Experiments. Trend keşif ekranı paralel ilerleyebilir; fakat
+ilk portföy değerini kanıtlayan şey gerçekten çalışan
+<code>Concept → Playable</code> akışıdır.</p>
+<h2 id="r-kabul-senaryoları--demo-hikâyesi">R. Kabul senaryoları / demo
+hikâyesi</h2>
+<h3 id="demo-1-discovery">Demo 1: Discovery</h3>
+<p>Kullanıcı region Türkiye, platform iOS, kategori puzzle seçer. Trend
+ekranı tarihli resmi chart gözlemleri ve izinli/manual creative
+örnekleri listeler; rapor sınırlamalarını gösterir. Sistem 4 özgün
+konsepte ait mockup board üretir. Kullanıcı
+<code>Last Move Rescue</code> benzeri özgün bir konsepti seçer.</p>
+<h3 id="demo-2-production">Demo 2: Production</h3>
+<p>Workflow Studio otomatik graph açar; Game DNA + selected board -&gt;
+asset plan -&gt; image generation -&gt; playable code -&gt; sandbox
+build -&gt; browser QA -&gt; human approval -&gt; export. Her node
+üzerinde gerçek status ve artifact preview vardır.</p>
+<h3 id="demo-3-observatory">Demo 3: Observatory</h3>
+<p>İkinci sekmede <code>Creative Core</code> çevresinde aktif agentlar
+ve tool worker'ları ışıklı bağlantılarla görünür. Playable Build adımı
+hata verir; ekran attempt #1 hata, attempt #2 retry ve maliyetlerini
+ayrıştırır. İnsan QA seçimine geçer.</p>
+<h3 id="demo-4-ledger--analytics">Demo 4: Ledger &amp; Analytics</h3>
+<p>Kullanıcı <code>run_id</code> ile istek metnini (izinli veya
+redacted), prompt/template sürümünü, input/output tokenını, medya
+maliyetini, 2 image + 1 playable artifact'i, tekrar denemeleri, reviewer
+notunu ve run manifest'i görür. <code>Run Compare</code> iki modeli/graf
+sürümünü karşılaştırır.</p>
+<h3 id="demo-5-experiments">Demo 5: Experiments</h3>
+<p>Aynı konseptin yalnızca CTA değişen iki varyantı offline QA ile
+karşılaştırılır. Gerçek kampanya datası yoksa sistem CTR tahmini veya
+'kazanan' performans açıklaması üretmez; yalnızca offline sonuç
+sunar.</p>
+<h2 id="s-mimari-karar-kayıtları-adr">S. Mimari karar kayıtları
+(ADR)</h2>
+<table>
+<thead>
+<tr class="header">
+<th>ADR</th>
+<th>Karar</th>
+<th>Reddedilen/ertelenen alternatif</th>
+<th>Gerekçe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>001</td>
+<td>UI React Flow ile özel</td>
+<td>full ComfyUI fork</td>
+<td>ürün creative decision + agent UI öncelikli</td>
+</tr>
+<tr class="even">
+<td>002</td>
+<td>Temporal workflow + PostgreSQL Ledger</td>
+<td>yalnız cron/queue, yalnız Temporal history</td>
+<td>pause/resume + kalıcı iş kaydı</td>
+</tr>
+<tr class="odd">
+<td>003</td>
+<td>Phoenix + OTel</td>
+<td>Phoenix+Langfuse+başka gözlemleme aynı anda</td>
+<td>düşük operasyonel karmaşa</td>
+</tr>
+<tr class="even">
+<td>004</td>
+<td>Provider adapter &amp; LiteLLM</td>
+<td>model sağlayıcısına bağımlı çağrılar</td>
+<td>routing ve cost policy</td>
+</tr>
+<tr class="odd">
+<td>005</td>
+<td>Pydantic typed contracts</td>
+<td>serbest Markdown agent handoff</td>
+<td>deterministik validation</td>
+</tr>
+<tr class="even">
+<td>006</td>
+<td>Immutable artifacts + lineage</td>
+<td>aynı dosyayı üzerine yazma</td>
+<td>reproducibility/audit</td>
+</tr>
+<tr class="odd">
+<td>007</td>
+<td>Postgres read models</td>
+<td>ilk günden ayrı data warehouse</td>
+<td>portföy projesinde sadelik</td>
+</tr>
+<tr class="even">
+<td>008</td>
+<td>Human approval</td>
+<td>otomatik tüm yayınlama</td>
+<td>kalite ve içerik kontrolü</td>
+</tr>
+<tr class="odd">
+<td>009</td>
+<td>Basic playable export</td>
+<td>gelişmiş reklam ağı compiler</td>
+<td>seçilen scope'a sadakat</td>
+</tr>
+<tr class="even">
+<td>010</td>
+<td>Source permission-first</td>
+<td>scraping-first</td>
+<td>güvenilirlik, erişim kuralları ve sürdürülebilirlik</td>
+</tr>
+</tbody>
+</table>
+<h2 id="t-yürütmeye-hazır-toplam-teslim-listesi">T. Yürütmeye hazır
+toplam teslim listesi</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" />Çalışır iki sekmeli Studio: Workflow
+ve Observatory.</label></li>
+<li><label><input type="checkbox" />Kaynak ve güven göstergeli trend
+tarama.</label></li>
+<li><label><input type="checkbox" />En az 3 seçilebilir oyun/creative
+mockup board.</label></li>
+<li><label><input type="checkbox" />Game DNA editor, versioning,
+original assets.</label></li>
+<li><label><input type="checkbox" />Image, video composition ve basic
+playable flow.</label></li>
+<li><label><input type="checkbox" />Typed contract + agent context
+bundle.</label></li>
+<li><label><input type="checkbox" />Durable
+run/retry/pause/resume/cancel.</label></li>
+<li><label><input type="checkbox" />Çok katmanlı QA ve human
+approval.</label></li>
+<li><label><input type="checkbox" />Model registry, versioned price
+catalogue, budgets.</label></li>
+<li><label><input type="checkbox" />Complete Execution Ledger and event
+provenance.</label></li>
+<li><label><input type="checkbox" />Dashboard:
+token/usage/maliyet/retry/agent/asset/QA/run.</label></li>
+<li><label><input type="checkbox" />Artifact lineage, versions, run
+manifests, rerun vs replay.</label></li>
+<li><label><input type="checkbox" />Real vs simulation badge, strict
+input provenance.</label></li>
+<li><label><input type="checkbox" />Test suite, license review, threat
+model, README/demo.</label></li>
+<li><label><input type="checkbox" />Offline experiment engine + optional
+authorized real outcome import.</label></li>
+</ul>
+<h2 id="u-başarı-ölçütleri-ve-cv-değeri">U. Başarı ölçütleri ve CV
+değeri</h2>
+<p>Bu proje tamamlandığında GitHub ve CV'de gerçekte ölçülmüş sayılarla
+şunlar gösterilebilir: <code>N</code> run, <code>M</code> generated
+artifacts, provider reported input/output token toplamları, per-asset
+maliyet, <code>P</code> başarılı playable build, retry recovery oranı,
+end-to-end workflow latency, creative QA human agreement ve failure
+analysis. <strong>Bu sayılar ölçülmeden CV'de yüzdelik veya ürün
+performansı iddiası verilmemelidir.</strong></p>
+<p>Örnek açıklama (tamamlanırsa):</p>
+<blockquote>
+<p>Built an agentic creative intelligence and production studio with a
+node-based workflow editor, trend-grounded concept generation,
+multimodal image/video/playable pipelines, durable execution,
+event-sourced operational auditing, model-cost accounting, and real-time
+agent observability.</p>
+</blockquote>
+<hr />
+<h3
+id="doğrulanan-referans-sayfalar-25-ekim-2026-araştırması">Doğrulanan
+referans sayfalar (25 Ekim 2026 araştırması)</h3>
+<ul>
+<li><a href="https://reactflow.dev/">https://reactflow.dev/</a></li>
+<li><a
+href="https://github.com/temporalio/sdk-python">https://github.com/temporalio/sdk-python</a></li>
+<li><a
+href="https://github.com/Comfy-Org/docs/blob/main/development/comfyui-server/comms_routes.mdx">https://github.com/Comfy-Org/docs/blob/main/development/comfyui-server/comms_routes.mdx</a></li>
+<li><a
+href="https://github.com/remotion-dev/remotion">https://github.com/remotion-dev/remotion</a></li>
+<li><a
+href="https://github.com/phaserjs/phaser">https://github.com/phaserjs/phaser</a></li>
+<li><a
+href="https://github.com/microsoft/playwright">https://github.com/microsoft/playwright</a></li>
+<li><a
+href="https://github.com/Arize-ai/phoenix">https://github.com/Arize-ai/phoenix</a></li>
+<li><a
+href="https://github.com/Arize-ai/openinference">https://github.com/Arize-ai/openinference</a></li>
+<li><a
+href="https://github.com/BerriAI/litellm">https://github.com/BerriAI/litellm</a></li>
+<li><a
+href="https://github.com/pgvector/pgvector">https://github.com/pgvector/pgvector</a></li>
+<li><a
+href="https://github.com/open-telemetry/semantic-conventions-genai">https://github.com/open-telemetry/semantic-conventions-genai</a></li>
+<li><a
+href="https://apps.apple.com/tr/iphone/charts/6014">https://apps.apple.com/tr/iphone/charts/6014</a></li>
+<li><a
+href="https://ads.tiktok.com/resources/help/article/creative-center">https://ads.tiktok.com/resources/help/article/creative-center</a></li>
+</ul>
+<p><strong>Rapor durumu:</strong> Bu metin kapsamlı ürün ve uygulama
+planıdır, çalışan sistemin üretildiğine dair iddia değildir. Her
+geliştirme maddesi implementasyon görevlerine bölünerek
+ilerlenebilir.</p>
+</main>
+</body>
+</html>

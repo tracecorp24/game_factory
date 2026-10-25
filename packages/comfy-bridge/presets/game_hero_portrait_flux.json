@@ -1,0 +1,59 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "flux1-schnell.safetensors"
+    }
+  },
+  "2": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["1", 1],
+      "text": "epic stylized fantasy game warrior hero portrait, golden armor, glowing eyes, cinematic rim lighting, character key art"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["1", 1],
+      "text": "photorealistic person, lowres, distorted anatomy, noisy"
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "cfg": 3.5,
+      "denoise": 1.0,
+      "latent_image": ["2", 0],
+      "model": ["1", 0],
+      "negative": ["4", 0],
+      "positive": ["3", 0],
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "seed": 5551212,
+      "steps": 4
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["5", 0],
+      "vae": ["1", 2]
+    }
+  },
+  "7": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "Hero_Portrait_Flux",
+      "images": ["6", 0]
+    }
+  }
+}

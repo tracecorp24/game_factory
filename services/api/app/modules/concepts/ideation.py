@@ -86,17 +86,17 @@ class IdeationAgent:
         },
     ]
 
-    def generate_hypotheses(
+    def __init__(self, gateway: Optional[Any] = None) -> None:
+        self.gateway = gateway
+
+    def _generate_from_templates(
         self,
         trend_report: TrendReport,
         profile_version: GameProfileVersion,
         count: int = 4,
         target_audience: Optional[str] = None,
     ) -> List[CreativeHypothesis]:
-        """
-        Generates between 3 and 8 unique CreativeHypothesis models grounded in
-        real trend report signals and bounded by Game Profile DNA constraints.
-        """
+        """Synchronous template-based generation fallback."""
         target_count = max(3, min(8, count))
         hypotheses: List[CreativeHypothesis] = []
 
@@ -149,9 +149,139 @@ class IdeationAgent:
             hypotheses.append(hypo)
 
         logger.info(
-            "Generated %d creative hypotheses for game '%s' (version %s)",
+            "Generated %d template creative hypotheses for game '%s' (version %s)",
             len(hypotheses),
             profile_version.name,
             profile_version.version_id,
         )
         return hypotheses
+
+    def generate_hypotheses(
+        self,
+        trend_report: TrendReport,
+        profile_version: GameProfileVersion,
+        count: int = 4,
+        target_audience: Optional[str] = None,
+    ) -> List[CreativeHypothesis]:
+        """Generates hypotheses via template engine (sync wrapper)."""
+        return self._generate_from_templates(
+            trend_report=trend_report,
+            profile_version=profile_version,
+            count=count,
+            target_audience=target_audience,
+        )
+
+    async def generate_hypotheses_async(
+        self,
+        trend_report: TrendReport,
+        profile_version: GameProfileVersion,
+        count: int = 4,
+        target_audience: Optional[str] = None,
+    ) -> List[CreativeHypothesis]:
+        """
+        Attempts live LLM hypothesis generation via ModelGateway when configured.
+        Seamlessly falls back to calibrated domain templates if no provider keys exist.
+        """
+        has_api_keys = bool(
+            os.getenv("OPENAI_API_KEY")
+            or os.getenv("ANTHROPIC_API_KEY")
+            or os.getenv("GEMINI_API_KEY")
+            or os.getenv("LITELLM_URL")
+            or os.getenv("LITELLM_BASE_URL")
+        )
+
+        if not has_api_keys:
+            return self._generate_from_templates(
+                trend_report=trend_report,
+                profile_version=profile_version,
+                count=count,
+                target_audience=target_audience,
+            )
+
+        try:
+            from services.api.app.modules.budgets.gateway import ModelGateway, ModelGatewayRequest
+            from services.api.app.modules.budgets.types import ModelCapability, ModelTier
+            import json
+            import re
+
+            gateway = self.gateway or ModelGateway()
+
+            system_prompt = (
+                "You are CreativeForge's empirical Ad Creative Ideation Agent. "
+                "Generate rigorous, high-converting, falsifiable playable ad hypotheses grounded in Game DNA and trend signals. "
+                "Output strictly a valid JSON array of objects with keys: "
+                "title, intended_hook, emotional_arc, creative_mechanism, primary_metric (one of 'ipm', 'ctr', 'cpi_reduction', 'cvr'), "
+                "falsification_condition, novelty_rationale."
+            )
+
+            user_prompt = (
+                f"Game: {profile_version.name}\n"
+                f"Genre: {profile_version.genre.value}\n"
+                f"Core Loop: {profile_version.core_loop}\n"
+                f"Art Style: {profile_version.art_style}\n"
+                f"Forbidden Themes: {', '.join(profile_version.do_not_generate)}\n"
+                f"Target Audience: {target_audience or 'Casual & Midcore Mobile Gamers'}\n"
+                f"Generate exactly {count} distinct creative hypotheses in JSON format."
+            )
+
+            req = ModelGatewayRequest(
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ],
+                required_capabilities=[ModelCapability.TEXT],
+                preferred_tier=ModelTier.STANDARD,
+                temperature=0.7,
+            )
+
+            resp = await gateway.execute(req)
+            content = resp.content.strip()
+
+            # Clean markdown code block if present
+            if content.startswith("```"):
+                content = re.sub(r"^```(?:json)?\n?", "", content)
+                content = re.sub(r"\n?```$", "", content)
+
+            data = json.loads(content)
+            if isinstance(data, list) and len(data) > 0:
+                results: List[CreativeHypothesis] = []
+                for item in data[:count]:
+                    metric_str = str(item.get("primary_metric", "ipm")).upper()
+                    if "CTR" in metric_str:
+                        metric = PrimaryMetric.CTR
+                    elif "CPI" in metric_str:
+                        metric = PrimaryMetric.CPI_REDUCTION
+                    elif "CVR" in metric_str:
+                        metric = PrimaryMetric.CVR
+                    else:
+                        metric = PrimaryMetric.IPM
+
+                    hypo = CreativeHypothesis(
+                        project_id=None,
+                        game_profile_version_id=profile_version.version_id,
+                        title=str(item.get("title", f"{profile_version.name} Concept")),
+                        audience=target_audience or "Casual Mobile Gamers",
+                        genre=profile_version.genre.value,
+                        intended_hook=str(item.get("intended_hook", "Tap to play!")),
+                        emotional_arc=str(item.get("emotional_arc", "Curiosity -> Action")),
+                        evidence_refs=[f"llm_{resp.model_used}"],
+                        creative_mechanism=str(item.get("creative_mechanism", "Dynamic interaction")),
+                        primary_metric=metric,
+                        falsification_condition=str(item.get("falsification_condition", "IPM drops >10%")),
+                        novelty_rationale=str(item.get("novelty_rationale", "AI generated hypothesis")),
+                    )
+                    results.append(hypo)
+
+                if len(results) >= 2:
+                    logger.info("Successfully generated %d LLM hypotheses via %s", len(results), resp.model_used)
+                    return results
+
+        except Exception as exc:
+            logger.warning("LLM hypothesis generation failed (%s), falling back to template engine", exc)
+
+        return self._generate_from_templates(
+            trend_report=trend_report,
+            profile_version=profile_version,
+            count=count,
+            target_audience=target_audience,
+        )

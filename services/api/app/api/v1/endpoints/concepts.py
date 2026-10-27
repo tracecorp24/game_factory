@@ -77,7 +77,7 @@ async def generate_concepts(project_id: str, payload: ConceptGenerateRequest):
     trend_report = TrendReport(signals=[])
 
     # Generate and rank concept boards
-    boards = concept_service.generate_and_rank_concepts(
+    boards = await concept_service.generate_and_rank_concepts_async(
         trend_report=trend_report,
         profile_version=profile,
         count=payload.target_count,

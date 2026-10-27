@@ -93,6 +93,41 @@ class ConceptService:
             self.decisions.register_board(board)
             boards.append(board)
 
+    async def generate_and_rank_concepts_async(
+        self,
+        trend_report: TrendReport,
+        profile_version: GameProfileVersion,
+        count: int = 4,
+        weights_override: Optional[RankingWeights] = None,
+        target_audience: Optional[str] = None,
+    ) -> List[ConceptBoard]:
+        """
+        Asynchronously generates 3 to 8 hypotheses (leveraging live LLMs if configured),
+        evaluates each via the heuristic formula, and constructs interactive ConceptBoards.
+        """
+        hypotheses = await self.ideation.generate_hypotheses_async(
+            trend_report=trend_report,
+            profile_version=profile_version,
+            count=count,
+            target_audience=target_audience,
+        )
+
+        boards: List[ConceptBoard] = []
+        for hypo in hypotheses:
+            self._hypotheses[hypo.hypothesis_id] = hypo
+            ranking_eval = self.ranking.evaluate_hypothesis(
+                hypothesis=hypo,
+                profile_version=profile_version,
+                weights_override=weights_override,
+            )
+            board = self.board_gen.generate_board(
+                hypothesis=hypo,
+                ranking=ranking_eval,
+                profile_version=profile_version,
+            )
+            self.decisions.register_board(board)
+            boards.append(board)
+
         # Sort boards by composite ranking score descending
         boards.sort(key=lambda b: b.ranking.composite_score, reverse=True)
         return boards

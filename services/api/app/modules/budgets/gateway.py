@@ -236,16 +236,160 @@ class ModelGateway:
 
     async def _call_provider(self, model_id: str, request: ModelGatewayRequest) -> Dict[str, Any]:
         """
-        Executes request via LiteLLM or realistic deterministic mock.
+        Executes request via live LLM provider (OpenAI, Anthropic, Gemini, or LiteLLM proxy),
+        or falls back to a deterministic baseline when API keys are not provided.
         """
-        # If API key is available or litellm completion is requested:
-        # In testing and local dev without external keys, produce deterministic structured output
-        prompt_snippet = request.messages[-1].get("content", "")[:30]
+        import os
+        import httpx
+
+        openai_key = os.getenv("OPENAI_API_KEY", "").strip()
+        anthropic_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
+        gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+        openai_base = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
+        timeout_sec = 45.0
+
+        # --- 1. OpenAI or OpenAI-Compatible Gateway ---
+        if openai_key and (model_id.startswith("gpt") or not (anthropic_key or gemini_key)):
+            try:
+                target_model = "gpt-4o" if "4o" in model_id else ("gpt-4-turbo" if "turbo" in model_id else "gpt-4o-mini")
+                logger.info("Dispatching live request to OpenAI API (%s) for model '%s'...", openai_base, target_model)
+                async with httpx.AsyncClient(timeout=timeout_sec) as client:
+                    resp = await client.post(
+                        f"{openai_base}/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {openai_key}",
+                            "Content-Type": "application/json",
+                        },
+                        json={
+                            "model": target_model,
+                            "messages": request.messages,
+                            "temperature": request.temperature,
+                            "max_tokens": request.max_tokens,
+                        },
+                    )
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        content = data["choices"][0]["message"]["content"] or ""
+                        usage = data.get("usage", {})
+                        cached_tokens = usage.get("prompt_tokens_details", {}).get("cached_tokens", 0)
+                        return {
+                            "content": content,
+                            "usage": {
+                                "prompt_tokens": usage.get("prompt_tokens", 0),
+                                "completion_tokens": usage.get("completion_tokens", 0),
+                                "cached_tokens": cached_tokens,
+                            },
+                        }
+                    else:
+                        logger.warning("OpenAI API returned status %d: %s", resp.status_code, resp.text)
+            except Exception as exc:
+                logger.warning("Live OpenAI call failed (%s). Checking next provider.", exc)
+
+        # --- 2. Anthropic Claude Messages API ---
+        if anthropic_key and (model_id.startswith("claude") or not openai_key):
+            try:
+                claude_model = "claude-3-5-sonnet-20241022" if "3-5" in model_id or "sonnet" in model_id else "claude-3-haiku-20240307"
+                logger.info("Dispatching live request to Anthropic API for model '%s'...", claude_model)
+                system_prompt = ""
+                chat_messages = []
+                for msg in request.messages:
+                    if msg.get("role") == "system":
+                        system_prompt += msg.get("content", "") + "\n"
+                    else:
+                        chat_messages.append({"role": msg.get("role", "user"), "content": msg.get("content", "")})
+
+                async with httpx.AsyncClient(timeout=timeout_sec) as client:
+                    req_body: Dict[str, Any] = {
+                        "model": claude_model,
+                        "messages": chat_messages or [{"role": "user", "content": "Hello"}],
+                        "max_tokens": request.max_tokens,
+                        "temperature": request.temperature,
+                    }
+                    if system_prompt.strip():
+                        req_body["system"] = system_prompt.strip()
+
+                    resp = await client.post(
+                        "https://api.anthropic.com/v1/messages",
+                        headers={
+                            "x-api-key": anthropic_key,
+                            "anthropic-version": "2023-06-01",
+                            "Content-Type": "application/json",
+                        },
+                        json=req_body,
+                    )
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        content_blocks = data.get("content", [])
+                        content = "".join([b.get("text", "") for b in content_blocks if b.get("type") == "text"])
+                        usage = data.get("usage", {})
+                        cached_tokens = usage.get("cache_read_input_tokens", 0)
+                        return {
+                            "content": content,
+                            "usage": {
+                                "prompt_tokens": usage.get("input_tokens", 0),
+                                "completion_tokens": usage.get("output_tokens", 0),
+                                "cached_tokens": cached_tokens,
+                            },
+                        }
+                    else:
+                        logger.warning("Anthropic API returned status %d: %s", resp.status_code, resp.text)
+            except Exception as exc:
+                logger.warning("Live Anthropic call failed (%s). Checking next provider.", exc)
+
+        # --- 3. Google Gemini API ---
+        if gemini_key:
+            try:
+                gemini_model = "gemini-1.5-pro" if "pro" in model_id else "gemini-1.5-flash"
+                logger.info("Dispatching live request to Google Gemini API for model '%s'...", gemini_model)
+                prompt_text = "\n\n".join([f"{m.get('role', 'user')}: {m.get('content', '')}" for m in request.messages])
+                async with httpx.AsyncClient(timeout=timeout_sec) as client:
+                    resp = await client.post(
+                        f"https://generativelanguage.googleapis.com/v1beta/models/{gemini_model}:generateContent?key={gemini_key}",
+                        headers={"Content-Type": "application/json"},
+                        json={
+                            "contents": [{"parts": [{"text": prompt_text}]}],
+                            "generationConfig": {
+                                "temperature": request.temperature,
+                                "maxOutputTokens": request.max_tokens,
+                            },
+                        },
+                    )
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        candidates = data.get("candidates", [])
+                        content = ""
+                        if candidates and "content" in candidates[0]:
+                            parts = candidates[0]["content"].get("parts", [])
+                            content = "".join([p.get("text", "") for p in parts])
+                        usage_meta = data.get("usageMetadata", {})
+                        return {
+                            "content": content,
+                            "usage": {
+                                "prompt_tokens": usage_meta.get("promptTokenCount", 0),
+                                "completion_tokens": usage_meta.get("candidatesTokenCount", 0),
+                                "cached_tokens": usage_meta.get("cachedContentTokenCount", 0),
+                            },
+                        }
+                    else:
+                        logger.warning("Gemini API returned status %d: %s", resp.status_code, resp.text)
+            except Exception as exc:
+                logger.warning("Live Gemini call failed (%s). Falling back.", exc)
+
+        # --- 4. Fallback baseline when no external keys are configured ---
+        prompt_snippet = request.messages[-1].get("content", "")[:35].strip()
+        logger.info(
+            "No active API keys configured (OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY). "
+            "Returning structured baseline response for prompt snippet: '%s'",
+            prompt_snippet,
+        )
         return {
-            "content": f"CreativeForge AI generated response for: '{prompt_snippet}'",
+            "content": (
+                f"[SIMULATED BASELINE - Set OPENAI_API_KEY, ANTHROPIC_API_KEY, or GEMINI_API_KEY in .env to activate live model]\n"
+                f"Autonomous Creative Synthesis for: '{prompt_snippet}'"
+            ),
             "usage": {
                 "prompt_tokens": 450,
                 "completion_tokens": 120,
-                "cached_tokens": 150,  # Demonstrates cached token reporting
+                "cached_tokens": 150,
             },
         }

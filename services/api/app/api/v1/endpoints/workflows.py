@@ -28,15 +28,16 @@ _WORKFLOW_VERSIONS: Dict[str, Dict[str, Any]] = {
         "is_published": True,
         "graph_json": {
             "nodes": [
-                {"id": "node_1", "type": "Creative Brief"},
-                {"id": "node_2", "type": "Image Generator"},
-                {"id": "node_3", "type": "Visual QA"},
-                {"id": "node_4", "type": "Quality Gate"},
+                {"id": "node_fetch", "type": "Source Fetch"},
+                {"id": "node_genre", "type": "Genre Classifier"},
+                {"id": "node_pattern", "type": "Ad Pattern Extract"},
+                {"id": "node_synthesis", "type": "Trend Synthesis"},
             ],
             "edges": [
-                {"source": "node_1", "target": "node_2"},
-                {"source": "node_2", "target": "node_3"},
-                {"source": "node_3", "target": "node_4"},
+                {"source": "node_fetch", "target": "node_genre", "source_handle": "snapshot", "target_handle": "snapshot"},
+                {"source": "node_fetch", "target": "node_pattern", "source_handle": "snapshot", "target_handle": "creative_evidence"},
+                {"source": "node_genre", "target": "node_synthesis", "source_handle": "genre_report", "target_handle": "genre_report"},
+                {"source": "node_pattern", "target": "node_synthesis", "source_handle": "pattern_report", "target_handle": "pattern_report"},
             ],
         },
         "sha256": "8a329fa5a932bce26fec918da294c79c5cbb702e53ef711b6ff7b7f14b62fef9",

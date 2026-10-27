@@ -33,6 +33,8 @@ export default function AnalyticsDashboardPage() {
       change: '+4.2%',
       positive: true,
       icon: TrendingUp,
+      color: 'text-apple-emerald',
+      bg: 'bg-apple-emerald/10',
     },
     {
       title: 'Node Retry Rate',
@@ -41,6 +43,8 @@ export default function AnalyticsDashboardPage() {
       change: '-1.8%',
       positive: true,
       icon: RotateCcw,
+      color: 'text-apple-amber',
+      bg: 'bg-apple-amber/10',
     },
     {
       title: 'Cost / Approved Asset',
@@ -49,6 +53,8 @@ export default function AnalyticsDashboardPage() {
       change: '-12%',
       positive: true,
       icon: DollarSign,
+      color: 'text-apple-teal',
+      bg: 'bg-apple-teal/10',
     },
     {
       title: 'Tokens Ingested',
@@ -57,6 +63,8 @@ export default function AnalyticsDashboardPage() {
       change: 'No double-billing',
       positive: true,
       icon: Zap,
+      color: 'text-apple-blue',
+      bg: 'bg-apple-blue/10',
     },
     {
       title: 'Unpriced Call Ratio',
@@ -65,6 +73,8 @@ export default function AnalyticsDashboardPage() {
       change: 'Safe Accounting',
       positive: true,
       icon: AlertTriangle,
+      color: 'text-apple-red',
+      bg: 'bg-apple-red/10',
     },
     {
       title: 'Latency P50 / P95',
@@ -73,16 +83,18 @@ export default function AnalyticsDashboardPage() {
       change: 'Steady',
       positive: true,
       icon: Clock,
+      color: 'text-apple-purple',
+      bg: 'bg-apple-purple/10',
     },
   ];
 
   // Provider breakdown data
   const providerData = [
-    { provider: 'OpenAI (GPT-4o)', cost: 18.42, tokens: '640k', share: 42, color: 'bg-cyan-400' },
-    { provider: 'Anthropic (Claude 3.5)', cost: 12.80, tokens: '380k', share: 29, color: 'bg-purple-400' },
-    { provider: 'ComfyUI (SDXL / FLUX)', cost: 6.50, tokens: '0 (Media)', share: 15, color: 'bg-amber-400' },
-    { provider: 'Remotion SSR (Video)', cost: 4.85, tokens: '0 (Compute)', share: 11, color: 'bg-emerald-400' },
-    { provider: 'Unpriced / Quota Quotes', cost: 'unknown' as const, tokens: '28k', share: 3, color: 'bg-rose-400' },
+    { provider: 'OpenAI (GPT-4o)', cost: 18.42, tokens: '640k', share: 42, color: 'bg-apple-blue' },
+    { provider: 'Anthropic (Claude 3.5)', cost: 12.80, tokens: '380k', share: 29, color: 'bg-apple-purple' },
+    { provider: 'ComfyUI (SDXL / FLUX)', cost: 6.50, tokens: '0 (Media)', share: 15, color: 'bg-apple-amber' },
+    { provider: 'Remotion SSR (Video)', cost: 4.85, tokens: '0 (Compute)', share: 11, color: 'bg-apple-emerald' },
+    { provider: 'Unpriced / Quota Quotes', cost: 'unknown' as const, tokens: '28k', share: 3, color: 'bg-apple-red' },
   ];
 
   // QA Gate pass breakdown data
@@ -101,27 +113,26 @@ export default function AnalyticsDashboardPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/60 text-cyan-300 text-xs font-mono mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-apple-teal/10 border border-apple-teal/20 text-apple-teal text-xs font-medium mb-3">
             <BarChart3 className="w-3.5 h-3.5" />
-            <span>M12 — Production Analytics & Cost Ledger</span>
+            <span>M12 · Production Analytics & Ledger Metrics</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Analytics & Model Performance Dashboard</h1>
-          <p className="text-slate-400 text-xs mt-1">
+          <h1 className="text-2xl font-semibold tracking-tight text-neutral-100">
+            Analytics & Model Performance Dashboard
+          </h1>
+          <p className="text-neutral-400 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
             Real operational metrics calculated from PostgreSQL rollups. Strict double-count protection, cached token separation, and explicit unknown cost badges.
           </p>
         </div>
 
         {/* Filter bar */}
-        <div className="flex items-center gap-2 text-xs font-mono">
-          <div className="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-0.5">
+        <div className="flex items-center gap-3">
+          <div className="apple-segmented">
             {['24h', '7d', '30d', 'Quarter'].map((r) => (
               <button
                 key={r}
                 onClick={() => setTimeRange(r)}
-                className={cn(
-                  'px-3 py-1 rounded-md transition-colors',
-                  timeRange === r ? 'bg-cyan-500/20 text-cyan-300 font-semibold' : 'text-slate-400 hover:text-slate-200'
-                )}
+                className={cn('apple-segmented-item text-xs', timeRange === r && 'active')}
               >
                 {r}
               </button>
@@ -147,9 +158,9 @@ export default function AnalyticsDashboardPage() {
               URL.revokeObjectURL(url);
               toast.success('Rapor İndirildi', 'Analitik KPI ve sağlayıcı dökümü CSV formatında dışa aktarıldı.');
             }}
-            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition-colors"
+            className="apple-btn-secondary flex items-center gap-2 py-2 px-3.5 text-xs"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-3.5 h-3.5 text-neutral-400" />
             <span>Export Report</span>
           </button>
         </div>
@@ -160,14 +171,21 @@ export default function AnalyticsDashboardPage() {
         {kpis.map((kpi, idx) => {
           const Icon = kpi.icon;
           return (
-            <div key={idx} className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2">
-              <div className="flex items-center justify-between text-slate-400 text-xs">
-                <span className="truncate pr-1">{kpi.title}</span>
-                <Icon className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" />
+            <div
+              key={idx}
+              className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl shadow-apple-sm space-y-2 hover:border-white/[0.14] transition-all"
+            >
+              <div className="flex items-center justify-between text-neutral-400 text-xs">
+                <span className="truncate pr-1 font-medium">{kpi.title}</span>
+                <div className={`p-1.5 rounded-lg ${kpi.bg}`}>
+                  <Icon className={`w-3.5 h-3.5 ${kpi.color} flex-shrink-0`} />
+                </div>
               </div>
-              <div className="text-xl font-bold font-mono text-slate-100">{kpi.value}</div>
-              <div className="text-[10px] font-mono text-slate-500 truncate">{kpi.sub}</div>
-              <div className="text-[10px] font-mono text-cyan-400">{kpi.change}</div>
+              <div className="text-xl font-semibold text-neutral-100 font-sans tracking-tight">
+                {kpi.value}
+              </div>
+              <div className="text-[11px] font-mono text-neutral-500 truncate">{kpi.sub}</div>
+              <div className="text-[11px] font-mono font-medium text-apple-emerald">{kpi.change}</div>
             </div>
           );
         })}
@@ -176,17 +194,17 @@ export default function AnalyticsDashboardPage() {
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Chart 1: Provider & Model Cost Breakdown */}
-        <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+        <div className="p-6 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl shadow-apple-sm space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300 font-mono flex items-center gap-2">
-              <Cpu className="w-4 h-4 text-cyan-400" />
+            <h2 className="text-sm font-semibold tracking-tight text-neutral-200 flex items-center gap-2">
+              <Cpu className="w-4 h-4 text-apple-blue" />
               Cost Breakdown by Provider & Worker
             </h2>
-            <span className="text-xs font-mono text-slate-400">Total: $42.85 USD</span>
+            <span className="text-xs font-mono text-neutral-400 font-medium">Total: $42.85 USD</span>
           </div>
 
           {/* Visual Bar Distribution */}
-          <div className="h-4 w-full rounded-full bg-slate-950 flex overflow-hidden p-0.5 border border-slate-800">
+          <div className="h-3 w-full rounded-full bg-white/[0.04] flex overflow-hidden p-0.5 border border-white/[0.06]">
             {providerData.map((p, i) => (
               <div
                 key={i}
@@ -198,18 +216,18 @@ export default function AnalyticsDashboardPage() {
           </div>
 
           {/* Legend Table */}
-          <div className="space-y-2 pt-2 divide-y divide-slate-800/60 text-xs font-mono">
+          <div className="space-y-2.5 pt-2 divide-y divide-white/[0.04] text-xs font-mono">
             {providerData.map((p, i) => (
               <div key={i} className="pt-2 flex items-center justify-between">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <span className={cn('w-2.5 h-2.5 rounded-full', p.color)} />
-                  <span className="text-slate-300">{p.provider}</span>
+                  <span className="text-neutral-300 font-sans">{p.provider}</span>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="text-slate-500 text-[11px]">{p.tokens}</span>
-                  <span className="text-slate-200 font-semibold w-20 text-right">
+                  <span className="text-neutral-500 text-[11px]">{p.tokens}</span>
+                  <span className="text-neutral-200 font-semibold w-20 text-right">
                     {p.cost === 'unknown' ? (
-                      <span className="text-amber-400 px-1.5 py-0.2 rounded bg-amber-950/60 border border-amber-800/40 text-[10px]">
+                      <span className="text-apple-amber px-2 py-0.5 rounded-full bg-apple-amber/10 border border-apple-amber/20 text-[10px]">
                         unknown
                       </span>
                     ) : (
@@ -223,32 +241,32 @@ export default function AnalyticsDashboardPage() {
         </div>
 
         {/* Chart 2: 7 Quality Gates Pass / Warning / Failure Rate */}
-        <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+        <div className="p-6 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl shadow-apple-sm space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300 font-mono flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <h2 className="text-sm font-semibold tracking-tight text-neutral-200 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-apple-emerald" />
               Quality Gates Pipeline Pass Rates
             </h2>
-            <span className="text-xs font-mono text-emerald-400">Overall: 94.2%</span>
+            <span className="text-xs font-mono text-apple-emerald font-semibold">Overall: 94.2%</span>
           </div>
 
           <div className="space-y-3 font-mono text-xs">
             {qaGatesData.map((gate, i) => (
-              <div key={i} className="space-y-1">
+              <div key={i} className="space-y-1.5">
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-300">{gate.gate}</span>
-                  <div className="flex items-center gap-2 text-[10px]">
-                    <span className="text-emerald-400">{gate.pass}% pass</span>
-                    {gate.warn > 0 && <span className="text-amber-400">{gate.warn}% warn</span>}
-                    {gate.fail > 0 && <span className="text-rose-400">{gate.fail}% fail</span>}
+                  <span className="text-neutral-300 font-sans">{gate.gate}</span>
+                  <div className="flex items-center gap-2.5 text-[10px]">
+                    <span className="text-apple-emerald font-medium">{gate.pass}% pass</span>
+                    {gate.warn > 0 && <span className="text-apple-amber font-medium">{gate.warn}% warn</span>}
+                    {gate.fail > 0 && <span className="text-apple-red font-medium">{gate.fail}% fail</span>}
                   </div>
                 </div>
 
                 {/* Stacked Progress Bar */}
-                <div className="h-2 w-full rounded-full bg-slate-950 flex overflow-hidden border border-slate-800/80">
-                  <div className="h-full bg-emerald-500" style={{ width: `${gate.pass}%` }} />
-                  <div className="h-full bg-amber-400" style={{ width: `${gate.warn}%` }} />
-                  <div className="h-full bg-rose-500" style={{ width: `${gate.fail}%` }} />
+                <div className="h-2 w-full rounded-full bg-white/[0.04] flex overflow-hidden border border-white/[0.06]">
+                  <div className="h-full bg-apple-emerald" style={{ width: `${gate.pass}%` }} />
+                  <div className="h-full bg-apple-amber" style={{ width: `${gate.warn}%` }} />
+                  <div className="h-full bg-apple-red" style={{ width: `${gate.fail}%` }} />
                 </div>
               </div>
             ))}

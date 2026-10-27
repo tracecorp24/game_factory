@@ -11,6 +11,7 @@ import {
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
+  Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
@@ -83,7 +84,6 @@ export default function ExperimentsPage() {
     toast.success('A/B Deneyi Oluşturuldu', 'Tek değişkenli mutasyon deneyi başarıyla oluşturuldu ve varyant matrisine eklendi.');
   };
 
-  // Zero-safe metric calculators per Master Plan M03
   const calcCTR = (clicks: number, impressions: number): string => {
     if (!impressions || impressions === 0) return '—';
     return `${((clicks / impressions) * 100).toFixed(2)}%`;
@@ -108,36 +108,44 @@ export default function ExperimentsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-950/60 border border-blue-800/60 text-blue-300 text-xs font-mono mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-apple-purple/10 border border-apple-purple/20 text-apple-purple text-xs font-medium mb-3">
             <FlaskConical className="w-3.5 h-3.5" />
-            <span>M03 — A/B Experimentation & Learning Loop</span>
+            <span>M03 · A/B Experimentation & Learning Loop</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Creative Experiments & Variant Matrix</h1>
-          <p className="text-slate-400 text-xs mt-1">
-            Single-variable mutation testing. Rigorously separates synthetic offline QA tests from real ad network campaign performance metrics.
+          <h1 className="text-2xl font-semibold tracking-tight text-neutral-100">
+            Creative Experiments & Variant Matrix
+          </h1>
+          <p className="text-neutral-400 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+            Single-variable mutation testing. Rigorously isolates synthetic offline QA evaluations from real ad network campaign attribution metrics.
           </p>
         </div>
 
         {/* Action & Filter */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center bg-slate-900 border border-slate-800 p-0.5 rounded-lg text-xs font-mono">
-            {['all', 'real_campaign', 'offline'].map((m) => (
-              <button
-                key={m}
-                onClick={() => setFilterMode(m as any)}
-                className={cn(
-                  'px-3 py-1 rounded-md transition-colors',
-                  filterMode === m ? 'bg-cyan-500/20 text-cyan-300 font-semibold' : 'text-slate-400 hover:text-slate-200'
-                )}
-              >
-                {m === 'all' ? 'All' : m === 'real_campaign' ? 'Real Campaigns' : 'Offline QA'}
-              </button>
-            ))}
+        <div className="flex items-center gap-3">
+          <div className="apple-segmented">
+            <button
+              onClick={() => setFilterMode('all')}
+              className={cn('apple-segmented-item text-xs', filterMode === 'all' && 'active')}
+            >
+              All Variants
+            </button>
+            <button
+              onClick={() => setFilterMode('real_campaign')}
+              className={cn('apple-segmented-item text-xs', filterMode === 'real_campaign' && 'active')}
+            >
+              Real Campaigns
+            </button>
+            <button
+              onClick={() => setFilterMode('offline')}
+              className={cn('apple-segmented-item text-xs', filterMode === 'offline' && 'active')}
+            >
+              Offline QA
+            </button>
           </div>
 
           <button
             onClick={handleCreateExperiment}
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-medium text-xs flex items-center gap-1.5 transition-all shadow-md hover:shadow-cyan-500/20"
+            className="apple-btn-primary flex items-center gap-2 py-2 px-4 shadow-apple-sm text-xs"
           >
             <Plus className="w-4 h-4" />
             <span>Create Experiment</span>
@@ -148,66 +156,81 @@ export default function ExperimentsPage() {
       {/* Experiments List */}
       <div className="space-y-6">
         {filtered.map((exp) => (
-          <div key={exp.id} className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-4">
+          <div
+            key={exp.id}
+            className="p-6 rounded-3xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl shadow-apple-sm space-y-5"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-4">
               <div>
                 <div className="flex items-center gap-2.5">
-                  <h3 className="font-bold text-base text-slate-100">{exp.title}</h3>
-                  <span className={cn(
-                    'text-[10px] font-mono px-2 py-0.5 rounded border',
-                    exp.mode === 'real_campaign'
-                      ? 'bg-emerald-950 text-emerald-300 border-emerald-800/60'
-                      : 'bg-purple-950 text-purple-300 border-purple-800/60'
-                  )}>
-                    {exp.mode === 'real_campaign' ? 'Real Campaign (CSV Ingested)' : 'Synthetic Offline QA'}
+                  <h3 className="font-semibold text-base text-neutral-100">{exp.title}</h3>
+                  <span
+                    className={cn(
+                      'text-[11px] font-medium px-2.5 py-0.5 rounded-full border',
+                      exp.mode === 'real_campaign'
+                        ? 'bg-apple-emerald/10 text-apple-emerald border-apple-emerald/20'
+                        : 'bg-apple-purple/10 text-apple-purple border-apple-purple/20'
+                    )}
+                  >
+                    {exp.mode === 'real_campaign' ? 'Real Campaign (Attribution Ingested)' : 'Synthetic Offline QA'}
                   </span>
                 </div>
-                <div className="text-xs text-slate-400 mt-1 font-mono">
-                  Controlled Variable: <span className="text-cyan-300">{exp.variable}</span>
+                <div className="text-xs text-neutral-400 mt-1 font-mono">
+                  Controlled Variable: <span className="text-apple-blue font-medium">{exp.variable}</span>
                 </div>
               </div>
 
-              <div className="text-right">
-                <span className="text-[10px] uppercase font-mono text-slate-500">Leading Variant:</span>
-                <div className="text-xs font-mono font-bold text-emerald-400 mt-0.5">{exp.winner}</div>
+              <div className="sm:text-right">
+                <span className="text-[10px] uppercase font-semibold text-neutral-500 tracking-wider">Leading Variant</span>
+                <div className="text-xs font-mono font-semibold text-apple-emerald mt-0.5">{exp.winner}</div>
               </div>
             </div>
 
             {/* Variant Comparison Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {exp.variants.map((v, i) => (
-                <div key={i} className="p-4 rounded-xl bg-slate-950 border border-slate-800/80 space-y-3">
-                  <div className="font-bold text-xs text-slate-200">{v.name}</div>
+                <div
+                  key={i}
+                  className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-3 hover:border-white/[0.12] transition-colors"
+                >
+                  <div className="font-semibold text-xs text-neutral-200 flex items-center justify-between">
+                    <span>{v.name}</span>
+                    {v.syntheticScore && (
+                      <span className="text-xs text-apple-purple font-mono font-medium">
+                        Score: {v.syntheticScore} / 5.0
+                      </span>
+                    )}
+                  </div>
 
                   {exp.mode === 'real_campaign' ? (
                     <div className="grid grid-cols-3 gap-2 font-mono text-xs">
-                      <div className="p-2 rounded bg-slate-900 text-center">
-                        <div className="text-[10px] text-slate-500">CTR</div>
-                        <div className="text-slate-200 font-semibold mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.04] text-center">
+                        <div className="text-[10px] text-neutral-500 uppercase tracking-wide">CTR</div>
+                        <div className="text-neutral-100 font-semibold mt-1">
                           {calcCTR(v.clicks, v.impressions)}
                         </div>
                       </div>
-                      <div className="p-2 rounded bg-slate-900 text-center">
-                        <div className="text-[10px] text-slate-500">CPI</div>
-                        <div className="text-emerald-400 font-semibold mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.04] text-center">
+                        <div className="text-[10px] text-neutral-500 uppercase tracking-wide">CPI</div>
+                        <div className="text-apple-emerald font-semibold mt-1">
                           {calcCPI(v.spend, v.installs)}
                         </div>
                       </div>
-                      <div className="p-2 rounded bg-slate-900 text-center">
-                        <div className="text-[10px] text-slate-500">IPM</div>
-                        <div className="text-cyan-300 font-semibold mt-0.5">
+                      <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.04] text-center">
+                        <div className="text-[10px] text-neutral-500 uppercase tracking-wide">IPM</div>
+                        <div className="text-apple-blue font-semibold mt-1">
                           {calcIPM(v.installs, v.impressions)}
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <div className="p-3 rounded bg-slate-900 font-mono text-xs text-center space-y-1">
-                      <div className="text-[10px] text-slate-400">LLM Rubric Score (0-5)</div>
-                      <div className="text-lg font-bold text-purple-300">{v.syntheticScore} / 5.0</div>
+                    <div className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.04] font-mono text-xs text-center space-y-1">
+                      <div className="text-[10px] text-neutral-400 uppercase tracking-wider">Multi-Agent Rubric Score</div>
+                      <div className="text-xl font-bold text-apple-purple">{v.syntheticScore} / 5.0</div>
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1">
+                  <div className="flex items-center justify-between text-[11px] font-mono text-neutral-500 pt-1 border-t border-white/[0.04]">
                     <span>Impressions: {v.impressions.toLocaleString()}</span>
                     <span>Spend: ${v.spend.toFixed(1)}</span>
                   </div>

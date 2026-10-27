@@ -12,6 +12,9 @@ import {
   Info,
   CheckCircle2,
   Power,
+  ChevronRight,
+  Wifi,
+  WifiOff,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
@@ -45,92 +48,90 @@ export function Header() {
   const spentPercent = Math.min(100, Math.round((budgetSpent / budgetApproved) * 100));
 
   return (
-    <header className="h-16 border-b border-slate-800 bg-[#070b14]/90 backdrop-blur-md px-6 flex items-center justify-between z-20">
-      {/* Left: Context Breadcrumb */}
+    <header className="h-14 border-b border-white/[0.06] bg-[#0c101a]/80 backdrop-blur-2xl px-5 flex items-center justify-between z-20 select-none">
+      {/* Left: Apple Style Path Breadcrumb */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2 text-xs font-mono">
-          <span className="text-slate-400">org_creativeforge</span>
-          <span className="text-slate-600">/</span>
-          <span className="text-slate-300 font-semibold">{projectId}</span>
-          <span className="text-slate-600">/</span>
-          <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 text-[11px] border border-slate-700">
+        <div className="flex items-center gap-1.5 text-xs">
+          <span className="text-neutral-400 font-medium tracking-tight">CreativeForge</span>
+          <ChevronRight className="w-3.5 h-3.5 text-neutral-600" />
+          <span className="text-neutral-200 font-semibold tracking-tight">{projectId}</span>
+          <ChevronRight className="w-3.5 h-3.5 text-neutral-600" />
+          <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-neutral-300 text-[11px] font-mono border border-white/[0.08]">
             {campaignId}
           </span>
         </div>
 
-        {/* Simulation Demo Banner */}
+        {/* Simulation Demo Indicator */}
         {isDemoSimulation && (
-          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-[11px] font-mono text-cyan-300 shadow-sm shadow-cyan-500/20">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="font-semibold tracking-wider">SIMULATION DEMO STREAM</span>
-            <span className="text-cyan-500 font-light">| run_88</span>
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-apple-blue/10 border border-apple-blue/25 text-[11px] font-medium text-apple-teal">
+            <span className="w-1.5 h-1.5 rounded-full bg-apple-teal animate-pulse" />
+            <span className="tracking-wide">Simulation Stream</span>
+            <span className="text-apple-teal/60 font-mono text-[10px]">run_88</span>
           </div>
         )}
       </div>
 
-      {/* Right: Telemetry, Budget, Theme, Motion */}
-      <div className="flex items-center gap-4">
-        {/* Budget Guard Meter */}
-        <div className="hidden md:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
-          <div className="flex items-center gap-1.5 text-xs">
-            <DollarSign className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-slate-400 font-mono text-[11px]">Budget:</span>
-            <span className="font-mono font-semibold text-slate-200">
+      {/* Right: Telemetry, Budget, Theme & Controls */}
+      <div className="flex items-center gap-3">
+        {/* Budget Meter Pill */}
+        <div className="hidden md:flex items-center gap-2.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.07] text-xs">
+          <div className="flex items-center gap-1.5">
+            <DollarSign className="w-3.5 h-3.5 text-apple-amber" />
+            <span className="text-neutral-400 text-[11px]">Budget:</span>
+            <span className="font-mono font-semibold text-neutral-100">
               ${budgetSpent.toFixed(2)}
             </span>
-            <span className="text-slate-500 text-[11px]">/ ${budgetApproved.toFixed(0)}</span>
+            <span className="text-neutral-500 text-[11px]">/ ${budgetApproved.toFixed(0)}</span>
           </div>
-          <div className="w-16 h-1.5 rounded-full bg-slate-800 overflow-hidden">
+          <div className="w-14 h-1.5 rounded-full bg-neutral-800/80 overflow-hidden">
             <div
               className={cn(
-                'h-full rounded-full transition-all',
-                spentPercent > 80 ? 'bg-rose-500' : 'bg-cyan-400'
+                'h-full rounded-full transition-all duration-500',
+                spentPercent > 80 ? 'bg-apple-red' : 'bg-apple-blue'
               )}
               style={{ width: `${spentPercent}%` }}
             />
           </div>
         </div>
 
-        {/* SSE Connection Health */}
-        <div className="flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded bg-slate-900 border border-slate-800">
-          <span
-            className={cn(
-              'w-2 h-2 rounded-full',
-              isLiveConnected ? 'bg-emerald-400 shadow-sm shadow-emerald-400 animate-pulse' : 'bg-rose-400'
-            )}
-          />
-          <span className="text-slate-400 text-[11px]">
-            {isLiveConnected ? 'SSE Live' : 'Disconnected'}
+        {/* SSE Connection Health Status */}
+        <div className="flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.07]">
+          {isLiveConnected ? (
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-apple-emerald opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-apple-emerald" />
+            </span>
+          ) : (
+            <span className="inline-flex rounded-full h-2 w-2 bg-apple-red" />
+          )}
+          <span className="text-neutral-400 text-[11px] font-mono">
+            {isLiveConnected ? 'Live Telemetry' : 'Offline'}
           </span>
         </div>
 
-        {/* Theme Switcher: Operations vs Neon */}
-        <div className="flex items-center rounded-lg bg-slate-900 p-0.5 border border-slate-800">
+        {/* Apple Segmented Theme Switcher */}
+        <div className="apple-segmented">
           <button
             onClick={() => setObservatoryTheme('neon')}
             className={cn(
-              'px-2.5 py-1 text-xs rounded-md font-medium transition-all flex items-center gap-1.5',
-              observatoryTheme === 'neon'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm shadow-cyan-500/30'
-                : 'text-slate-400 hover:text-slate-200'
+              'apple-segmented-item flex items-center gap-1.5',
+              observatoryTheme === 'neon' && 'apple-segmented-item-active'
             )}
-            title="Cyber Neon Mode (Visual & Presentation)"
+            title="Sleek Dark Theme"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span className="text-[11px]">Neon</span>
+            <Sparkles className="w-3 h-3" />
+            <span>Studio</span>
           </button>
           <button
             onClick={() => setObservatoryTheme('operations')}
             className={cn(
-              'px-2.5 py-1 text-xs rounded-md font-medium transition-all flex items-center gap-1.5',
-              observatoryTheme === 'operations'
-                ? 'bg-slate-800 text-slate-100 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+              'apple-segmented-item flex items-center gap-1.5',
+              observatoryTheme === 'operations' && 'apple-segmented-item-active'
             )}
             title="Clean Operations Mode"
           >
-            <Gauge className="w-3.5 h-3.5" />
-            <span className="text-[11px]">Operations</span>
+            <Gauge className="w-3 h-3" />
+            <span>Operations</span>
           </button>
         </div>
 
@@ -138,15 +139,15 @@ export function Header() {
         <button
           onClick={() => setReducedMotion(!reducedMotion)}
           className={cn(
-            'p-1.5 rounded-lg border text-xs transition-all flex items-center gap-1',
+            'px-2.5 py-1 rounded-lg border text-xs transition-all flex items-center gap-1.5',
             reducedMotion
-              ? 'bg-purple-950/80 border-purple-500/60 text-purple-300'
-              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+              ? 'bg-apple-purple/15 border-apple-purple/40 text-apple-purple'
+              : 'bg-white/[0.04] border-white/[0.07] text-neutral-400 hover:text-neutral-200 hover:bg-white/[0.08]'
           )}
           title={reducedMotion ? 'Reduced Motion: ON' : 'Reduced Motion: OFF'}
         >
-          <Activity className="w-4 h-4" />
-          <span className="text-[10px] font-mono hidden sm:inline">
+          <Activity className="w-3.5 h-3.5" />
+          <span className="text-[11px] hidden sm:inline">
             {reducedMotion ? 'Static' : 'Motion'}
           </span>
         </button>
@@ -156,15 +157,15 @@ export function Header() {
           onClick={handleShutdownServer}
           disabled={isShuttingDown}
           className={cn(
-            'p-1.5 rounded-lg border text-xs transition-all flex items-center gap-1',
+            'p-1.5 rounded-lg border text-xs transition-all flex items-center gap-1.5',
             isShuttingDown
-              ? 'bg-rose-950 text-rose-400 border-rose-800 opacity-60'
-              : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-rose-400 hover:border-rose-900/80'
+              ? 'bg-apple-red/20 text-apple-red border-apple-red/40 opacity-60'
+              : 'bg-white/[0.04] border-white/[0.07] text-neutral-400 hover:text-apple-red hover:bg-apple-red/10 hover:border-apple-red/30'
           )}
           title="Sunucuyu ve CMD Sürecini Kapat (Clean Shutdown)"
         >
-          <Power className="w-4 h-4 text-rose-500" />
-          <span className="text-[10px] font-mono hidden lg:inline text-rose-400">
+          <Power className="w-3.5 h-3.5 text-apple-red" />
+          <span className="text-[11px] hidden lg:inline text-neutral-300">
             {isShuttingDown ? 'Kapanıyor...' : 'Kapat'}
           </span>
         </button>

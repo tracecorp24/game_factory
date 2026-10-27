@@ -98,12 +98,12 @@ export default function QualityCenterPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 text-xs font-mono mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-apple-emerald/10 border border-apple-emerald/25 text-apple-emerald text-xs font-medium mb-3">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>M07 — 7-Layer Multi-Stage Quality & Originality Gates</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">Quality Center & Governance Gates</h1>
-          <p className="text-slate-400 text-xs mt-1">
+          <h1 className="text-2xl font-semibold tracking-tight text-neutral-100">Quality Center & Governance Gates</h1>
+          <p className="text-neutral-400 text-xs mt-1 leading-relaxed">
             End-to-end multi-layer evaluation pipeline. Unifies schema validation, Playwright browser testing, game truth compliance, and reasoned human oversight.
           </p>
         </div>
@@ -111,64 +111,64 @@ export default function QualityCenterPage() {
 
       {/* Human Review Escalation Queue Banner */}
       <div className={cn(
-        'p-6 rounded-2xl border transition-all duration-300 space-y-4',
+        'p-6 rounded-3xl border transition-all duration-300 space-y-4 backdrop-blur-2xl shadow-apple-md',
         pendingReviewed
-          ? 'bg-emerald-950/20 border-emerald-800/50'
-          : 'bg-amber-950/25 border-amber-800/60 shadow-xl shadow-amber-500/10'
+          ? 'bg-apple-emerald/5 border-apple-emerald/25'
+          : 'bg-apple-amber/5 border-apple-amber/30'
       )}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <UserCheck className="w-5 h-5 text-amber-400" />
-            <h2 className="text-sm font-bold text-white uppercase font-mono tracking-wider">
+            <UserCheck className="w-5 h-5 text-apple-amber" />
+            <h2 className="text-sm font-semibold text-neutral-100 tracking-tight">
               {pendingReviewed ? 'Human Review Resolved' : 'Human Review Gate: Pending Approval'}
             </h2>
           </div>
           <span className={cn(
-            'text-[10px] font-mono px-2 py-0.5 rounded border',
+            'text-[10px] font-mono px-2.5 py-0.5 rounded-full border',
             pendingReviewed
-              ? 'bg-emerald-950 text-emerald-300 border-emerald-800/80 font-semibold'
-              : 'bg-amber-950 text-amber-300 border-amber-800/80 animate-pulse font-semibold'
+              ? 'bg-apple-emerald/15 text-apple-emerald border-apple-emerald/25 font-semibold'
+              : 'bg-apple-amber/15 text-apple-amber border-apple-amber/30 animate-pulse font-semibold'
           )}>
             {pendingReviewed ? 'Approved by usr_creative_lead' : 'Pending Lead Action'}
           </span>
         </div>
 
-        <p className="text-slate-300 text-xs leading-relaxed">
-          SimilarityGate flagged a <span className="text-amber-300 font-mono">0.74 cosine overlap</span> with a competitor ad. Gate policy requires explicit creative director review before public release.
+        <p className="text-neutral-300 text-xs leading-relaxed font-sans">
+          SimilarityGate flagged a <span className="text-apple-amber font-mono font-semibold">0.74 cosine overlap</span> with a competitor ad. Gate policy requires explicit creative director review before public release.
         </p>
 
         {/* Reviewer Note Input */}
         <div className="space-y-1.5 text-xs">
-          <label className="text-slate-400 font-mono text-[11px]">Reasoned Decision Rationale:</label>
+          <label className="text-neutral-400 font-sans text-[11px] font-medium">Reasoned Decision Rationale:</label>
           <textarea
             value={reviewNote}
             onChange={(e) => setReviewNote(e.target.value)}
             disabled={pendingReviewed}
             rows={2}
-            className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500 font-mono leading-relaxed disabled:opacity-75"
+            className="w-full bg-black/30 border border-white/[0.08] rounded-xl p-3 text-xs text-neutral-100 focus:outline-none focus:border-apple-blue font-mono leading-relaxed disabled:opacity-60"
           />
         </div>
 
         {/* Action Buttons */}
         {!pendingReviewed ? (
-          <div className="flex items-center gap-3 pt-2">
+          <div className="flex items-center gap-3 pt-1">
             <button
               onClick={handleApprove}
-              className="px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:shadow-emerald-500/25 text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-md"
+              className="apple-btn-primary flex items-center gap-1.5 shadow-apple-sm"
             >
               <ThumbsUp className="w-3.5 h-3.5" />
               <span>Approve & Release Creative</span>
             </button>
             <button
               onClick={handleReject}
-              className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-rose-950 text-slate-300 hover:text-rose-300 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              className="apple-btn-secondary flex items-center gap-1.5 hover:text-apple-red hover:border-apple-red/30"
             >
               <ThumbsDown className="w-3.5 h-3.5" />
               <span>Reject with Feedback</span>
             </button>
           </div>
         ) : (
-          <div className="text-emerald-400 font-mono text-xs flex items-center gap-2 pt-1">
+          <div className="text-apple-emerald font-mono text-xs flex items-center gap-2 pt-1">
             <CheckCircle2 className="w-4 h-4" />
             <span>Approved and signed with immutable audit trail. Ready for ad campaign export.</span>
           </div>
@@ -177,38 +177,38 @@ export default function QualityCenterPage() {
 
       {/* 7-Gate Pipeline Cards */}
       <div className="space-y-4">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300 font-mono flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-cyan-400" />
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-neutral-400 flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-apple-teal" />
           7-Stage Multi-Layer Gates Status
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {gates.map((g) => (
-            <div key={g.id} className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-2.5">
+            <div key={g.id} className="p-4 rounded-3xl bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.12] transition-colors space-y-2.5 shadow-apple-sm">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono text-slate-500 uppercase">Stage #{g.id}</span>
+                <span className="text-[10px] font-mono text-neutral-500 uppercase">Stage #{g.id}</span>
                 <span className={cn(
-                  'text-[10px] font-mono px-2 py-0.5 rounded border font-semibold',
-                  g.status === 'PASSED' && 'bg-emerald-950 text-emerald-300 border-emerald-800/60',
-                  g.status === 'WARNING' && 'bg-amber-950 text-amber-300 border-amber-800/60',
-                  g.status === 'APPROVED' && 'bg-emerald-950 text-emerald-300 border-emerald-800/60',
-                  g.status === 'PENDING ACTION' && 'bg-rose-950 text-rose-300 border-rose-800/60 animate-pulse'
+                  'text-[10px] font-mono px-2 py-0.5 rounded-full border font-semibold',
+                  g.status === 'PASSED' && 'bg-apple-emerald/15 text-apple-emerald border-apple-emerald/25',
+                  g.status === 'WARNING' && 'bg-apple-amber/15 text-apple-amber border-apple-amber/25',
+                  g.status === 'APPROVED' && 'bg-apple-emerald/15 text-apple-emerald border-apple-emerald/25',
+                  g.status === 'PENDING ACTION' && 'bg-apple-red/15 text-apple-red border-apple-red/25 animate-pulse'
                 )}>
                   {g.status}
                 </span>
               </div>
 
               <div>
-                <h3 className="font-bold text-sm text-slate-200">{g.name}</h3>
-                <div className="text-[11px] text-slate-400 font-mono">{g.category}</div>
+                <h3 className="font-semibold text-sm text-neutral-100">{g.name}</h3>
+                <div className="text-[11px] text-neutral-400 font-sans">{g.category}</div>
               </div>
 
-              <div className="p-2 rounded bg-slate-950 border border-slate-800/80 font-mono text-[11px] text-cyan-300 flex items-center justify-between">
-                <span>Score:</span>
+              <div className="p-2 rounded-xl bg-black/20 border border-white/[0.04] font-mono text-[11px] text-apple-teal flex items-center justify-between">
+                <span className="text-neutral-500">Score:</span>
                 <span className="font-semibold">{g.score}</span>
               </div>
 
-              <p className="text-[11px] text-slate-400 leading-relaxed">{g.desc}</p>
+              <p className="text-[11px] text-neutral-400 leading-relaxed font-sans">{g.desc}</p>
             </div>
           ))}
         </div>

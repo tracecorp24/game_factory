@@ -12,6 +12,7 @@ import {
   Smartphone,
   GitFork,
   Kanban,
+  ChevronDown,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
@@ -48,25 +49,22 @@ export function WorkflowToolbar({
   const { workflowVersion, workflowStatus } = useAppStore();
 
   return (
-    <div className="h-14 border-b border-slate-800 bg-[#070b14]/90 backdrop-blur-md px-4 flex items-center justify-between z-10 select-none">
-      {/* Left: Version, View Switcher & Template Selector */}
+    <div className="h-13 border-b border-white/[0.06] bg-[#0c101a]/70 backdrop-blur-2xl px-4 py-2 flex items-center justify-between z-10 select-none">
+      {/* Left: Version & Apple Segmented View Switcher */}
       <div className="flex items-center gap-3">
-        {/* Workflow Version Badge */}
-        <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs font-mono">
-          <Layers className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="text-slate-400">Version:</span>
-          <span className="text-cyan-300 font-semibold">{workflowVersion}</span>
+        {/* Version Capsule */}
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.07] text-[11px] font-mono text-neutral-400">
+          <Layers className="w-3 h-3 text-apple-blue" />
+          <span>v{workflowVersion}</span>
         </div>
 
-        {/* View Mode Switcher: DAG Canvas vs Factory Swimlane */}
-        <div className="flex items-center rounded-lg bg-slate-900 p-0.5 border border-slate-800 text-xs font-mono">
+        {/* Apple Segmented Switcher: DAG Canvas vs Factory Swimlane */}
+        <div className="apple-segmented">
           <button
             onClick={() => onViewModeChange('canvas')}
             className={cn(
-              'px-2.5 py-1 rounded-md transition-all flex items-center gap-1.5',
-              viewMode === 'canvas'
-                ? 'bg-cyan-500/20 text-cyan-300 font-semibold shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+              'apple-segmented-item flex items-center gap-1.5',
+              viewMode === 'canvas' && 'apple-segmented-item-active'
             )}
             title="React Flow Node DAG View"
           >
@@ -77,10 +75,8 @@ export function WorkflowToolbar({
           <button
             onClick={() => onViewModeChange('swimlane')}
             className={cn(
-              'px-2.5 py-1 rounded-md transition-all flex items-center gap-1.5',
-              viewMode === 'swimlane'
-                ? 'bg-purple-500/20 text-purple-300 font-semibold shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+              'apple-segmented-item flex items-center gap-1.5',
+              viewMode === 'swimlane' && 'apple-segmented-item-active'
             )}
             title="Horizontal Factory Floor Concurrency Swimlanes"
           >
@@ -89,116 +85,116 @@ export function WorkflowToolbar({
           </button>
         </div>
 
-        {/* Template Presets Dropdown */}
-        <div className="hidden lg:flex items-center gap-1.5 text-xs">
-          <span className="text-slate-500 font-mono text-[11px]">Template:</span>
-          <select
-            onChange={(e) => onLoadTemplate(e.target.value)}
-            className="bg-slate-900 border border-slate-800 rounded-md px-2.5 py-1 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono"
-            defaultValue="Full Campaign"
-          >
-            <option value="Full Campaign">Full Campaign 360 (Image, Video, Playable)</option>
-            <option value="Trend Concept Mockup">Trend → Concept → Mockup</option>
-            <option value="Selected Concept Static Ad">Selected Concept → Static Ad</option>
-            <option value="Selected Concept Video Ad">Selected Concept → Video Ad</option>
-            <option value="Selected Concept Basic Playable">Selected Concept → Basic Playable</option>
-          </select>
+        {/* Template Presets Picker */}
+        <div className="hidden lg:flex items-center gap-2">
+          <div className="relative">
+            <select
+              onChange={(e) => onLoadTemplate(e.target.value)}
+              className="bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] rounded-lg px-2.5 py-1 text-xs text-neutral-200 focus:outline-none focus:border-apple-blue font-sans cursor-pointer transition-colors pr-7 appearance-none"
+              defaultValue="Full Campaign"
+            >
+              <option value="Full Campaign" className="bg-[#121724] text-neutral-200">Full Campaign 360 (Image, Video, Playable)</option>
+              <option value="Trend Concept Mockup" className="bg-[#121724] text-neutral-200">Trend → Concept → Mockup</option>
+              <option value="Selected Concept Static Ad" className="bg-[#121724] text-neutral-200">Selected Concept → Static Ad</option>
+              <option value="Selected Concept Video Ad" className="bg-[#121724] text-neutral-200">Selected Concept → Video Ad</option>
+              <option value="Selected Concept Basic Playable" className="bg-[#121724] text-neutral-200">Selected Concept → Basic Playable</option>
+            </select>
+            <ChevronDown className="w-3 h-3 text-neutral-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
         </div>
 
         {/* Validation Errors Notice */}
         {validationErrors.length > 0 && (
-          <div className="flex items-center gap-1.5 text-rose-400 text-xs font-mono px-2 py-0.5 rounded bg-rose-950/60 border border-rose-800/50">
-            <AlertCircle className="w-3.5 h-3.5" />
-            <span>{validationErrors.length} Errors</span>
+          <div className="flex items-center gap-1.5 text-apple-red text-xs font-mono px-2 py-0.5 rounded-full bg-apple-red/10 border border-apple-red/25">
+            <AlertCircle className="w-3 h-3" />
+            <span>{validationErrors.length} Issue{validationErrors.length > 1 ? 's' : ''}</span>
           </div>
         )}
       </div>
 
-      {/* Right: Device Emulator & Actions (Validate, Dry Run, Run, Pause, Cancel) */}
+      {/* Right: Actions Hierarchy (Secondary Tools + Primary Action) */}
       <div className="flex items-center gap-2">
-        {/* Docked Mobile Safe-Zone Emulator Toggle */}
+        {/* Device Emulator Toggle */}
         <button
           onClick={onToggleDeviceEmulator}
           className={cn(
-            'px-3 py-1.5 rounded-lg border text-xs font-mono transition-all flex items-center gap-1.5',
+            'px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-all flex items-center gap-1.5',
             showDeviceEmulator
-              ? 'bg-cyan-950 text-cyan-300 border-cyan-500/60 font-semibold shadow-sm shadow-cyan-500/20'
-              : 'border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200'
+              ? 'bg-apple-blue/15 text-apple-blue border-apple-blue/30 font-semibold shadow-sm'
+              : 'border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.08] text-neutral-300'
           )}
           title="Open Live Device Emulator with TikTok Safe-Zone Overlay"
         >
-          <Smartphone className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="hidden sm:inline">Device Emulator</span>
+          <Smartphone className="w-3.5 h-3.5 text-apple-teal" />
+          <span className="hidden sm:inline">Preview Emulator</span>
         </button>
 
         {/* ComfyUI Sub-Canvas Modal Trigger */}
         {onOpenComfySubCanvas && (
           <button
             onClick={onOpenComfySubCanvas}
-            className="px-3 py-1.5 rounded-lg border border-cyan-800/80 bg-cyan-950/60 hover:bg-cyan-900/80 text-cyan-300 text-xs font-mono font-medium transition-all flex items-center gap-1.5 shadow-sm shadow-cyan-950"
+            className="px-2.5 py-1.5 rounded-lg border border-apple-purple/30 bg-apple-purple/10 hover:bg-apple-purple/20 text-apple-purple text-xs font-medium transition-all flex items-center gap-1.5"
             title="Open ComfyUI Micro-Graph Sub-Canvas (Tier 2)"
           >
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <Sparkles className="w-3.5 h-3.5 text-apple-purple" />
             <span className="hidden sm:inline">Comfy Sub-Canvas</span>
           </button>
         )}
 
-        <span className="text-slate-700 hidden sm:inline">|</span>
+        <div className="w-[1px] h-5 bg-white/[0.08] mx-1 hidden sm:block" />
 
-        {/* Validate */}
+        {/* Validate DAG */}
         <button
           onClick={onValidate}
-          className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-medium transition-colors hidden sm:flex items-center gap-1.5"
+          className="apple-btn-secondary hidden sm:flex items-center gap-1.5"
           title="Type Check Edge Ports and Cycle Prevention"
         >
-          <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
+          <CheckCircle2 className="w-3.5 h-3.5 text-neutral-400" />
           Validate
         </button>
 
         {/* Dry Run */}
         <button
           onClick={onDryRun}
-          className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-medium transition-colors hidden sm:flex items-center gap-1.5"
+          className="apple-btn-secondary hidden sm:flex items-center gap-1.5"
           title="Verify Models, Token Quotas and DAG Toposort without Executing"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <Sparkles className="w-3.5 h-3.5 text-apple-amber" />
           Dry Run
         </button>
 
-        {/* Run Workflow */}
+        {/* Primary Action: Run Workflow */}
         <button
           onClick={onRun}
           disabled={workflowStatus === 'running'}
           className={cn(
-            'px-4 py-1.5 rounded-lg text-white text-xs font-semibold shadow-md transition-all flex items-center gap-1.5',
-            workflowStatus === 'running'
-              ? 'bg-cyan-900 text-cyan-300 cursor-not-allowed opacity-70'
-              : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-cyan-500/30 hover:scale-[1.02]'
+            'apple-btn-primary flex items-center gap-1.5',
+            workflowStatus === 'running' && 'opacity-60 cursor-not-allowed'
           )}
         >
           <Play className="w-3.5 h-3.5 fill-current" />
-          Run
+          <span>{workflowStatus === 'running' ? 'Running...' : 'Run Pipeline'}</span>
         </button>
 
-        {/* Pause */}
-        <button
-          onClick={onPause}
-          disabled={workflowStatus !== 'running'}
-          className="p-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs transition-colors disabled:opacity-40"
-          title="Pause Workflow Execution"
-        >
-          <Pause className="w-4 h-4" />
-        </button>
-
-        {/* Cancel */}
-        <button
-          onClick={onCancel}
-          disabled={workflowStatus === 'idle' || workflowStatus === 'completed'}
-          className="p-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-rose-950/60 text-slate-400 hover:text-rose-400 text-xs transition-colors disabled:opacity-40"
-          title="Cancel Execution"
-        >
-          <Square className="w-4 h-4" />
-        </button>
+        {/* Pause & Cancel Controls */}
+        <div className="flex items-center gap-1 bg-white/[0.04] p-0.5 rounded-lg border border-white/[0.08]">
+          <button
+            onClick={onPause}
+            disabled={workflowStatus !== 'running'}
+            className="p-1 rounded-md text-neutral-400 hover:text-neutral-200 hover:bg-white/[0.08] transition-colors disabled:opacity-30"
+            title="Pause Execution"
+          >
+            <Pause className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={onCancel}
+            disabled={workflowStatus === 'idle' || workflowStatus === 'completed'}
+            className="p-1 rounded-md text-neutral-400 hover:text-apple-red hover:bg-apple-red/10 transition-colors disabled:opacity-30"
+            title="Cancel Execution"
+          >
+            <Square className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   );

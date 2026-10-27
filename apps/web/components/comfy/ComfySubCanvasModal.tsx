@@ -288,26 +288,26 @@ export function ComfySubCanvasModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in">
-      <div className="relative w-full max-w-[96vw] h-[94vh] bg-[#070b14] border border-cyan-500/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-slate-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-2xl p-4 animate-fade-in">
+      <div className="relative w-full max-w-[96vw] h-[94vh] bg-[#0c101a]/95 border border-white/[0.1] rounded-3xl shadow-2xl flex flex-col overflow-hidden text-neutral-100">
         {/* Top Header Bar */}
-        <div className="h-14 px-6 border-b border-slate-800 bg-[#080d1a] flex items-center justify-between select-none z-10 flex-shrink-0">
+        <div className="h-14 px-6 border-b border-white/[0.06] bg-black/20 flex items-center justify-between select-none z-10 flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-cyan-950/80 border border-cyan-800/80 text-cyan-400">
+            <div className="p-2 rounded-xl bg-apple-purple/15 text-apple-purple">
               <Layers className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-sm font-bold tracking-wide uppercase font-mono text-slate-100">
+                <h2 className="text-sm font-semibold tracking-tight text-neutral-100">
                   ComfyUI Micro-Graph Sub-Canvas
                 </h2>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3 text-cyan-400" />
-                  Tier-2 Native VRAM Engine
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-apple-purple/15 text-apple-purple border border-apple-purple/25 flex items-center gap-1">
+                  <ShieldCheck className="w-3 h-3" />
+                  Tier-2 Native VRAM
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-sans">
-                Interactive node graph transpiled directly to ComfyUI execution payload.
+              <p className="text-[11px] text-neutral-400 font-sans">
+                Interactive diffusion node graph transpiled directly to ComfyUI execution payload.
               </p>
             </div>
           </div>
@@ -322,14 +322,14 @@ export function ComfySubCanvasModal({
 
             <button
               onClick={handleSaveAndApply}
-              className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-md shadow-emerald-950 transition-all font-mono"
+              className="apple-btn-primary flex items-center gap-1.5 shadow-apple-sm"
             >
               Apply to Pipeline Node
             </button>
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-white/[0.08] transition-colors"
               title="Close Sub-Canvas"
             >
               <X className="w-5 h-5" />
@@ -346,7 +346,7 @@ export function ComfySubCanvasModal({
         {/* Main Work Area: Left Palette + Center React Flow + Right Variable Panel */}
         <div className="flex-1 flex min-h-0 relative overflow-hidden">
           {/* Left Node Palette */}
-          <div className="w-52 border-r border-slate-800 bg-[#080d1a]/95 p-3 flex flex-col gap-2 overflow-y-auto select-none flex-shrink-0">
+          <div className="w-56 border-r border-white/[0.06] bg-black/20 p-3 flex flex-col gap-2 overflow-y-auto select-none flex-shrink-0">
             <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider font-semibold">
               Available Nodes
             </span>

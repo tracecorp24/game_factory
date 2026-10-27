@@ -14,6 +14,7 @@ import {
   ChevronDown,
   ChevronRight,
   GripVertical,
+  Sliders,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { NodeCategory } from '@/lib/types';
@@ -91,27 +92,27 @@ export function NodePalette({ onAddNode }: NodePaletteProps) {
   const categories = Object.keys(PALETTE_DATA) as NodeCategory[];
 
   return (
-    <div className="w-72 border-r border-slate-800 bg-[#070b14]/95 flex flex-col flex-shrink-0 select-none overflow-hidden h-full">
+    <div className="w-68 border-r border-white/[0.06] bg-[#0c101a]/75 backdrop-blur-2xl flex flex-col flex-shrink-0 select-none overflow-hidden h-full">
       {/* Palette Header */}
-      <div className="p-3.5 border-b border-slate-800 space-y-2.5">
+      <div className="p-3.5 border-b border-white/[0.06] space-y-2.5">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-300 font-mono">
-            Node Palette (28)
+          <span className="text-xs font-semibold tracking-tight text-neutral-200">
+            Node Library
           </span>
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/60">
-            Drag / Click
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.06] text-neutral-400 border border-white/[0.08]">
+            28 Blocks
           </span>
         </div>
 
-        {/* Search */}
+        {/* Apple Style Search Bar */}
         <div className="relative">
-          <Search className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5" />
+          <Search className="w-3.5 h-3.5 text-neutral-500 absolute left-2.5 top-2.5" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search nodes..."
-            className="w-full bg-slate-900 border border-slate-800 rounded-md pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500/60 transition-colors"
+            placeholder="Filter blocks..."
+            className="w-full bg-white/[0.04] border border-white/[0.07] rounded-lg pl-8 pr-3 py-1.5 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-apple-blue/60 transition-colors font-sans"
           />
         </div>
       </div>
@@ -127,13 +128,13 @@ export function NodePalette({ onAddNode }: NodePaletteProps) {
           const isCollapsed = collapsedCategories[cat];
 
           return (
-            <div key={cat} className="rounded-lg bg-slate-900/40 border border-slate-800/60 overflow-hidden">
+            <div key={cat} className="rounded-xl bg-white/[0.02] border border-white/[0.05] overflow-hidden">
               <button
                 onClick={() => toggleCategory(cat)}
-                className="w-full px-3 py-2 flex items-center justify-between text-xs font-medium text-slate-300 hover:bg-slate-800/50 transition-colors"
+                className="w-full px-3 py-2 flex items-center justify-between text-xs font-medium text-neutral-300 hover:bg-white/[0.04] transition-colors"
               >
-                <span className="font-mono text-[11px] font-semibold text-slate-400">{cat}</span>
-                <div className="flex items-center gap-1.5 text-slate-500 text-[10px]">
+                <span className="text-[11px] font-semibold tracking-tight text-neutral-300">{cat}</span>
+                <div className="flex items-center gap-1.5 text-neutral-500 text-[10px]">
                   <span>{items.length}</span>
                   {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </div>
@@ -145,21 +146,21 @@ export function NodePalette({ onAddNode }: NodePaletteProps) {
                     <div
                       key={item.id}
                       onClick={() => onAddNode(item)}
-                      className="group p-2 rounded-md bg-slate-900/80 border border-slate-800/80 hover:border-cyan-500/40 hover:bg-slate-800/80 transition-all cursor-pointer flex items-center justify-between"
+                      className="group p-2 rounded-lg bg-white/[0.03] border border-white/[0.04] hover:border-apple-blue/30 hover:bg-apple-blue/5 transition-all cursor-pointer flex items-center justify-between"
                       title={item.desc}
                     >
                       <div className="min-w-0 pr-2">
-                        <div className="text-xs font-medium text-slate-200 group-hover:text-cyan-300 truncate">
+                        <div className="text-xs font-medium text-neutral-200 group-hover:text-apple-blue transition-colors truncate">
                           {item.title}
                         </div>
-                        <div className="text-[10px] font-mono text-slate-500 truncate">
+                        <div className="text-[10px] font-mono text-neutral-500 truncate">
                           {item.executor}
                         </div>
                       </div>
                       <button
-                        className="w-6 h-6 rounded bg-slate-800 group-hover:bg-cyan-500 text-slate-400 group-hover:text-white flex items-center justify-center transition-colors flex-shrink-0"
+                        className="w-5 h-5 rounded-md bg-white/[0.06] group-hover:bg-apple-blue text-neutral-400 group-hover:text-white flex items-center justify-center transition-all flex-shrink-0"
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-3 h-3" />
                       </button>
                     </div>
                   ))}

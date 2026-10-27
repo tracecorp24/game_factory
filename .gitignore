@@ -23,6 +23,13 @@ wheels/
 .pytest_cache/
 .coverage
 htmlcov/
+.venv/
+runtime/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+ComfyUI/models/
 
 # Node.js
 apps/web/node_modules/
@@ -34,6 +41,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.tsbuildinfo
+
 
 # Environment & Storage
 .env

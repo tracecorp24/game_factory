@@ -22,48 +22,44 @@ export default function StudioPage() {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-[#090d16]">
+    <div className="flex flex-col h-full overflow-hidden bg-[#0a0d14]">
       {/* Studio Top Navigation Bar */}
-      <div className="h-12 border-b border-slate-800 bg-[#070b14] px-6 flex items-center justify-between z-20 select-none">
-        <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800">
+      <div className="h-12 border-b border-white/[0.06] bg-[#0c101a]/70 backdrop-blur-2xl px-5 flex items-center justify-between z-20 select-none">
+        <div className="apple-segmented">
           <button
             onClick={() => handleTabChange('workflow')}
             className={cn(
-              'px-3.5 py-1 text-xs font-medium rounded-md transition-all flex items-center gap-2',
-              tab === 'workflow'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-sm shadow-cyan-500/20'
-                : 'text-slate-400 hover:text-slate-200'
+              'apple-segmented-item flex items-center gap-2',
+              tab === 'workflow' && 'apple-segmented-item-active'
             )}
           >
             <GitFork className="w-3.5 h-3.5" />
             <span>Workflow Studio</span>
-            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-black/20">Canvas</span>
+            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-white/[0.08] text-neutral-300">DAG</span>
           </button>
 
           <button
             onClick={() => handleTabChange('agents')}
             className={cn(
-              'px-3.5 py-1 text-xs font-medium rounded-md transition-all flex items-center gap-2',
-              tab === 'agents'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-sm shadow-purple-500/20'
-                : 'text-slate-400 hover:text-slate-200'
+              'apple-segmented-item flex items-center gap-2',
+              tab === 'agents' && 'apple-segmented-item-active'
             )}
           >
             <Radio className="w-3.5 h-3.5" />
             <span>Agent Observatory</span>
-            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/60 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-apple-emerald/15 text-apple-emerald flex items-center gap-1 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-apple-emerald animate-pulse" />
               Live
             </span>
           </button>
         </div>
 
-        {/* Status Pill */}
-        <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-slate-400">
-          <span>Active Run:</span>
-          <span className="text-cyan-300 font-semibold">{activeRunId}</span>
-          <span className="text-slate-600">•</span>
-          <span className="text-emerald-400 font-semibold">{runStatus.toUpperCase()}</span>
+        {/* Status Capsule */}
+        <div className="hidden sm:flex items-center gap-2 font-mono text-xs text-neutral-400 bg-white/[0.03] px-3 py-1 rounded-full border border-white/[0.06]">
+          <span>Run:</span>
+          <span className="text-apple-teal font-medium">{activeRunId}</span>
+          <span className="text-neutral-600">•</span>
+          <span className="text-apple-emerald font-semibold uppercase text-[11px]">{runStatus}</span>
         </div>
       </div>
 

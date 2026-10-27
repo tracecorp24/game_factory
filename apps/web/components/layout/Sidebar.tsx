@@ -18,7 +18,8 @@ import {
   Cpu,
   Lock,
   ChevronRight,
-  Flame,
+  Sparkles,
+  Command,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
@@ -125,30 +126,30 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="w-64 border-r border-slate-800 bg-[#070b14] flex flex-col flex-shrink-0 select-none z-30">
-      {/* Brand Header */}
-      <div className="h-16 border-b border-slate-800/80 px-5 flex items-center justify-between">
+    <aside className="w-60 border-r border-white/[0.06] bg-[#0c101a]/75 backdrop-blur-2xl flex flex-col flex-shrink-0 select-none z-30">
+      {/* Apple Studio App Header */}
+      <div className="h-14 border-b border-white/[0.06] px-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-all">
-            <Flame className="w-5 h-5 text-white" />
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-apple-blue to-apple-purple flex items-center justify-center shadow-sm shadow-apple-blue/20 group-hover:scale-105 transition-all">
+            <Sparkles className="w-3.5 h-3.5 text-white" />
           </div>
           <div>
-            <div className="font-bold text-sm tracking-wide bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent flex items-center gap-1.5">
+            <div className="font-semibold text-xs tracking-tight text-neutral-100 flex items-center gap-1.5">
               CreativeForge
-              <span className="text-[10px] px-1.5 py-0.2 rounded font-mono bg-cyan-950 text-cyan-300 border border-cyan-800/60 font-semibold">
+              <span className="text-[9px] px-1 py-0.2 rounded font-mono bg-white/[0.08] text-neutral-300 border border-white/[0.08] font-medium">
                 v3.0
               </span>
             </div>
-            <div className="text-[11px] text-slate-400 font-mono">Intelligence Studio</div>
+            <div className="text-[10px] text-neutral-400 font-normal">Game Factory Pro</div>
           </div>
         </Link>
       </div>
 
-      {/* Navigation Sections */}
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+      {/* Navigation Groups */}
+      <div className="flex-1 overflow-y-auto px-2.5 py-4 space-y-5">
         {navItems.map((group, idx) => (
-          <div key={idx} className="space-y-1">
-            <div className="px-3 text-[10px] uppercase font-mono font-semibold tracking-wider text-slate-400">
+          <div key={idx} className="space-y-0.5">
+            <div className="px-2.5 py-1 text-[10px] uppercase font-semibold tracking-wider text-neutral-400">
               {group.title}
             </div>
             {group.items.map((item) => {
@@ -163,34 +164,32 @@ export function Sidebar() {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    'group flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150',
+                    'group flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-150',
                     isActive
-                      ? 'bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 shadow-sm shadow-cyan-500/10'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                      ? 'bg-apple-blue/15 text-apple-blue shadow-sm'
+                      : 'text-neutral-300 hover:text-white hover:bg-white/[0.05]'
                   )}
                 >
                   <div className="flex items-center gap-2.5">
                     <Icon
                       className={cn(
-                        'w-4 h-4 transition-colors',
-                        isActive
-                          ? 'text-cyan-400'
-                          : 'text-slate-500 group-hover:text-slate-300'
+                        'w-3.5 h-3.5 transition-colors',
+                        isActive ? 'text-apple-blue' : 'text-neutral-400 group-hover:text-neutral-200'
                       )}
                     />
-                    <span>{item.name}</span>
+                    <span className="tracking-tight">{item.name}</span>
                   </div>
 
                   {item.badge && (
                     <span
                       className={cn(
-                        'text-[10px] px-1.5 py-0.5 rounded font-mono',
+                        'text-[10px] px-1.5 py-0.5 rounded-full font-mono',
                         item.pulse
-                          ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-700/50 flex items-center gap-1 animate-pulse'
-                          : 'bg-slate-800 text-slate-400'
+                          ? 'bg-apple-emerald/15 text-apple-emerald border border-apple-emerald/30 flex items-center gap-1 font-semibold'
+                          : 'bg-white/[0.06] text-neutral-400 border border-white/[0.08]'
                       )}
                     >
-                      {item.pulse && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />}
+                      {item.pulse && <span className="w-1.5 h-1.5 rounded-full bg-apple-emerald animate-pulse" />}
                       {item.badge}
                     </span>
                   )}
@@ -201,14 +200,14 @@ export function Sidebar() {
         ))}
       </div>
 
-      {/* Footer Info & Active Project Badge */}
-      <div className="p-3 border-t border-slate-800/80 bg-slate-950/50">
-        <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
-          <div>
-            <div className="text-[11px] text-slate-400">Current Project</div>
-            <div className="text-xs font-semibold text-slate-200">Royal Match Strike</div>
+      {/* Project Status Pill in Footer */}
+      <div className="p-3 border-t border-white/[0.06] bg-black/20">
+        <div className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-between">
+          <div className="min-w-0">
+            <div className="text-[10px] text-neutral-400">Current DNA</div>
+            <div className="text-[11px] font-semibold text-neutral-200 truncate">Royal Match Strike</div>
           </div>
-          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800/60">
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-apple-purple/15 text-apple-purple border border-apple-purple/25 flex-shrink-0">
             P0 Engine
           </span>
         </div>

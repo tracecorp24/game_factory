@@ -496,7 +496,7 @@ export function WorkflowCanvas() {
           <NodePalette onAddNode={handleAddNodeFromPalette} />
 
           {/* Center React Flow Canvas */}
-          <div className="flex-1 h-full relative bg-[#090d16]">
+          <div className="flex-1 h-full relative bg-[#0a0d14]">
             <ReactFlow
               nodes={nodes}
               edges={edges}
@@ -508,19 +508,19 @@ export function WorkflowCanvas() {
               nodeTypes={nodeTypes}
               edgeTypes={edgeTypes}
               fitView
-              className="bg-[#090d16]"
+              className="bg-[#0a0d14]"
               minZoom={0.2}
               maxZoom={1.5}
             >
-              <Background color="#1e293b" gap={24} size={1.5} />
-              <Controls className="!bg-slate-900 !border-slate-800 !text-slate-200 fill-slate-200" />
+              <Background color="rgba(255, 255, 255, 0.05)" gap={20} size={1} />
+              <Controls className="!bg-[#121724]/90 !border-white/[0.08] !rounded-xl !shadow-apple-sm !text-neutral-300 fill-neutral-300 backdrop-blur-xl" />
               <MiniMap
-                className="!bg-slate-950 !border-slate-800"
+                className="!bg-[#0c101a]/90 !border-white/[0.08] !rounded-xl !shadow-apple-sm backdrop-blur-xl !overflow-hidden"
                 nodeColor={(n: any) => {
-                  if (n.data?.status === 'completed') return '#10b981';
-                  if (n.data?.status === 'running') return '#00f2fe';
-                  if (n.data?.status === 'failed') return '#f43f5e';
-                  return '#475569';
+                  if (n.data?.status === 'completed') return '#30d158';
+                  if (n.data?.status === 'running') return '#0a84ff';
+                  if (n.data?.status === 'failed') return '#ff453a';
+                  return '#3a3a3c';
                 }}
               />
             </ReactFlow>
